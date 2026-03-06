@@ -1,0 +1,138 @@
+//
+// Created by antho on 2026-01-07.
+//
+
+#include "Game.h"
+#include "Map.h"
+// #include "GameObject.h"
+
+#include <iostream>
+#include <ostream>
+
+#include "manager/AssetManager.h"
+
+// GameObject *player = nullptr;
+
+std::function<void(std::string)> Game::onSceneChangeRequest;
+
+Game::Game() {}
+
+Game::~Game() {
+    destroy();
+}
+
+void Game::init(const char* title, int width, int height, bool fullscreen)
+{
+    int flags = 0;
+    if (fullscreen) {
+        flags = SDL_WINDOW_FULLSCREEN;
+    }
+
+    // Initialize SDL library
+    if (SDL_InitSubSystem(SDL_INIT_VIDEO) == 1) {
+        std::cout << "Subsystem initialized..." << std::endl;
+        window = SDL_CreateWindow(title, width, height, flags);
+        if (window) {
+            std::cout << "Window created..." << std::endl;
+        }
+
+        // Windows will be Direct3D (DirectX)
+        // Mac will likely be Metal, OpenGL
+        renderer = SDL_CreateRenderer(window, nullptr);
+
+        if (renderer) {
+            std::cout << "Renderer created..." << std::endl;
+        }
+        else {
+            std::cout << "Renderer could not be created..." << std::endl;
+            return;
+        }
+
+        isRunning = true;
+    }
+    else {
+        isRunning = false;
+    }
+
+    // Load assets
+    AssetManager::loadAnimation("player", "../Assets/Animations/fox_animations.xml");
+    AssetManager::loadAnimation("enemy", "../Assets/Animations/bird_animations.xml");
+
+    // Load scenes
+    sceneManager.loadScene("level1", "../Assets/Map.tmx", width, height);
+    sceneManager.loadScene("level2", "../Assets/map2.tmx", width, height);
+
+    // Start level 1
+    sceneManager.changeSceneDeferred("level1");
+
+    // Resolve scene callback
+    onSceneChangeRequest = [this](std::string sceneName) {
+
+        // Some game state happening here
+        if (sceneManager.currentScene -> getName() == "level2" && sceneName == "level2") {
+            std::cout << "You Win!" << std::endl;
+            isRunning = false;
+            return;
+        }
+
+        if (sceneName == "gameover") {
+            std::cout << "Game Over" << std::endl;
+            isRunning = false;
+            return;
+        }
+
+        sceneManager.changeSceneDeferred(sceneName);
+    };
+}
+
+void Game::handleEvents() {
+    // SDL listens to the OS for input events internally, and it adds them to a queue
+
+    // Check for next event, if an event is available, it will remove from the queue and store in event
+    SDL_PollEvent(&event);
+
+    switch (event.type) {
+        case SDL_EVENT_QUIT: // Usually triggered when the user closes the window
+            isRunning = false;
+            break;
+        default:
+            break;
+    }
+}
+
+void Game::update(float deltaTime) {
+    frameCount++;
+    sceneManager.update(deltaTime, event);
+}
+
+void Game::render() {
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+
+    // Every frame, the renderer is cleared with the draw color
+    SDL_RenderClear(renderer);
+
+    sceneManager.render();
+
+    // Swaps back buffer to the screen
+    SDL_RenderPresent(renderer);
+}
+
+void Game::destroy() {
+    TextureManager::clean();
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
+    std::cout << "Game destroyed..." << std::endl;
+}
+
+// void RandomizePixels() {
+//     if (frameCount % 60 != 0) {
+//         return;
+//     }
+//
+//     r = rand() % 256;
+//     g = rand() % 256;
+//     b = rand() % 256;
+//     a = rand() % 256;
+//
+// }
