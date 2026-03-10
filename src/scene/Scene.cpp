@@ -26,7 +26,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     }
 
     // Load our map
-    world.getMap().load(mapPath, TextureManager::load("../Assets/tileset.png"));
+    world.getMap().load(mapPath, TextureManager::load("../Assets/CutManTileset.png"));
 
     // Spawn Colliders
     for (auto &collider : world.getMap().colliders) {
@@ -38,11 +38,13 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
         c.rect.w = collider.rect.w;
         c.rect.h = collider.rect.h;
 
+        /*
         // To have a visual of the colliders
         SDL_Texture* tex = TextureManager::load("../Assets/tileset.png");
         SDL_FRect colSrc{0,32,32,32};
         SDL_FRect colDst {c.rect.x, c.rect.y, c.rect.w, c.rect.h};
         e.addComponent<Sprite>(tex, colSrc, colDst);
+        */
     }
 
     // Spawn items
@@ -69,7 +71,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
 
     // Spawn Player
     auto& player(world.createEntity());
-    auto& playerTransform = player.addComponent<Transform>(Vector2D(500,500), 0.0f, 1.0f);
+    auto& playerTransform = player.addComponent<Transform>(Vector2D(0,0), 0.0f, 1.0f);
     player.addComponent<Velocity>(Vector2D(0.0f,0.0f), 200.0f);
 
 

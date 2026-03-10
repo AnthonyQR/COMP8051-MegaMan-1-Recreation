@@ -61,8 +61,9 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
     // Load scenes
     sceneManager.loadScene(SceneType::Menu, "mainMenu", nullptr, width, height);
-    sceneManager.loadScene(SceneType::Gameplay, "level1", "../Assets/Map.tmx", width, height);
-    sceneManager.loadScene(SceneType::Gameplay, "level2", "../Assets/map2.tmx", width, height);
+    sceneManager.loadScene(SceneType::Gameplay, "cutman", "../Assets/CutManMap.tmx", width, height);
+    //sceneManager.loadScene(SceneType::Gameplay, "level1", "../Assets/Map.tmx", width, height);
+    //sceneManager.loadScene(SceneType::Gameplay, "level2", "../Assets/map2.tmx", width, height);
 
     // Init game data / state
     gameState.playerHealth = 5;

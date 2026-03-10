@@ -39,6 +39,8 @@ void Map::load(const char* path, SDL_Texture *ts) {
     // Parse collider data
     auto* collidersObjectGroup = layer->NextSiblingElement("objectgroup");; // Set to the first object group
 
+    if (!collidersObjectGroup) return;
+
     // If the name is wrong, iterate through the object groups until the element with the same name is found
     if (collidersObjectGroup->Attribute("name") != std::string("Collision Layer")) {
         for (auto* objGroup = collidersObjectGroup->NextSiblingElement("objectgroup");
@@ -58,10 +60,10 @@ void Map::load(const char* path, SDL_Texture *ts) {
             obj = obj->NextSiblingElement("object")) { // Increment
 
             Collider c;
-            c.rect.x = obj->FloatAttribute("x");
-            c.rect.y = obj->FloatAttribute("y");
-            c.rect.w = obj->FloatAttribute("width");
-            c.rect.h = obj->FloatAttribute("height");
+            c.rect.x = obj->FloatAttribute("x") * 2;
+            c.rect.y = obj->FloatAttribute("y") * 2;
+            c.rect.w = obj->FloatAttribute("width") * 2;
+            c.rect.h = obj->FloatAttribute("height") * 2;
             colliders.push_back(c);
             }
     }
@@ -112,22 +114,36 @@ void Map::draw(const Camera &cam) {
                     // Dirt
                     src.x = 0;
                     src.y = 0;
-                    src.w = 32;
-                    src.h = 32;
+                    src.w = 16;
+                    src.h = 16;
                     break;
                 case 2:
                     // Grass
+                    src.x = 16;
+                    src.y = 0;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 3:
+                    // Water
                     src.x = 32;
                     src.y = 0;
-                    src.w = 32;
-                    src.h = 32;
+                    src.w = 16;
+                    src.h = 16;
                     break;
                 case 4:
                     // Water
-                    src.x = 32;
-                    src.y = 32;
-                    src.w = 32;
-                    src.h = 32;
+                    src.x = 48;
+                    src.y = 0;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 5:
+                    // Water
+                    src.x = 64;
+                    src.y = 0;
+                    src.w = 16;
+                    src.h = 16;
                     break;
                 default:
                     break;
