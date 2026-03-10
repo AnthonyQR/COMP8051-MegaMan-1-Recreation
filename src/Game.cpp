@@ -13,6 +13,7 @@
 
 // GameObject *player = nullptr;
 
+GameState Game::gameState;
 std::function<void(std::string)> Game::onSceneChangeRequest;
 
 Game::Game() {}
@@ -59,11 +60,15 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     AssetManager::loadAnimation("enemy", "../Assets/Animations/bird_animations.xml");
 
     // Load scenes
-    sceneManager.loadScene("level1", "../Assets/Map.tmx", width, height);
-    sceneManager.loadScene("level2", "../Assets/map2.tmx", width, height);
+    sceneManager.loadScene(SceneType::Menu, "mainMenu", nullptr, width, height);
+    sceneManager.loadScene(SceneType::Gameplay, "level1", "../Assets/Map.tmx", width, height);
+    sceneManager.loadScene(SceneType::Gameplay, "level2", "../Assets/map2.tmx", width, height);
 
-    // Start level 1
-    sceneManager.changeSceneDeferred("level1");
+    // Init game data / state
+    gameState.playerHealth = 5;
+
+    // Start Main Menu
+    sceneManager.changeSceneDeferred("mainMenu");
 
     // Resolve scene callback
     onSceneChangeRequest = [this](std::string sceneName) {

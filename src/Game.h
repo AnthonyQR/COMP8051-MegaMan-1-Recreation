@@ -13,6 +13,10 @@
 #include "World.h"
 #include "manager/SceneManager.h"
 
+struct GameState {
+    int playerHealth;
+};
+
 class Game {
     public:
     Game();
@@ -37,6 +41,7 @@ class Game {
 
     SceneManager sceneManager;
     static std::function<void(std::string)> onSceneChangeRequest;
+    static GameState gameState;
 
     World world;
 

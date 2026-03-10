@@ -32,10 +32,11 @@ add_executable(Tutorial1 src/main.cpp
         src/utils/Vector2DTest.cpp
         src/utils/Collision.cpp
         src/ecs/system/CollisionSystem.cpp
-        src/ecs/World.cpp
         src/vendor/tinyxml2.cpp
         src/manager/AssetManager.cpp
-        src/manager/Scene.cpp
+        src/scene/Scene.cpp
+        src/ecs/system/EventResponseSystem.cpp
+        src/ecs/system/MainMenuSystem.cpp
 )
 
 target_link_libraries(Tutorial1
