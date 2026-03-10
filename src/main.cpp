@@ -16,7 +16,8 @@ int main() {
     int actualFrameTime;
 
     game = new Game();
-    game->init("Tutorial Engine", 800, 600, false);
+    // game->init("Tutorial Engine", 800, 600, false);
+    game->init("Tutorial Engine", 768, 720, false);
 
     // Vector2DTest *vector2DTest = new Vector2DTest();
     // vector2DTest -> Test();

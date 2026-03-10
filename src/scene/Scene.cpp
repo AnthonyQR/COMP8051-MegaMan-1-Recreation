@@ -67,12 +67,13 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     SDL_FRect camView{};
     camView.w = windowWidth;
     camView.h = windowHeight;
-    cam.addComponent<Camera>(camView, world.getMap().width * 32.0f, world.getMap().height * 32.0f);
+    cam.addComponent<Camera>(camView, world.getMap().width * 48.0f, world.getMap().height * 48.0f);
 
     // Spawn Player
     auto& player(world.createEntity());
     auto& playerTransform = player.addComponent<Transform>(Vector2D(0,0), 0.0f, 1.0f);
     player.addComponent<Velocity>(Vector2D(0.0f,0.0f), 200.0f);
+    player.addComponent<Gravity>(10.0f, true);
 
 
     Animation anim = AssetManager::getAnimation("player");

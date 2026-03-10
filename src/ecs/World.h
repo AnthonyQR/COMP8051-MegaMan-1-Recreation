@@ -19,6 +19,7 @@
 #include "CameraSystem.h"
 #include "DestructionSystem.h"
 #include "EventResponseSystem.h"
+#include "GravitySystem.h"
 #include "MainMenuSystem.h"
 #include "SpawnTimerSystem.h"
 #include "scene/SceneType.h"
@@ -30,6 +31,7 @@ class World {
     MovementSystem movementSystem;
     RenderSystem renderSystem;
     KeyboardInputSystem keyboardInputSystem;
+    GravitySystem gravitySystem;
     CollisionSystem collisionSystem;
     AnimationSystem animationSystem;
     CameraSystem cameraSystem;
@@ -46,6 +48,7 @@ public:
         }
         else {
             keyboardInputSystem.update(entities, event);
+            gravitySystem.update(entities, dt);
             movementSystem.update(entities, dt);
             collisionSystem.update(*this);
             animationSystem.update(entities, dt);

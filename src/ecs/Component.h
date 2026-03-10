@@ -25,6 +25,11 @@ struct Velocity {
     float speed{};
 };
 
+struct Gravity {
+    float gravitySpeed{};
+    bool gravityEnabled{};
+};
+
 struct Sprite {
     SDL_Texture* texture = nullptr;
     SDL_FRect src{};

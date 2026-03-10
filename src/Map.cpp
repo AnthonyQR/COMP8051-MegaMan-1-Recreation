@@ -60,10 +60,10 @@ void Map::load(const char* path, SDL_Texture *ts) {
             obj = obj->NextSiblingElement("object")) { // Increment
 
             Collider c;
-            c.rect.x = obj->FloatAttribute("x") * 2;
-            c.rect.y = obj->FloatAttribute("y") * 2;
-            c.rect.w = obj->FloatAttribute("width") * 2;
-            c.rect.h = obj->FloatAttribute("height") * 2;
+            c.rect.x = obj->FloatAttribute("x") * 3;
+            c.rect.y = obj->FloatAttribute("y") * 3;
+            c.rect.w = obj->FloatAttribute("width") * 3;
+            c.rect.h = obj->FloatAttribute("height") * 3;
             colliders.push_back(c);
             }
     }
@@ -95,7 +95,7 @@ void Map::load(const char* path, SDL_Texture *ts) {
 void Map::draw(const Camera &cam) {
     SDL_FRect src{}, dest{};
 
-    dest.w = dest.h = 32;
+    dest.w = dest.h = 48;
 
     for (int row = 0; row < height; row++) {
         for (int col = 0; col < width; col++) {
@@ -109,45 +109,237 @@ void Map::draw(const Camera &cam) {
             dest.x = std::round(worldX - cam.view.x);
             dest.y = std::round(worldY - cam.view.y);
 
+            // All tiles are the same width & height
+            // Calculate x & y with modulus
+            type -= 1;
+            src.x = (type % 6) * 16;
+            src.y = ((type / 6) % 6) * 16;
+            src.w = 16;
+            src.h = 16;
+
+            /*
             switch (type) {
                 case 1:
-                    // Dirt
                     src.x = 0;
                     src.y = 0;
                     src.w = 16;
                     src.h = 16;
                     break;
                 case 2:
-                    // Grass
                     src.x = 16;
                     src.y = 0;
                     src.w = 16;
                     src.h = 16;
                     break;
                 case 3:
-                    // Water
                     src.x = 32;
                     src.y = 0;
                     src.w = 16;
                     src.h = 16;
                     break;
                 case 4:
-                    // Water
                     src.x = 48;
                     src.y = 0;
                     src.w = 16;
                     src.h = 16;
                     break;
                 case 5:
-                    // Water
                     src.x = 64;
                     src.y = 0;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 6:
+                    src.x = 80;
+                    src.y = 0;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 7:
+                    src.x = 0;
+                    src.y = 16;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 8:
+                    src.x = 16;
+                    src.y = 16;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 9:
+                    src.x = 32;
+                    src.y = 16;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 10:
+                    src.x = 48;
+                    src.y = 16;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 11:
+                    src.x = 64;
+                    src.y = 16;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 12:
+                    src.x = 80;
+                    src.y = 16;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 13:
+                    src.x = 0;
+                    src.y = 32;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 14:
+                    src.x = 16;
+                    src.y = 32;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 15:
+                    src.x = 32;
+                    src.y = 32;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 16:
+                    src.x = 48;
+                    src.y = 32;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 17:
+                    src.x = 64;
+                    src.y = 32;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 18:
+                    src.x = 80;
+                    src.y = 32;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 19:
+                    src.x = 0;
+                    src.y = 48;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 20:
+                    src.x = 16;
+                    src.y = 48;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 21:
+                    src.x = 32;
+                    src.y = 48;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 22:
+                    src.x = 48;
+                    src.y = 48;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 23:
+                    src.x = 64;
+                    src.y = 48;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 24:
+                    src.x = 80;
+                    src.y = 48;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 25:
+                    src.x = 0;
+                    src.y = 64;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 26:
+                    src.x = 16;
+                    src.y = 64;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 27:
+                    src.x = 32;
+                    src.y = 64;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 28:
+                    src.x = 48;
+                    src.y = 64;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 29:
+                    src.x = 64;
+                    src.y = 64;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 30:
+                    src.x = 80;
+                    src.y = 64;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 31:
+                    src.x = 0;
+                    src.y = 80;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 32:
+                    src.x = 16;
+                    src.y = 80;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 33:
+                    src.x = 32;
+                    src.y = 80;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 34:
+                    src.x = 48;
+                    src.y = 80;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 35:
+                    src.x = 64;
+                    src.y = 80;
+                    src.w = 16;
+                    src.h = 16;
+                    break;
+                case 36:
+                    src.x = 80;
+                    src.y = 80;
                     src.w = 16;
                     src.h = 16;
                     break;
                 default:
                     break;
             }
+        */
+
             TextureManager::draw(tileset, src, dest);
         }
     }

@@ -56,7 +56,33 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
         // Stop the player
         auto& t = player->getComponent<Transform>();
-        t.position = t.oldPosition;
+        auto& v = player->getComponent<Velocity>();
+        auto& playerGravity = player->getComponent<Gravity>();
+        // t.position = t.oldPosition;
+
+        auto& playerCollider = player->getComponent<Collider>().rect;
+        auto& wallCollider = other->getComponent<Collider>().rect;
+
+        // Check collision below player
+        if ((playerCollider.y + playerCollider.h) >= wallCollider.y) {
+            // t.position.y -= (playerCollider.y + playerCollider.h - wallCollider.y);
+            t.position.y = t.oldPosition.y;
+            v.direction.y = 0;
+            playerGravity.gravityEnabled = false;
+        }
+
+        // Check collision to the left of the player
+        if (playerCollider.x <= (wallCollider.x + wallCollider.w)) {
+            //t.position.x += (wallCollider.x + wallCollider.w - playerCollider.x);
+            t.position.x = t.oldPosition.x;
+        }
+
+        // Check collision to the right of the player
+        if ((playerCollider.x + playerCollider.w) >= wallCollider.x) {
+            // t.position.x -= (playerCollider.x + playerCollider.w - wallCollider.x);
+            t.position.x = t.oldPosition.x;
+        }
+
     }
     else if (std::string(otherTag) == "Projectile") {
         if (e.state !=CollisionState::Enter) return;

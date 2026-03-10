@@ -24,7 +24,7 @@ public:
                 Vector2D directionVector = v.direction;
 
                 // Normalizing
-                directionVector.normalize();
+                // directionVector.normalize();
 
                 // Vector 2D needs an operator function to multiply a float to itself
                 Vector2D velocityVector = directionVector * v.speed;
