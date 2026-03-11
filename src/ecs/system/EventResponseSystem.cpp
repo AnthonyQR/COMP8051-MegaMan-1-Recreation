@@ -63,29 +63,39 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
         auto& playerCollider = player->getComponent<Collider>().rect;
         auto& wallCollider = other->getComponent<Collider>().rect;
-        
+
+        bool bottomCollision = false;
+        bool leftCollision = false;
+        bool rightCollision = false;
 
         // Check collision below player
         if ((playerCollider.y + playerCollider.h) >= wallCollider.y) {
             // t.position.y -= (playerCollider.y + playerCollider.h - wallCollider.y);
+            bottomCollision = true;
+        }
+
+        // Check collision to the left of the player
+        if (playerCollider.x <= (wallCollider.x + wallCollider.w)) {
+            //t.position.x += (wallCollider.x + wallCollider.w - playerCollider.x);
+            leftCollision = true;
+        }
+
+        // Check collision to the right of the player
+        if ((playerCollider.x + playerCollider.w) >= wallCollider.x) {
+            // t.position.x -= (playerCollider.x + playerCollider.w - wallCollider.x);
+            rightCollision = true;
+        }
+
+        if (bottomCollision && leftCollision && rightCollision && v.direction.y >= 0) {
             t.position.y = t.oldPosition.y;
             v.direction.y = 0;
             playerGravity.gravityEnabled = false;
             isGrounded.grounded = true;
         }
 
-        // Check collision to the left of the player
-        if (playerCollider.x <= (wallCollider.x + wallCollider.w)) {
-            //t.position.x += (wallCollider.x + wallCollider.w - playerCollider.x);
+        if (leftCollision || rightCollision) {
             t.position.x = t.oldPosition.x;
         }
-
-        // Check collision to the right of the player
-        if ((playerCollider.x + playerCollider.w) >= wallCollider.x) {
-            // t.position.x -= (playerCollider.x + playerCollider.w - wallCollider.x);
-            t.position.x = t.oldPosition.x;
-        }
-
     }
     else if (std::string(otherTag) == "Projectile") {
         if (e.state !=CollisionState::Enter) return;
@@ -107,8 +117,6 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             // Change scenes deferred
             Game::onSceneChangeRequest("gameover");
         }
-
-
     }
 }
 
