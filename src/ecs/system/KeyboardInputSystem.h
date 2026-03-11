@@ -19,11 +19,15 @@ public:
                 auto& v = e->getComponent<Velocity>();
                 if (event.type == SDL_EVENT_KEY_DOWN) {
                     switch (event.key.key) {
-                        case SDLK_W:
-                            v.direction.y = -1;
-                            break;
-                        case SDLK_S:
-                            v.direction.y = 1;
+                        case SDLK_SPACE:
+                            if (e->hasComponent<IsGrounded>() && e->hasComponent<Gravity>()) {
+                                auto& isGrounded = e->getComponent<IsGrounded>();
+                                if (isGrounded.grounded) {
+                                    isGrounded.grounded = false;
+                                    e->getComponent<Gravity>().gravityEnabled = true;
+                                    v.direction.y = -4;
+                                }
+                            }
                             break;
                         case SDLK_A:
                             v.direction.x = -1;
@@ -38,11 +42,10 @@ public:
 
                 if (event.type == SDL_EVENT_KEY_UP) {
                     switch (event.key.key) {
-                        case SDLK_W:
-                            v.direction.y = 0;
-                            break;
-                        case SDLK_S:
-                            v.direction.y = 0;
+                        case SDLK_SPACE:
+                            if (v.direction.y <= 0) {
+                                v.direction.y = 0;
+                            }
                             break;
                         case SDLK_A:
                             v.direction.x = 0;

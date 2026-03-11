@@ -30,6 +30,14 @@ struct Gravity {
     bool gravityEnabled{};
 };
 
+struct IsGrounded {
+    bool grounded{};
+};
+
+struct Jump {
+    float jumpSpeed{};
+};
+
 struct Sprite {
     SDL_Texture* texture = nullptr;
     SDL_FRect src{};

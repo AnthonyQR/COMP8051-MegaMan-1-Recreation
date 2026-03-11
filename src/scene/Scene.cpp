@@ -93,6 +93,9 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     player.addComponent<PlayerTag>();
     player.addComponent<Health>(Game::gameState.playerHealth);
 
+    player.addComponent<IsGrounded>(false);
+
+    // Spawn Spawner
     auto& spawner(world.createEntity());
     Transform t = spawner.addComponent<Transform>(Vector2D(windowWidth / 2, windowHeight - 5), 0.0f, 1.0f);
     spawner.addComponent<TimedSpawner>(2.0f, [this, t] {

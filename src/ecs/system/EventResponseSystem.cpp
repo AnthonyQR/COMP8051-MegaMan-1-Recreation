@@ -58,10 +58,12 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
         auto& t = player->getComponent<Transform>();
         auto& v = player->getComponent<Velocity>();
         auto& playerGravity = player->getComponent<Gravity>();
+        auto& isGrounded = player->getComponent<IsGrounded>();
         // t.position = t.oldPosition;
 
         auto& playerCollider = player->getComponent<Collider>().rect;
         auto& wallCollider = other->getComponent<Collider>().rect;
+        
 
         // Check collision below player
         if ((playerCollider.y + playerCollider.h) >= wallCollider.y) {
@@ -69,6 +71,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             t.position.y = t.oldPosition.y;
             v.direction.y = 0;
             playerGravity.gravityEnabled = false;
+            isGrounded.grounded = true;
         }
 
         // Check collision to the left of the player
