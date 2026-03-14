@@ -22,10 +22,9 @@ void CollisionSystem::update(World &world) {
         auto& t = entity->getComponent<Transform>();
         auto& c = entity->getComponent<Collider>();
         c.rect.x = t.position.x;
-        c.rect.y = t.position.y;
     }
 
-    std::set<CollisionKey> currentCollisions;
+    std::set<CollisionKey> currentHorizontalCollisions;
 
     // Outer loop
     for (size_t i = 0; i < collidables.size(); i++) {
@@ -42,21 +41,61 @@ void CollisionSystem::update(World &world) {
 
             if (Collision::AABB(colliderA, colliderB)) {
                 CollisionKey key = makeKey(entityA, entityB);
-                currentCollisions.insert(key);
+                currentHorizontalCollisions.insert(key);
                 if (!activeCollisions.contains(key)) {
-                    world.getEventManager().emit(CollisionEvent{entityA, entityB, CollisionState::Enter});
+                    world.getEventManager().emit(CollisionEvent{entityA, entityB, CollisionState::Enter, CollisionAxis::Horizontal});
                 }
-                world.getEventManager().emit(CollisionEvent{entityA, entityB, CollisionState::Stay});
+                world.getEventManager().emit(CollisionEvent{entityA, entityB, CollisionState::Stay, CollisionAxis::Horizontal});
             }
         }
     }
     for (auto& key : activeCollisions) {
-        if (!currentCollisions.contains(key)) {
-            world.getEventManager().emit(CollisionEvent{key.first, key.second, CollisionState::Exit});
+        if (!currentHorizontalCollisions.contains(key)) {
+            world.getEventManager().emit(CollisionEvent{key.first, key.second, CollisionState::Exit, CollisionAxis::Horizontal});
         }
     }
 
-    activeCollisions = std::move(currentCollisions); // Update with current collisions
+    activeCollisions = std::move(currentHorizontalCollisions); // Update with current collisions
+
+    // Update all collider positions first
+    for (auto entity: collidables) {
+        auto& t = entity->getComponent<Transform>();
+        auto& c = entity->getComponent<Collider>();
+        c.rect.y = t.position.y;
+    }
+
+    std::set<CollisionKey> currentVerticalCollisions;
+
+    // Outer loop
+    for (size_t i = 0; i < collidables.size(); i++) {
+        // Update the collider position
+        auto entityA = collidables[i];
+        auto& colliderA = entityA->getComponent<Collider>();
+
+
+        // Check for the collider collision
+        // Inner loop
+        for (size_t j = i + 1; j < collidables.size(); j++) {
+            auto entityB = collidables[j];
+            auto& colliderB = entityB->getComponent<Collider>();
+
+            if (Collision::AABB(colliderA, colliderB)) {
+                CollisionKey key = makeKey(entityA, entityB);
+                currentVerticalCollisions.insert(key);
+                if (!activeCollisions.contains(key)) {
+                    world.getEventManager().emit(CollisionEvent{entityA, entityB, CollisionState::Enter, CollisionAxis::Vertical});
+                }
+                world.getEventManager().emit(CollisionEvent{entityA, entityB, CollisionState::Stay, CollisionAxis::Vertical});
+            }
+        }
+    }
+    for (auto& key : activeCollisions) {
+        if (!currentVerticalCollisions.contains(key)) {
+            world.getEventManager().emit(CollisionEvent{key.first, key.second, CollisionState::Exit, CollisionAxis::Vertical});
+        }
+    }
+
+    activeCollisions = std::move(currentVerticalCollisions); // Update with current collisions
 }
 
 std::vector <Entity*> CollisionSystem::queryCollidables(const std::vector<std::unique_ptr<Entity>>& entities) {

@@ -12,6 +12,7 @@
 #include <unordered_map>
 
 #include "AnimationClip.h"
+#include "Entity.h"
 
 struct Transform {
     Vector2D position{};
@@ -27,6 +28,7 @@ struct Velocity {
 
 struct Gravity {
     float gravitySpeed{};
+    float fallingCap{};
     bool gravityEnabled{};
 };
 
@@ -76,6 +78,12 @@ struct SceneState {
 
 struct Health {
     int currentHealth{};
+};
+
+struct FollowEntity {
+    Entity followedEntity{};
+    float xOffset{};
+    float yOffset{};
 };
 
 struct PlayerTag{};

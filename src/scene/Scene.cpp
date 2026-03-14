@@ -71,10 +71,9 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
 
     // Spawn Player
     auto& player(world.createEntity());
-    auto& playerTransform = player.addComponent<Transform>(Vector2D(0,0), 0.0f, 1.0f);
+    auto& playerTransform = player.addComponent<Transform>(Vector2D(50,6300), 0.0f, 1.0f);
     player.addComponent<Velocity>(Vector2D(0.0f,0.0f), 200.0f);
-    player.addComponent<Gravity>(10.0f, true);
-
+    player.addComponent<Gravity>(10.0f, 10.0f, true);
 
     Animation anim = AssetManager::getAnimation("player");
     player.addComponent<Animation>(anim);
@@ -94,6 +93,15 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     player.addComponent<Health>(Game::gameState.playerHealth);
 
     player.addComponent<IsGrounded>(false);
+
+    auto& playerGrounded (world.createEntity());
+    auto& playerGroundedTransform = playerGrounded.addComponent<Transform>
+        (Vector2D(playerTransform.position.x,playerTransform.position.y), 0.0f, 1.0f);
+    auto & playerGroundedCollider = playerGrounded.addComponent<Collider>("PlayerGrounded");
+    playerGroundedCollider.rect.h = 1;
+    playerGroundedCollider.rect.w = playerDst.w;
+    playerGrounded.addComponent<FollowEntity>(player, 0.0f, playerDst.h);
+
 
     // Spawn Spawner
     auto& spawner(world.createEntity());

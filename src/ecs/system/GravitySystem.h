@@ -20,6 +20,9 @@ public:
                 auto& gravity = e->getComponent<Gravity>();
                 if (gravity.gravityEnabled == true) {
                     velocity.direction.y += gravity.gravitySpeed * dt;
+                    if (velocity.direction.y >= gravity.fallingCap) {
+                        velocity.direction.y = gravity.fallingCap;
+                    }
                 }
             }
         };

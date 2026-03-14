@@ -4,6 +4,8 @@
 
 #include "EventResponseSystem.h"
 
+#include <list>
+
 #include "Game.h"
 #include "World.h"
 
@@ -51,6 +53,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             }
         }
     }
+
     else if (std::string(otherTag) == "Wall") {
         if (e.state !=CollisionState::Stay) return;
 
@@ -64,39 +67,67 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
         auto& playerCollider = player->getComponent<Collider>().rect;
         auto& wallCollider = other->getComponent<Collider>().rect;
 
-        bool bottomCollision = false;
-        bool leftCollision = false;
-        bool rightCollision = false;
+        if (e.axis == CollisionAxis::Horizontal) {
+            std::cout << "Horizontal" << std::endl;
 
-        // Check collision below player
-        if ((playerCollider.y + playerCollider.h) >= wallCollider.y) {
-            // t.position.y -= (playerCollider.y + playerCollider.h - wallCollider.y);
-            bottomCollision = true;
+            float leftPenetrationDepth = playerCollider.x - (wallCollider.x + wallCollider.w);
+            float rightPenetrationDepth = (playerCollider.x + playerCollider.w) - wallCollider.x;
+            if (std::abs(leftPenetrationDepth) < std::abs(rightPenetrationDepth)) {
+                t.position.x = (wallCollider.x + wallCollider.w + 0.1f);
+            }
+            else {
+                t.position.x = (wallCollider.x - playerCollider.w - 0.1f);
+            }
+            playerCollider.x = t.position.x;
+
         }
 
-        // Check collision to the left of the player
-        if (playerCollider.x <= (wallCollider.x + wallCollider.w)) {
-            //t.position.x += (wallCollider.x + wallCollider.w - playerCollider.x);
-            leftCollision = true;
-        }
-
-        // Check collision to the right of the player
-        if ((playerCollider.x + playerCollider.w) >= wallCollider.x) {
-            // t.position.x -= (playerCollider.x + playerCollider.w - wallCollider.x);
-            rightCollision = true;
-        }
-
-        if (bottomCollision && leftCollision && rightCollision && v.direction.y >= 0) {
+        else if (e.axis == CollisionAxis::Vertical) {
             t.position.y = t.oldPosition.y;
             v.direction.y = 0;
-            playerGravity.gravityEnabled = false;
-            isGrounded.grounded = true;
+            float topPenetrationDepth = playerCollider.y - (wallCollider.y + wallCollider.h);
+            float bottomPenetrationDepth = (playerCollider.y + playerCollider.h) - wallCollider.y;
+            if (std::abs(bottomPenetrationDepth) < std::abs(topPenetrationDepth)) {
+                t.position.y = wallCollider.y - playerCollider.h - 0.1f;
+                v.direction.y = 0;
+                isGrounded.grounded = true;
+            }
+            else {
+                t.position.y = (wallCollider.y + wallCollider.h + 0.1f);
+                v.direction.y = 0;
+            }
+            playerCollider.y = t.position.y;
+
         }
 
-        if (leftCollision || rightCollision) {
-            t.position.x = t.oldPosition.x;
+
+        /*
+        // Collision to the left or right of the player
+        if (collisions.at(2) && !collisions.at(3)){
+            t.position.x += (wallCollider.x + wallCollider.w - playerCollider.x);
         }
+
+        if (collisions.at(3) && !collisions.at(2)) {
+            t.position.x -= (playerCollider.x + playerCollider.w - wallCollider.x);
+        }
+
+        // Collision below the player
+        if (collisions.at(1) && v.direction.y > 0) {
+            t.position.y -= (playerCollider.y + playerCollider.h - wallCollider.y);
+            v.direction.y = 0;
+            isGrounded.grounded = true;
+            playerGravity.gravityEnabled = false;
+        }
+
+        // Collision above the player
+        if (collisions.at(0) && v.direction.y < 0) {
+            t.position.y = t.oldPosition.y;
+            v.direction.y = 0;
+        }
+        */
+
     }
+
     else if (std::string(otherTag) == "Projectile") {
         if (e.state !=CollisionState::Enter) return;
 
@@ -118,6 +149,37 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             Game::onSceneChangeRequest("gameover");
         }
     }
+}
+
+std::vector<bool> EventResponseSystem::checkCollisionDirection(const SDL_FRect& colliderA, const SDL_FRect& colliderB) {
+    std::vector<bool>collisions = {false, false, false, false};
+
+    // Check collision above player
+    if ((colliderA.y <= colliderB.y + colliderB.h)) {
+        collisions.at(0) = true;
+    }
+
+    // Check collision below player
+    if ((colliderA.y + colliderA.h >= colliderB.y)) {
+        // t.position.y -= (playerCollider.y + playerCollider.h - wallCollider.y);
+        collisions.at(1) = true;
+    }
+
+    // Check collision to the left of the player
+    if ((colliderA.x <= colliderB.x + colliderB.w)) {
+        //t.position.x += (wallCollider.x + wallCollider.w - playerCollider.x);
+        std::cout << "left" << std::endl;
+        collisions.at(2) = true;
+    }
+
+    // Check collision to the right of the player
+    if (colliderA.x + colliderA.w >= colliderB.x) {
+        // t.position.x -= (playerCollider.x + playerCollider.w - wallCollider.x);
+        std::cout << "right" << std::endl;
+        collisions.at(3) = true;
+    }
+
+    return collisions;
 }
 
 bool EventResponseSystem::getCollisionEntities(

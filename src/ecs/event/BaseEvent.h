@@ -18,13 +18,16 @@ struct BaseEvent {
 };
 
 enum class CollisionState { Enter, Stay, Exit };
+enum class CollisionAxis {Horizontal, Vertical};
 
 struct CollisionEvent : BaseEvent {
     Entity* entityA = nullptr;
     Entity* entityB = nullptr;
     CollisionState state{};
+    CollisionAxis axis{};
 
-    CollisionEvent(Entity* entityA, Entity* entityB, CollisionState state) : entityA(entityA), entityB(entityB), state(state) {
+    CollisionEvent(Entity* entityA, Entity* entityB, CollisionState state, CollisionAxis axis) :
+    entityA(entityA), entityB(entityB), state(state), axis(axis) {
         type = EventType::Collision;
     }
 };
