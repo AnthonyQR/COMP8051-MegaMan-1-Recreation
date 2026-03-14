@@ -57,15 +57,17 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
     else if (std::string(otherTag) == "Wall") {
         if (e.state !=CollisionState::Stay) return;
 
-        // Stop the player
+        // Player components
         auto& t = player->getComponent<Transform>();
         auto& v = player->getComponent<Velocity>();
-        auto& playerGravity = player->getComponent<Gravity>();
         auto& isGrounded = player->getComponent<IsGrounded>();
-        // t.position = t.oldPosition;
 
+        // Colliders
         auto& playerCollider = player->getComponent<Collider>().rect;
         auto& wallCollider = other->getComponent<Collider>().rect;
+
+        // Added / Subtracted from position to prevent unecessary collisions
+        float positionOffset = 0.1f;
 
         if (e.axis == CollisionAxis::Horizontal) {
             std::cout << "Horizontal" << std::endl;
@@ -73,10 +75,10 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             float leftPenetrationDepth = playerCollider.x - (wallCollider.x + wallCollider.w);
             float rightPenetrationDepth = (playerCollider.x + playerCollider.w) - wallCollider.x;
             if (std::abs(leftPenetrationDepth) < std::abs(rightPenetrationDepth)) {
-                t.position.x = (wallCollider.x + wallCollider.w + 0.1f);
+                t.position.x = (wallCollider.x + wallCollider.w + positionOffset);
             }
             else {
-                t.position.x = (wallCollider.x - playerCollider.w - 0.1f);
+                t.position.x = (wallCollider.x - playerCollider.w - positionOffset);
             }
             playerCollider.x = t.position.x;
 
@@ -88,12 +90,12 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             float topPenetrationDepth = playerCollider.y - (wallCollider.y + wallCollider.h);
             float bottomPenetrationDepth = (playerCollider.y + playerCollider.h) - wallCollider.y;
             if (std::abs(bottomPenetrationDepth) < std::abs(topPenetrationDepth)) {
-                t.position.y = wallCollider.y - playerCollider.h - 0.1f;
+                t.position.y = wallCollider.y - playerCollider.h - positionOffset;
                 v.direction.y = 0;
                 isGrounded.grounded = true;
             }
             else {
-                t.position.y = (wallCollider.y + wallCollider.h + 0.1f);
+                t.position.y = (wallCollider.y + wallCollider.h + positionOffset);
                 v.direction.y = 0;
             }
             playerCollider.y = t.position.y;
