@@ -18,7 +18,8 @@ class World;
 class CollisionSystem {
 public:
     void update(World& world);
-    std::set<CollisionKey> activeCollisions;
+    std::set<CollisionKey> horizontalCollisions;
+    std::set<CollisionKey> verticalCollisions;
 private:
     std::vector<Entity*> queryCollidables(const std::vector<std::unique_ptr<Entity>>& entities);
     CollisionKey makeKey(Entity* entityA, Entity* entityB) {

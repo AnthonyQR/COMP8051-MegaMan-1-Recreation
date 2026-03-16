@@ -19,9 +19,20 @@ public:
                 auto& velocity = e->getComponent<Velocity>();
                 auto& gravity = e->getComponent<Gravity>();
                 if (gravity.gravityEnabled == true) {
-                    velocity.direction.y += gravity.gravitySpeed * dt;
-                    if (velocity.direction.y >= gravity.fallingCap) {
-                        velocity.direction.y = gravity.fallingCap;
+                    if (e->hasComponent<Jump>()) {
+                        auto& jump = e->getComponent<Jump>();
+                        if (jump.fastFalling && velocity.ySpeed <= 0) {
+                            velocity.ySpeed += jump.fastFallSpeed * dt;
+                            return;
+                        }
+                        else if (velocity.ySpeed >= 0) {
+                            jump.fastFalling = false;
+                        }
+                    }
+
+                    velocity.ySpeed += gravity.gravitySpeed * dt;
+                    if (velocity.ySpeed >= gravity.fallingCap) {
+                        velocity.ySpeed = gravity.fallingCap;
                     }
                 }
             }

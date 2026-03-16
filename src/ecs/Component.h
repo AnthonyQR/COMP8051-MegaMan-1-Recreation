@@ -23,7 +23,8 @@ struct Transform {
 
 struct Velocity {
     Vector2D direction{};
-    float speed{};
+    float xSpeed{};
+    float ySpeed{};
 };
 
 struct Gravity {
@@ -38,6 +39,9 @@ struct IsGrounded {
 
 struct Jump {
     float jumpSpeed{};
+    float fastFallSpeed{};
+    bool hasJumped = false;
+    bool fastFalling = false;
 };
 
 struct Sprite {

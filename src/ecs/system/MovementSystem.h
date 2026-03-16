@@ -21,15 +21,16 @@ public:
                 // Track previous frame's position
                 t.oldPosition = t.position;
 
-                Vector2D directionVector = v.direction;
+                // Vector2D directionVector = v.direction;
 
                 // Normalizing
                 // directionVector.normalize();
 
                 // Vector 2D needs an operator function to multiply a float to itself
-                Vector2D velocityVector = {directionVector * v.speed};
+                // Vector2D velocityVector = {directionVector * v.speed};
 
-                t.position += (velocityVector * dt);
+                t.position.x += (v.direction.x * v.xSpeed * dt);
+                t.position.y += (v.direction.y * v.ySpeed * dt);
             }
         }
     }
