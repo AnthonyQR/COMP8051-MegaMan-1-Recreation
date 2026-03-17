@@ -94,13 +94,13 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     SDL_Texture* tex = TextureManager::load("../Assets/Animations/fox_anim.png");
     // SDL_FRect playerSrc {0, 0, 32, 44};
     SDL_FRect playerSrc = anim.clips[anim.currentClip].frameIndices[0];
-    SDL_FRect playerDst {playerTransform.position.x, playerTransform.position.y, 42, 72};
+    SDL_FRect playerDst {playerTransform.position.x, playerTransform.position.y, 48, 48};
 
     player.addComponent<Sprite>(tex, playerSrc, playerDst);
 
     auto& playerCollider = player.addComponent<Collider>("Player");
-    playerCollider.rect.w = playerDst.w;
-    playerCollider.rect.h = playerDst.h;
+    playerCollider.rect.w = 42;
+    playerCollider.rect.h = 48;
 
     player.addComponent<PlayerTag>();
     player.addComponent<Health>(Game::gameState.playerHealth);
