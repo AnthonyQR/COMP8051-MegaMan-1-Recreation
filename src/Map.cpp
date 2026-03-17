@@ -75,7 +75,7 @@ void Map::load(const char* path, SDL_Texture *ts) {
             objGroup != nullptr;
             objGroup = objGroup->NextSiblingElement("objectgroup")) {
             if (objGroup->Attribute("name") == std::string("Ladder Layer")) {
-                collidersObjectGroup = objGroup;
+                laddersObjectGroup = objGroup;
                 break;
             }
         }

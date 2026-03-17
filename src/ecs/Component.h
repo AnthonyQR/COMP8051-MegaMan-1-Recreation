@@ -97,6 +97,15 @@ struct FollowEntity {
     float yOffset{};
 };
 
+struct KeyboardInputs {
+    bool isHoldingLeft = false;
+    bool isHoldingRight = false;
+    bool isHoldingUp = false;
+    bool isHoldingDown = false;
+    bool isHoldingJump = false;
+    bool isHoldingAttack = false;
+};
+
 struct PlayerTag{};
 struct ProjectileTag{};
 

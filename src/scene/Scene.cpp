@@ -56,6 +56,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
         c.rect.y = ladder.rect.y;
         c.rect.w = ladder.rect.w;
         c.rect.h = ladder.rect.h;
+
     }
 
     // Spawn items
@@ -93,7 +94,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     SDL_Texture* tex = TextureManager::load("../Assets/Animations/fox_anim.png");
     // SDL_FRect playerSrc {0, 0, 32, 44};
     SDL_FRect playerSrc = anim.clips[anim.currentClip].frameIndices[0];
-    SDL_FRect playerDst {playerTransform.position.x, playerTransform.position.y, 64, 64};
+    SDL_FRect playerDst {playerTransform.position.x, playerTransform.position.y, 42, 72};
 
     player.addComponent<Sprite>(tex, playerSrc, playerDst);
 
@@ -107,6 +108,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     player.addComponent<IsGrounded>(false);
 
     player.addComponent<LadderClimbing>(200.0f);
+    player.addComponent<KeyboardInputs>();
 
     // Spawn Spawner
     auto& spawner(world.createEntity());

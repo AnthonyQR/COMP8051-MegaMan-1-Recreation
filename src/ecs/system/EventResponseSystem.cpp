@@ -61,16 +61,18 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             auto& t = player->getComponent<Transform>();
             auto& v = player->getComponent<Velocity>();
             auto& isGrounded = player->getComponent<IsGrounded>();
+            auto& gravity = player->getComponent<Gravity>();
+            auto& ladderClimbing = player->getComponent<LadderClimbing>();
 
             // Colliders
             auto& playerCollider = player->getComponent<Collider>().rect;
             auto& wallCollider = other->getComponent<Collider>().rect;
 
             // Added / Subtracted from position to prevent unnecessary collisions
-            float positionOffset = 0.1f;
+            float positionOffset = .1f;
 
             if (e.axis == CollisionAxis::Horizontal) {
-                std::cout << "Horizontal" << std::endl;
+                if (ladderClimbing.isClimbing) return;
 
                 float leftPenetrationDepth = playerCollider.x - (wallCollider.x + wallCollider.w);
                 float rightPenetrationDepth = (playerCollider.x + playerCollider.w) - wallCollider.x;
@@ -85,13 +87,39 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             }
 
             else if (e.axis == CollisionAxis::Vertical) {
-                t.position.y = t.oldPosition.y;
-                v.ySpeed = 0;
                 float topPenetrationDepth = playerCollider.y - (wallCollider.y + wallCollider.h);
                 float bottomPenetrationDepth = (playerCollider.y + playerCollider.h) - wallCollider.y;
+
+                if (ladderClimbing.isClimbing) {
+                    auto& ladderCollider = ladderClimbing.ladderEntity->getComponent<Collider>().rect;
+                    if (std::abs(bottomPenetrationDepth) < std::abs(topPenetrationDepth)) {
+                        t.position.y = wallCollider.y - playerCollider.h - positionOffset;
+                        isGrounded.grounded = true;
+                        ladderClimbing.isClimbing = false;
+                        gravity.gravityEnabled = true;
+                    }
+
+                    else if (wallCollider.y + (ladderCollider.y - wallCollider.y) < playerCollider.y) return;
+
+                    else if (ladderCollider.y > playerCollider.y) {
+                        t.position.y = wallCollider.y - playerCollider.h - positionOffset;
+                        isGrounded.grounded = true;
+                        ladderClimbing.isClimbing = false;
+                        gravity.gravityEnabled = true;
+                        playerCollider.y = t.position.y;
+                        v.ySpeed = 0;
+                        return;
+                    }
+                }
+
+                std::cout << "Vertical" << std::endl;
+
+                t.position.y = t.oldPosition.y;
+                v.ySpeed = 0;
                 if (std::abs(bottomPenetrationDepth) < std::abs(topPenetrationDepth)) {
                     t.position.y = wallCollider.y - playerCollider.h - positionOffset;
                     isGrounded.grounded = true;
+                    ladderClimbing.isClimbing = false;
                 }
                 else {
                     t.position.y = (wallCollider.y + wallCollider.h + positionOffset);
@@ -102,7 +130,6 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
         if (e.state == CollisionState::Exit) {
             if (e.axis == CollisionAxis::Vertical) {
-                std::cout << "Leave" << std::endl;
                 auto& isGrounded = player->getComponent<IsGrounded>();
                 isGrounded.grounded = false;
             }
@@ -116,6 +143,26 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
         if (e.state == CollisionState::Stay) {
             ladderClimbing.canClimb = true;
             ladderClimbing.ladderEntity = other;
+
+            if (e.axis == CollisionAxis::Horizontal) return;
+
+            auto& playerCollider = player->getComponent<Collider>().rect;
+            auto& ladderCollider = ladderClimbing.ladderEntity->getComponent<Collider>().rect;
+            auto& v = player->getComponent<Velocity>();
+            auto& t = player->getComponent<Transform>();
+            auto& gravity = player->getComponent<Gravity>();
+            auto& isGrounded = player->getComponent<IsGrounded>();
+            float ladderColliderTopOffset = 3.0f;
+            float positionOffset = 2.0f;
+
+            if (ladderCollider.y > playerCollider.y) {
+                t.position.y = ladderCollider.y + ladderColliderTopOffset - playerCollider.h - positionOffset;
+                isGrounded.grounded = true;
+                ladderClimbing.isClimbing = false;
+                gravity.gravityEnabled = true;
+
+                v.ySpeed = 0;
+            }
         }
 
         if (e.state == CollisionState::Exit) {
