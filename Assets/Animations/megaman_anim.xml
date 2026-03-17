@@ -1,3 +1,101 @@
 <animations>
+    <idle_left>
+        <frame x="0" y="0" w="32" h="32" />
+    </idle_left>
+    <idle_blink_left>
+        <frame x="32" y="0" w="32" h="32" />
+    </idle_blink_left>
+    <inch_left>
+        <frame x="64" y="0" w="32" h="32" />
+    </inch_left>
+    <idle_fire_left>
+        <frame x="96" y="0" w="32" h="32" />
+    </idle_fire_left>
+
+    <idle_right>
+        <frame x="0" y="32" w="32" h="32" />
+    </idle_right>
+    <idle_blink_right>
+        <frame x="32" y="32" w="32" h="32" />
+    </idle_blink_right>
+    <inch_right>
+        <frame x="64" y="32" w="32" h="32" />
+    </inch_right>
+    <idle_fire_right>
+        <frame x="96" y="32" w="32" h="32" />
+    </idle_fire_right>
+
+
+    <walk_left>
+        <frame x="0" y="64" w="32" h="32" />
+        <frame x="32" y="64" w="32" h="32" />
+        <frame x="64" y="64" w="32" h="32" />
+        <frame x="32" y="64" w="32" h="32" />
+    </walk_left>
+    <walk_right>
+        <frame x="0" y="96" w="32" h="32" />
+        <frame x="32" y="96" w="32" h="32" />
+        <frame x="64" y="96" w="32" h="32" />
+        <frame x="32" y="96" w="32" h="32" />
+    </walk_right>
+
+    <jump_left>
+        <frame x="96" y="64" w="32" h="32" />
+    </jump_left>
+    <jump_right>
+        <frame x="96" y="96" w="32" h="32" />
+    </jump_right>
+
+
+    <walk_fire_left>
+        <frame x="0" y="128" w="32" h="32" />
+        <frame x="32" y="128" w="32" h="32" />
+        <frame x="64" y="128" w="32" h="32" />
+        <frame x="32" y="128" w="32" h="32" />
+    </walk_fire_left>
+    <walk_fire_right>
+        <frame x="0" y="160" w="32" h="32" />
+        <frame x="32" y="160" w="32" h="32" />
+        <frame x="64" y="160" w="32" h="32" />
+        <frame x="32" y="160" w="32" h="32" />
+    </walk_fire_right>
+
+    <jump_fire_left>
+        <frame x="96" y="128" w="32" h="32" />
+    </jump_fire_left>
+    <jump_fire_right>
+        <frame x="96" y="160" w="32" h="32" />
+    </jump_fire_right>
+
+
+    <climb>
+        <frame x="0" y="192" w="32" h="32" />
+        <frame x="32" y="192" w="32" h="32" />
+    </climb>
+    <climb_finish>
+        <frame x="64" y="192" w="32" h="32" />
+    </climb_finish>
+
+    <climb_fire_left>
+        <frame x="96" y="192" w="32" h="32" />
+    </climb_fire_left>
+    <climb_fire_right>
+        <frame x="128" y="192" w="32" h="32" />
+    </climb_fire_right>
+
+
+    <ground_hit_left>
+        <frame x="0" y="224" w="32" h="32" />
+    </ground_hit_left>
+    <air_hit_left>
+        <frame x="32" y="224" w="32" h="32" />
+    </air_hit_left>
+
+    <ground_hit_right>
+        <frame x="64" y="224" w="32" h="32" />
+    </ground_hit_right>
+    <air_hit_right>
+        <frame x="96" y="224" w="32" h="32" />
+    </air_hit_right>
 
 </animations>

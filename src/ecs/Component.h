@@ -37,6 +37,10 @@ struct IsGrounded {
     bool grounded{};
 };
 
+struct IsFacingRight {
+    bool facingRight = true;
+};
+
 struct Jump {
     float jumpSpeed{};
     float fastFallSpeed{};
@@ -67,7 +71,7 @@ struct Animation {
     std::string currentClip{};
     float time{}; // Time is accumulated for the current frame
     int currentFrame{}; // Index of the current frame in the clip
-    float speed = 0.1f; // Time per frame
+    float speed = 0.15f; // Time per frame
 };
 
 struct Camera {

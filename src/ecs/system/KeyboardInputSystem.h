@@ -24,7 +24,8 @@ public:
                 e->hasComponent<LadderClimbing>() &&
                 e->hasComponent<Collider>() &&
                 e->hasComponent<Transform>() &&
-                e->hasComponent<KeyboardInputs>()
+                e->hasComponent<KeyboardInputs>() &&
+                e->hasComponent<IsFacingRight>()
                 )
             {
                 auto& v = e->getComponent<Velocity>();
@@ -35,6 +36,7 @@ public:
                 auto& collider = e->getComponent<Collider>();
                 auto& transform = e->getComponent<Transform>();
                 auto& keyboardInputs = e->getComponent<KeyboardInputs>();
+                auto& isFacingRight = e->getComponent<IsFacingRight>();
 
                 if (event.type == SDL_EVENT_KEY_DOWN) {
                     switch (event.key.key) {
@@ -122,7 +124,7 @@ public:
                         v.direction.x = 0;
                         v.ySpeed = -ladderClimbing.climbSpeed;
                         gravity.gravityEnabled = false;
-                        transform.position.x = ladderCollider.x + (ladderCollider.w - collider.rect.w);
+                        transform.position.x = ladderCollider.x + (ladderCollider.w - collider.rect.w) / 2;
                     }
                 }
 
@@ -133,8 +135,7 @@ public:
                     v.direction.x = 0;
                     v.ySpeed = ladderClimbing.climbSpeed;
                     gravity.gravityEnabled = false;
-                    transform.position.x = ladderCollider.x
-                    + (ladderCollider.w - collider.rect.w);
+                    transform.position.x = ladderCollider.x + (ladderCollider.w - collider.rect.w) / 2;
                     if (ladderCollider.y > collider.rect.y) {
                         transform.position.y = ladderCollider.y + 3;
                     }
@@ -149,9 +150,11 @@ public:
                 if (!ladderClimbing.isClimbing) {
                     if (keyboardInputs.isHoldingLeft && !keyboardInputs.isHoldingRight) {
                         v.direction.x = -1;
+                        isFacingRight.facingRight = false;
                     }
                     else if (keyboardInputs.isHoldingRight && !keyboardInputs.isHoldingLeft) {
                         v.direction.x = 1;
+                        isFacingRight.facingRight = true;
                     }
                     else {
                         v.direction.x = 0;

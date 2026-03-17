@@ -56,7 +56,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     }
 
     // Load assets
-    AssetManager::loadAnimation("player", "../Assets/Animations/fox_animations.xml");
+    AssetManager::loadAnimation("player", "../Assets/Animations/megaman_anim.xml");
     AssetManager::loadAnimation("enemy", "../Assets/Animations/bird_animations.xml");
 
     // Load scenes

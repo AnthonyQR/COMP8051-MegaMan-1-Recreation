@@ -91,16 +91,16 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     Animation anim = AssetManager::getAnimation("player");
     player.addComponent<Animation>(anim);
 
-    SDL_Texture* tex = TextureManager::load("../Assets/Animations/fox_anim.png");
+    SDL_Texture* tex = TextureManager::load("../Assets/Animations/megaman_anim.png");
     // SDL_FRect playerSrc {0, 0, 32, 44};
     SDL_FRect playerSrc = anim.clips[anim.currentClip].frameIndices[0];
-    SDL_FRect playerDst {playerTransform.position.x, playerTransform.position.y, 48, 48};
+    SDL_FRect playerDst {playerTransform.position.x, playerTransform.position.y, 96, 96};
 
     player.addComponent<Sprite>(tex, playerSrc, playerDst);
 
     auto& playerCollider = player.addComponent<Collider>("Player");
-    playerCollider.rect.w = 42;
-    playerCollider.rect.h = 48;
+    playerCollider.rect.w = playerDst.w - 20.0f;
+    playerCollider.rect.h = playerDst.h;
 
     player.addComponent<PlayerTag>();
     player.addComponent<Health>(Game::gameState.playerHealth);
@@ -109,6 +109,8 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
 
     player.addComponent<LadderClimbing>(200.0f);
     player.addComponent<KeyboardInputs>();
+    player.addComponent<IsFacingRight>();
+
 
     // Spawn Spawner
     auto& spawner(world.createEntity());

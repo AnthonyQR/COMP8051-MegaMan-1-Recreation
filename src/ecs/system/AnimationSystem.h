@@ -10,6 +10,8 @@
 #include "Component.h"
 #include "Entity.h"
 
+#include "./AnimationSystems/PlayerAnimationSystem.h"
+
 // State System: Deciding which clip to use
 // Check if the animation has been switched
 // Playback System: Advances the animation
@@ -19,11 +21,21 @@ public:
     void update(const std::vector<std::unique_ptr<Entity>>& entities, float dt) {
         for (auto& e : entities) {
             if (e->hasComponent<Animation>() && e->hasComponent<Velocity>()) {
+                std::string newClip;
+                auto& anim = e->getComponent<Animation>();
+                auto& velocity = e->getComponent<Velocity>();
+
+                if (e->hasComponent<PlayerTag>()) {
+                    newClip = PlayerAnimationSystem::getAnimationClip(e);
+                }
+                else {
+                    return;
+                }
+                /*
                 auto& anim = e->getComponent<Animation>();
                 auto& velocity = e->getComponent<Velocity>();
 
                 // State System
-                std::string newClip;
 
                 if (velocity.direction.x > 0.0f) {
                     newClip = "walk_right";
@@ -58,6 +70,7 @@ public:
                     }
 
                 }
+                */
 
                 // Check if the animation has switched
                 // If the chosen clip is different from the current one, switch to new clip, reset time & frame index
