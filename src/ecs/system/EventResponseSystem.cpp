@@ -73,16 +73,16 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
             if (e.axis == CollisionAxis::Horizontal) {
                 if (ladderClimbing.isClimbing) return;
-
+                float xOffset = player->getComponent<Collider>().xOffset;
                 float leftPenetrationDepth = playerCollider.x - (wallCollider.x + wallCollider.w);
                 float rightPenetrationDepth = (playerCollider.x + playerCollider.w) - wallCollider.x;
                 if (std::abs(leftPenetrationDepth) < std::abs(rightPenetrationDepth)) {
-                    t.position.x = (wallCollider.x + wallCollider.w + positionOffset);
+                    t.position.x = (wallCollider.x + wallCollider.w + positionOffset - xOffset);
                 }
                 else {
-                    t.position.x = (wallCollider.x - playerCollider.w - positionOffset);
+                    t.position.x = (wallCollider.x - playerCollider.w - positionOffset - xOffset);
                 }
-                playerCollider.x = t.position.x;
+                playerCollider.x = t.position.x + xOffset;
 
             }
 
@@ -153,7 +153,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             auto& gravity = player->getComponent<Gravity>();
             auto& isGrounded = player->getComponent<IsGrounded>();
             float ladderColliderTopOffset = 3.0f;
-            float positionOffset = 2.0f;
+            float positionOffset = -1.0f;
 
             if (ladderCollider.y > playerCollider.y) {
                 t.position.y = ladderCollider.y + ladderColliderTopOffset - playerCollider.h - positionOffset;

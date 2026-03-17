@@ -99,8 +99,9 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     player.addComponent<Sprite>(tex, playerSrc, playerDst);
 
     auto& playerCollider = player.addComponent<Collider>("Player");
-    playerCollider.rect.w = playerDst.w - 20.0f;
+    playerCollider.rect.w = playerDst.w - 36;
     playerCollider.rect.h = playerDst.h;
+    playerCollider.xOffset = 18;
 
     player.addComponent<PlayerTag>();
     player.addComponent<Health>(Game::gameState.playerHealth);

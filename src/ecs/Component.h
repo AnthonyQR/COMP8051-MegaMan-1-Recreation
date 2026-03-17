@@ -56,6 +56,8 @@ struct Sprite {
 
 struct Collider {
     std::string tag;
+    float xOffset{};
+    float yOffset{};
     SDL_FRect rect{};
 };
 
