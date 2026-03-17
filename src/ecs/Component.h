@@ -55,6 +55,13 @@ struct Collider {
     SDL_FRect rect{};
 };
 
+struct LadderClimbing {
+    float climbSpeed{};
+    bool canClimb = false;
+    bool isClimbing = false;
+    Entity* ladderEntity = nullptr;
+};
+
 struct Animation {
     std::unordered_map<std::string, AnimationClip> clips{};
     std::string currentClip{};

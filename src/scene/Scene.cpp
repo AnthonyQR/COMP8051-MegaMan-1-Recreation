@@ -47,6 +47,17 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
         */
     }
 
+    // Spawn Ladders
+    for (auto &ladder : world.getMap().ladders) {
+        auto& e = world.createEntity();
+        e.addComponent<Transform>(Vector2D(ladder.rect.x, ladder.rect.y), 0.0f, 1.0f);
+        auto& c = e.addComponent<Collider>("Ladder");
+        c.rect.x = ladder.rect.x;
+        c.rect.y = ladder.rect.y;
+        c.rect.w = ladder.rect.w;
+        c.rect.h = ladder.rect.h;
+    }
+
     // Spawn items
     for (auto &itemSpawnPoint : world.getMap().itemSpawnPoints) {
         auto& item = world.createEntity();
@@ -95,14 +106,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
 
     player.addComponent<IsGrounded>(false);
 
-    auto& playerGrounded (world.createEntity());
-    auto& playerGroundedTransform = playerGrounded.addComponent<Transform>
-        (Vector2D(playerTransform.position.x,playerTransform.position.y), 0.0f, 1.0f);
-    auto & playerGroundedCollider = playerGrounded.addComponent<Collider>("PlayerGrounded");
-    playerGroundedCollider.rect.h = 1;
-    playerGroundedCollider.rect.w = playerDst.w;
-    playerGrounded.addComponent<FollowEntity>(player, 0.0f, playerDst.h);
-
+    player.addComponent<LadderClimbing>(200.0f);
 
     // Spawn Spawner
     auto& spawner(world.createEntity());

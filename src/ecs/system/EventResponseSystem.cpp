@@ -19,6 +19,7 @@ EventResponseSystem::EventResponseSystem(World &world) {
             onCollision(collision, "Item", world);
             onCollision(collision, "Wall", world);
             onCollision(collision, "Projectile", world);
+            onCollision(collision, "Ladder", world);
         }
     );
 
@@ -106,7 +107,21 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                 isGrounded.grounded = false;
             }
         }
+    }
 
+    else if (std::string(otherTag) == "Ladder") {
+        if (e.state == CollisionState::Enter) return;
+
+        auto& ladderClimbing = player->getComponent<LadderClimbing>();
+        if (e.state == CollisionState::Stay) {
+            ladderClimbing.canClimb = true;
+            ladderClimbing.ladderEntity = other;
+        }
+
+        if (e.state == CollisionState::Exit) {
+            ladderClimbing.canClimb = false;
+            ladderClimbing.ladderEntity = nullptr;
+        }
     }
 
     else if (std::string(otherTag) == "Projectile") {

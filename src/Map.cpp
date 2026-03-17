@@ -37,7 +37,7 @@ void Map::load(const char* path, SDL_Texture *ts) {
     }
 
     // Parse collider data
-    auto* collidersObjectGroup = layer->NextSiblingElement("objectgroup");; // Set to the first object group
+    auto* collidersObjectGroup = layer->NextSiblingElement("objectgroup"); // Set to the first object group
 
     if (!collidersObjectGroup) return;
 
@@ -65,6 +65,33 @@ void Map::load(const char* path, SDL_Texture *ts) {
             c.rect.w = obj->FloatAttribute("width") * 3;
             c.rect.h = obj->FloatAttribute("height") * 3;
             colliders.push_back(c);
+            }
+    }
+
+    // Parse Ladders
+    auto* laddersObjectGroup = layer->NextSiblingElement("objectgroup");
+    if (laddersObjectGroup->Attribute("name") != std::string("Ladder Layer")) {
+        for (auto* objGroup = laddersObjectGroup->NextSiblingElement("objectgroup");
+            objGroup != nullptr;
+            objGroup = objGroup->NextSiblingElement("objectgroup")) {
+            if (objGroup->Attribute("name") == std::string("Ladder Layer")) {
+                collidersObjectGroup = objGroup;
+                break;
+            }
+        }
+    }
+    if (laddersObjectGroup->Attribute("name") == std::string("Ladder Layer")) {
+        // Create a for loop with initialization, condition and an increment
+        for (auto* obj = laddersObjectGroup->FirstChildElement("object"); // Initialization
+            obj != nullptr; // Condition
+            obj = obj->NextSiblingElement("object")) { // Increment
+
+            Collider c;
+            c.rect.x = obj->FloatAttribute("x") * 3;
+            c.rect.y = obj->FloatAttribute("y") * 3;
+            c.rect.w = obj->FloatAttribute("width") * 3;
+            c.rect.h = obj->FloatAttribute("height") * 3;
+            ladders.push_back(c);
             }
     }
 
