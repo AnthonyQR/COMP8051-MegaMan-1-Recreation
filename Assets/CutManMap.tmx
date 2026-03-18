@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="178">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="6" nextobjectid="180">
  <tileset firstgid="1" source="CutManTileset.tsx"/>
  <layer id="1" name="Terrain Layer" width="220" height="144">
   <data encoding="csv">
@@ -187,7 +187,7 @@
   <object id="39" x="848" y="1904" width="144" height="32"/>
   <object id="40" x="880" y="1872" width="112" height="32"/>
   <object id="41" x="912" y="1840" width="80" height="32"/>
-  <object id="42" x="992" y="1280" width="32" height="704"/>
+  <object id="42" x="995" y="1280" width="26" height="704"/>
   <object id="43" x="979" y="1584" width="10" height="256"/>
   <object id="44" x="944" y="1584" width="32" height="96"/>
   <object id="45" x="915" y="1616" width="26" height="64"/>
@@ -319,5 +319,8 @@
   <object id="175" x="1872" y="303" width="16" height="33"/>
   <object id="176" x="1872" y="463" width="16" height="81"/>
   <object id="177" x="1808" y="703" width="16" height="113"/>
+ </objectgroup>
+ <objectgroup id="5" name="Camera Bounds Layer">
+  <object id="179" x="0" y="2056" width="1024" height="248"/>
  </objectgroup>
 </map>

@@ -125,7 +125,7 @@ public:
                         v.direction.x = 0;
                         v.ySpeed = -ladderClimbing.climbSpeed;
                         gravity.gravityEnabled = false;
-                        transform.position.x = ladderCollider.x - collider.xOffset;
+                        transform.position.x = ladderCollider.x - collider.xOffset - 6;
                     }
                 }
 
@@ -136,7 +136,7 @@ public:
                     v.direction.x = 0;
                     v.ySpeed = ladderClimbing.climbSpeed;
                     gravity.gravityEnabled = false;
-                    transform.position.x = ladderCollider.x - collider.xOffset;
+                    transform.position.x = ladderCollider.x - collider.xOffset - 6;
                     if (ladderCollider.y > collider.rect.y) {
                         transform.position.y = ladderCollider.y + 3;
                     }
