@@ -56,7 +56,17 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
         c.rect.y = ladder.rect.y;
         c.rect.w = ladder.rect.w;
         c.rect.h = ladder.rect.h;
+    }
 
+    // Spawn Camera Bounds
+    for (auto &cameraBounds : world.getMap().cameraBounds) {
+        auto& e = world.createEntity();
+        e.addComponent<Transform>(Vector2D(cameraBounds.rect.x, cameraBounds.rect.y), 0.0f, 1.0f);
+        auto& c = e.addComponent<Collider>("Camera Bounds");
+        c.rect.x = cameraBounds.rect.x;
+        c.rect.y = cameraBounds.rect.y;
+        c.rect.w = cameraBounds.rect.w;
+        c.rect.h = cameraBounds.rect.h;
     }
 
     // Spawn items

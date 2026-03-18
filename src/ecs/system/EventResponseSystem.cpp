@@ -20,6 +20,7 @@ EventResponseSystem::EventResponseSystem(World &world) {
             onCollision(collision, "Wall", world);
             onCollision(collision, "Projectile", world);
             onCollision(collision, "Ladder", world);
+            onCollision(collision, "Camera Bounds", world);
         }
     );
 
@@ -186,6 +187,20 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             ladderClimbing.ladderEntity = nullptr;
         }
     }
+
+    else if (std::string(otherTag) == "Camera Bounds") {
+        if (e.state !=CollisionState::Enter) return;
+        auto& cameraBounds = other->getComponent<Collider>();
+
+        // Find the camera
+        for (auto& e : world.getEntities()) {
+            if (e->hasComponent<Camera>()) {
+                auto& camera = e->getComponent<Camera>();
+                break;
+            }
+        }
+    }
+    
 
     else if (std::string(otherTag) == "Projectile") {
         if (e.state !=CollisionState::Enter) return;

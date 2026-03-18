@@ -22,6 +22,7 @@ public:
     std::vector<std::vector<int>> tileData;
     std::vector<Collider> colliders;
     std::vector<Collider> ladders;
+    std::vector<Collider> cameraBounds;
     std::vector<Vector2D> itemSpawnPoints;
 };
 

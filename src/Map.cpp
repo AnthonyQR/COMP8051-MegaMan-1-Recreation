@@ -95,6 +95,33 @@ void Map::load(const char* path, SDL_Texture *ts) {
             }
     }
 
+    // Parse camera bounds
+    auto* cameraBoundsObjectGroup = layer->NextSiblingElement("objectgroup");
+    if (cameraBoundsObjectGroup->Attribute("name") != std::string("Camera Bounds Layer")) {
+        for (auto* objGroup = cameraBoundsObjectGroup->NextSiblingElement("objectgroup");
+            objGroup != nullptr;
+            objGroup = objGroup->NextSiblingElement("objectgroup")) {
+            if (objGroup->Attribute("name") == std::string("Camera Bounds Layer")) {
+                cameraBoundsObjectGroup = objGroup;
+                break;
+            }
+        }
+    }
+    if (cameraBoundsObjectGroup->Attribute("name") == std::string("Camera Bounds Layer")) {
+        // Create a for loop with initialization, condition and an increment
+        for (auto* obj = cameraBoundsObjectGroup->FirstChildElement("object"); // Initialization
+            obj != nullptr; // Condition
+            obj = obj->NextSiblingElement("object")) { // Increment
+
+            Collider c;
+            c.rect.x = obj->FloatAttribute("x") * 3;
+            c.rect.y = obj->FloatAttribute("y") * 3;
+            c.rect.w = obj->FloatAttribute("width") * 3;
+            c.rect.h = obj->FloatAttribute("height") * 3;
+            cameraBounds.push_back(c);
+            }
+    }
+
     // Parse item spawn points
     auto* itemSpawnPointsGroup = layer->NextSiblingElement("objectgroup");
     if (itemSpawnPointsGroup->Attribute("name") != std::string("Item Layer")) {
