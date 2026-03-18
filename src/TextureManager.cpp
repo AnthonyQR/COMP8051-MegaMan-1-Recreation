@@ -51,6 +51,7 @@ SDL_Texture* TextureManager::load(const char* path) {
 void TextureManager::draw(SDL_Texture* texture, SDL_FRect src, SDL_FRect dst)
 {
     // Draw the texture to the screen from vram
+    SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
     SDL_RenderTexture(game->renderer, texture, &src, &dst);
 }
 
