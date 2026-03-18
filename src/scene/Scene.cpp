@@ -113,6 +113,15 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     player.addComponent<KeyboardInputs>();
     player.addComponent<IsFacingRight>();
 
+    auto& playerGroundCheck (world.createEntity());
+    auto& playerGroundCheckCollider = playerGroundCheck.addComponent<Collider>("Player");
+    playerGroundCheckCollider.rect.w = playerCollider.rect.w;
+    playerGroundCheckCollider.rect.h = 16.0f;
+    playerGroundCheck.addComponent<PlayerGroundCheck>();
+    playerGroundCheck.addComponent<Transform>(playerTransform);
+    playerGroundCheck.addComponent<FollowEntity>(player, 18.0f, playerCollider.rect.h + 24.0f);
+
+
 
     // Spawn Spawner
     auto& spawner(world.createEntity());

@@ -103,6 +103,7 @@ public:
                         isGrounded.grounded = false;
                         jump.hasJumped = true;
                         jump.fastFalling = false;
+                        gravity.gravityEnabled = true;
                         v.ySpeed = -jump.jumpSpeed;
                         v.direction.y = 1;
                     }

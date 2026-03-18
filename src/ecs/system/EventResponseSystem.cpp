@@ -40,6 +40,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
     if (std::string(otherTag) == "Item") {
         if (e.state != CollisionState::Enter) return;
+        if (player->hasComponent<PlayerGroundCheck>()) return;
 
         other->destroy();
 
@@ -57,6 +58,8 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
     else if (std::string(otherTag) == "Wall") {
         if (e.state == CollisionState::Stay) {
+            if (player->hasComponent<PlayerGroundCheck>()) return;
+
             // Player components
             auto& t = player->getComponent<Transform>();
             auto& v = player->getComponent<Velocity>();
@@ -99,7 +102,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                         playerCollider.y = t.position.y + yOffset;
                         isGrounded.grounded = true;
                         ladderClimbing.isClimbing = false;
-                        gravity.gravityEnabled = true;
+                        gravity.gravityEnabled = false;
                         v.ySpeed = 0;
                         return;
                     }
@@ -111,7 +114,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                         playerCollider.y = t.position.y + yOffset;
                         isGrounded.grounded = true;
                         ladderClimbing.isClimbing = false;
-                        gravity.gravityEnabled = true;
+                        gravity.gravityEnabled = false;
                         playerCollider.y = t.position.y;
                         v.ySpeed = 0;
                         return;
@@ -123,6 +126,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                     t.position.y = wallCollider.y - playerCollider.h - positionOffset - yOffset;
                     isGrounded.grounded = true;
                     ladderClimbing.isClimbing = false;
+                    gravity.gravityEnabled = false;
                 }
                 else {
                     t.position.y = (wallCollider.y + wallCollider.h + positionOffset - yOffset);
@@ -132,15 +136,20 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
         }
 
         if (e.state == CollisionState::Exit) {
-            if (e.axis == CollisionAxis::Vertical) {
-                auto& isGrounded = player->getComponent<IsGrounded>();
+
+            if (player->hasComponent<PlayerGroundCheck>()) {
+                std::cout << "leave" << std::endl;
+                auto& isGrounded = player->getComponent<FollowEntity>().followedEntity.getComponent<IsGrounded>();
+                auto& gravity = player->getComponent<FollowEntity>().followedEntity.getComponent<Gravity>();
                 isGrounded.grounded = false;
+                gravity.gravityEnabled = true;
             }
         }
     }
 
     else if (std::string(otherTag) == "Ladder") {
         if (e.state == CollisionState::Enter) return;
+        if (player->hasComponent<PlayerGroundCheck>()) return;
 
         auto& ladderClimbing = player->getComponent<LadderClimbing>();
         if (e.state == CollisionState::Stay) {
@@ -151,7 +160,6 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
             auto& playerCollider = player->getComponent<Collider>().rect;
             auto& ladderCollider = ladderClimbing.ladderEntity->getComponent<Collider>().rect;
-            float xOffset = player->getComponent<Collider>().xOffset;
             float yOffset = player->getComponent<Collider>().yOffset;
 
             auto& v = player->getComponent<Velocity>();
@@ -160,20 +168,20 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             auto& isGrounded = player->getComponent<IsGrounded>();
 
             float ladderColliderTopOffset = 3.0f;
-            float positionOffset = -1.0f;
+            float positionOffset = .1f;
 
             if (ladderCollider.y > playerCollider.y) {
                 t.position.y = ladderCollider.y + ladderColliderTopOffset - playerCollider.h - positionOffset - yOffset;
                 playerCollider.y = t.position.y + yOffset;
                 isGrounded.grounded = true;
                 ladderClimbing.isClimbing = false;
-                gravity.gravityEnabled = true;
-
+                gravity.gravityEnabled = false;
                 v.ySpeed = 0;
             }
         }
 
         if (e.state == CollisionState::Exit) {
+            auto& gravity = player->getComponent<Gravity>();
             ladderClimbing.canClimb = false;
             ladderClimbing.ladderEntity = nullptr;
         }
@@ -181,6 +189,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
     else if (std::string(otherTag) == "Projectile") {
         if (e.state !=CollisionState::Enter) return;
+        if (player->hasComponent<PlayerGroundCheck>()) return;
 
         // This logic is simple and direct
         // Ideally we would only operate on data in an update function
@@ -202,36 +211,6 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
     }
 }
 
-std::vector<bool> EventResponseSystem::checkCollisionDirection(const SDL_FRect& colliderA, const SDL_FRect& colliderB) {
-    std::vector<bool>collisions = {false, false, false, false};
-
-    // Check collision above player
-    if ((colliderA.y <= colliderB.y + colliderB.h)) {
-        collisions.at(0) = true;
-    }
-
-    // Check collision below player
-    if ((colliderA.y + colliderA.h >= colliderB.y)) {
-        // t.position.y -= (playerCollider.y + playerCollider.h - wallCollider.y);
-        collisions.at(1) = true;
-    }
-
-    // Check collision to the left of the player
-    if ((colliderA.x <= colliderB.x + colliderB.w)) {
-        //t.position.x += (wallCollider.x + wallCollider.w - playerCollider.x);
-        std::cout << "left" << std::endl;
-        collisions.at(2) = true;
-    }
-
-    // Check collision to the right of the player
-    if (colliderA.x + colliderA.w >= colliderB.x) {
-        // t.position.x -= (playerCollider.x + playerCollider.w - wallCollider.x);
-        std::cout << "right" << std::endl;
-        collisions.at(3) = true;
-    }
-
-    return collisions;
-}
 
 bool EventResponseSystem::getCollisionEntities(
     const CollisionEvent &e,

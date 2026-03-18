@@ -113,6 +113,7 @@ struct KeyboardInputs {
 };
 
 struct PlayerTag{};
+struct PlayerGroundCheck{};
 struct ProjectileTag{};
 
 #endif //TUTORIAL1_COMPONENT_H
