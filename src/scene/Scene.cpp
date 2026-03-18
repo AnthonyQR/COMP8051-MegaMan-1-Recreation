@@ -84,9 +84,9 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     // Spawn Player
     auto& player(world.createEntity());
     auto& playerTransform = player.addComponent<Transform>(Vector2D(50, 6300), 0.0f, 1.0f);
-    player.addComponent<Velocity>(Vector2D(0.0f,1.0f), 200.0f, 0.0f);
-    player.addComponent<Gravity>(1800.0f, 1800.0f, true);
-    player.addComponent<Jump>(660.0f, 7200.0f);
+    player.addComponent<Velocity>(Vector2D(0.0f,1.0f), 250.0f, 0.0f);
+    player.addComponent<Gravity>(2400.0f, 2400.0f, true);
+    player.addComponent<Jump>(880.0f, 9600.0f);
 
     Animation anim = AssetManager::getAnimation("player");
     player.addComponent<Animation>(anim);

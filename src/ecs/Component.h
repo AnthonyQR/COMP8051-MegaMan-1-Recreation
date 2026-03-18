@@ -73,7 +73,7 @@ struct Animation {
     std::string currentClip{};
     float time{}; // Time is accumulated for the current frame
     int currentFrame{}; // Index of the current frame in the clip
-    float speed = 0.15f; // Time per frame
+    float speed = 0.12f; // Time per frame
 };
 
 struct Camera {
