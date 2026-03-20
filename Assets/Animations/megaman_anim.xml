@@ -8,9 +8,9 @@
     <inch_left>
         <frame x="64" y="0" w="32" h="32" />
     </inch_left>
-    <idle_fire_left>
+    <idle_left_fire>
         <frame x="96" y="0" w="32" h="32" />
-    </idle_fire_left>
+    </idle_left_fire>
 
     <idle_right>
         <frame x="0" y="32" w="32" h="32" />
@@ -21,9 +21,9 @@
     <inch_right>
         <frame x="64" y="32" w="32" h="32" />
     </inch_right>
-    <idle_fire_right>
+    <idle_right_fire>
         <frame x="96" y="32" w="32" h="32" />
-    </idle_fire_right>
+    </idle_right_fire>
 
 
     <walk_left>
@@ -47,25 +47,25 @@
     </jump_right>
 
 
-    <walk_fire_left>
+    <walk_left_fire>
         <frame x="0" y="128" w="32" h="32" />
         <frame x="32" y="128" w="32" h="32" />
         <frame x="64" y="128" w="32" h="32" />
         <frame x="32" y="128" w="32" h="32" />
-    </walk_fire_left>
-    <walk_fire_right>
+    </walk_left_fire>
+    <walk_right_fire>
         <frame x="0" y="160" w="32" h="32" />
         <frame x="32" y="160" w="32" h="32" />
         <frame x="64" y="160" w="32" h="32" />
         <frame x="32" y="160" w="32" h="32" />
-    </walk_fire_right>
+    </walk_right_fire>
 
-    <jump_fire_left>
+    <jump_left_fire>
         <frame x="96" y="128" w="32" h="32" />
-    </jump_fire_left>
-    <jump_fire_right>
+    </jump_left_fire>
+    <jump_right_fire>
         <frame x="96" y="160" w="32" h="32" />
-    </jump_fire_right>
+    </jump_right_fire>
 
 
     <climb>
@@ -76,12 +76,12 @@
         <frame x="64" y="192" w="32" h="32" />
     </climb_finish>
 
-    <climb_fire_left>
+    <climb_left_fire>
         <frame x="96" y="192" w="32" h="32" />
-    </climb_fire_left>
-    <climb_fire_right>
+    </climb_left_fire>
+    <climb_right_fire>
         <frame x="128" y="192" w="32" h="32" />
-    </climb_fire_right>
+    </climb_right_fire>
 
 
     <ground_hit_left>

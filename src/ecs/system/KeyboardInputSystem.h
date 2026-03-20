@@ -143,17 +143,18 @@ public:
                             isFiring.timer = isFiring.firingDuration;
                             if (isFacingRight.facingRight) {
                                 projectileStats.direction.x = 1;
-                                projectileStats.spawnPoint.x = collider.rect.w;
+                                projectileStats.spawnPoint.x = transform.position.x + collider.rect.w + collider.xOffset;
                             }
                             else {
                                 projectileStats.direction.x = -1;
-                                projectileStats.spawnPoint.x = collider.rect.x;
+                                projectileStats.spawnPoint.x = transform.position.x;
                             }
-                            projectileStats.spawnPoint.y = transform.position.y;
+                            projectileStats.spawnPoint.y = transform.position.y + 48;
                             projectileStats.spawnCallback(projectileStats);
                         }
                     }
                 }
+
                 else {
                     hasFired.fired = false;
                 }
@@ -191,22 +192,22 @@ public:
                     }
                 }
 
-                if (!ladderClimbing.isClimbing) {
-                    if (keyboardInputs.isHoldingLeft && !keyboardInputs.isHoldingRight) {
+                if (keyboardInputs.isHoldingLeft && !keyboardInputs.isHoldingRight) {
                         v.direction.x = -1;
                         isFacingRight.facingRight = false;
-                    }
-                    else if (keyboardInputs.isHoldingRight && !keyboardInputs.isHoldingLeft) {
-                        v.direction.x = 1;
-                        isFacingRight.facingRight = true;
-                    }
-                    else {
-                        v.direction.x = 0;
-                    }
+                }
+                else if (keyboardInputs.isHoldingRight && !keyboardInputs.isHoldingLeft) {
+                    v.direction.x = 1;
+                    isFacingRight.facingRight = true;
                 }
                 else {
                     v.direction.x = 0;
                 }
+
+                if (ladderClimbing.isClimbing) {
+                    v.direction.x = 0;
+                }
+
             }
             }
         }

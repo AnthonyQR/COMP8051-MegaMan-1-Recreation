@@ -21,6 +21,7 @@
 #include "EventResponseSystem.h"
 #include "FollowEntitySystem.h"
 #include "GravitySystem.h"
+#include "IsFiringTimerSystem.h"
 #include "MainMenuSystem.h"
 #include "SpawnTimerSystem.h"
 #include "scene/SceneType.h"
@@ -42,6 +43,7 @@ class World {
     EventResponseSystem eventResponseSystem{*this};
     MainMenuSystem mainMenuSystem;
     FollowEntitySystem followEntitySystem;
+    IsFiringTimerSystem isFiringTimerSystem;
 public:
     World() = default;
     void update(float dt, const SDL_Event& event, SceneType sceneType) {
@@ -57,6 +59,7 @@ public:
             animationSystem.update(entities, dt);
             cameraSystem.update(entities);
             spawnTimerSystem.update(entities, dt);
+            isFiringTimerSystem.update(entities, dt);
             destructionSystem.update(entities);
         }
         synchronizeEntities();

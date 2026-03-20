@@ -13,10 +13,17 @@
 class PlayerAnimationSystem {
 public:
     static std::string getAnimationClip(const std::unique_ptr<Entity>& player) {
+        std::string clip = checkCurrentAction(player);
+        clip += checkIsFiring(player, clip);
+        return clip;
+    }
+
+    static std::string checkCurrentAction(const std::unique_ptr<Entity>& player) {
         auto& velocity = player->getComponent<Velocity>();
         auto& isGrounded = player->getComponent<IsGrounded>().grounded;
         auto& isFacingRight = player->getComponent<IsFacingRight>().facingRight;
         auto& ladderClimbing = player->getComponent<LadderClimbing>();
+
 
         if (ladderClimbing.isClimbing) {
             return "climb";
@@ -49,6 +56,24 @@ public:
             }
             return "jump_left";
         }
+        return "";
+    }
+
+    static std::string checkIsFiring(const std::unique_ptr<Entity>& player, const std::string& clip) {
+        auto& isFiring = player->getComponent<IsFiring>().firing;
+        auto& isFacingRight = player->getComponent<IsFacingRight>().facingRight;
+        auto& ladderClimbing = player->getComponent<LadderClimbing>();
+
+        if (!isFiring) return "";
+        if (clip == "climb") {
+            if (isFacingRight) {
+                return "_right_fire";
+            }
+            else {
+                return "_left_fire";
+            }
+        }
+        return "_fire";
     }
 };
 #endif //TUTORIAL1_PLAYERANIMATIONSYSTEM_H

@@ -138,17 +138,17 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
         Vector2D(0, 0), Vector2D(0, 0), [this](ProjectileStats stats) {
             auto& projectile = world.createEntity();
             auto& projectileTransform = projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
-            auto& projectileCollider = projectile.addComponent<Collider>("Player");
+            auto& projectileCollider = projectile.addComponent<Collider>("Projectile");
             projectile.addComponent<ProjectileTag>();
             auto& projectileVelocity = projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed);
             auto& projectileSprite = projectile.addComponent<Sprite>(stats.sprite);
         }
     );
-    player.addComponent<ProjectileLimit>(3, 0);
+    player.addComponent<ProjectileLimit>(30, 0);
     player.addComponent<IsFiring>(false, 0.2f);
     player.addComponent<HasFired>(false);
 
-
+    
     // Spawn Spawner
     auto& spawner(world.createEntity());
     Transform t = spawner.addComponent<Transform>(Vector2D(windowWidth / 2, windowHeight - 5), 0.0f, 1.0f);
