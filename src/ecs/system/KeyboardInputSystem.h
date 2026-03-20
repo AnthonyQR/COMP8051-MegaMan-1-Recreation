@@ -88,7 +88,7 @@ public:
 
                         case SDLK_X:
                             keyboardInputs.isHoldingAttack = false;
-
+                            break;
                         // Ladder Movement
                         case SDLK_UP:
                             keyboardInputs.isHoldingUp = false;
@@ -168,7 +168,6 @@ public:
                 if (keyboardInputs.isHoldingUp && !keyboardInputs.isHoldingDown && ladderClimbing.canClimb) {
                     auto& ladderCollider = ladderClimbing.ladderEntity->getComponent<Collider>().rect;
                     if (ladderCollider.y < collider.rect.y) {
-                        std::cout << "up" << std::endl;
                         ladderClimbing.isClimbing = true;
                         v.direction.y = 1;
                         v.direction.x = 0;
@@ -187,7 +186,7 @@ public:
                     gravity.gravityEnabled = false;
                     transform.position.x = ladderCollider.x - collider.xOffset - 6;
                     if (ladderCollider.y > collider.rect.y) {
-                        transform.position.y = ladderCollider.y + 3;
+                        transform.position.y = ladderCollider.y - collider.yOffset;
                     }
                 }
 
@@ -195,6 +194,10 @@ public:
                     if (ladderClimbing.isClimbing) {
                         v.direction.y = 0;
                     }
+                }
+
+                if (ladderClimbing.isClimbing && isFiring.firing) {
+                    v.direction.y = 0;
                 }
 
                 if (keyboardInputs.isHoldingLeft && !keyboardInputs.isHoldingRight) {
