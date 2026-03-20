@@ -131,6 +131,23 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     playerGroundCheck.addComponent<Transform>(playerTransform);
     playerGroundCheck.addComponent<FollowEntity>(player, 18.0f, playerCollider.rect.h + 24.0f);
 
+    SDL_Texture* playerProjectileTex = TextureManager::load("../Assets/megaman_projectile.png");
+    SDL_FRect playerProjectileSrc{0, 0, 8, 8};
+    SDL_FRect playerProjectileDest{0, 0, 8 * 3, 8 * 3};
+    player.addComponent<ProjectileStats>(600.0f, Sprite(playerProjectileTex, playerProjectileSrc, playerProjectileDest),
+        Vector2D(0, 0), Vector2D(0, 0), [this](ProjectileStats stats) {
+            auto& projectile = world.createEntity();
+            auto& projectileTransform = projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
+            auto& projectileCollider = projectile.addComponent<Collider>("Player");
+            projectile.addComponent<ProjectileTag>();
+            auto& projectileVelocity = projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed);
+            auto& projectileSprite = projectile.addComponent<Sprite>(stats.sprite);
+        }
+    );
+    player.addComponent<ProjectileLimit>(3, 0);
+    player.addComponent<IsFiring>(false, 0.2f);
+    player.addComponent<HasFired>(false);
+
 
     // Spawn Spawner
     auto& spawner(world.createEntity());

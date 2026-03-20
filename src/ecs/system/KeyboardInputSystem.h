@@ -14,7 +14,7 @@
 
 class KeyboardInputSystem {
 public:
-    void update(const std::vector<std::unique_ptr<Entity>>& entities, const SDL_Event event) {
+    void update(const std::vector<std::unique_ptr<Entity>>& entities, const SDL_Event event, World& world) {
         for (auto& e : entities) {
             if (e->hasComponent<PlayerTag>() &&
                 e->hasComponent<Velocity>() &&
@@ -25,7 +25,11 @@ public:
                 e->hasComponent<Collider>() &&
                 e->hasComponent<Transform>() &&
                 e->hasComponent<KeyboardInputs>() &&
-                e->hasComponent<IsFacingRight>()
+                e->hasComponent<IsFacingRight>() &&
+                e->hasComponent<ProjectileStats>() &&
+                e->hasComponent<ProjectileLimit>() &&
+                e->hasComponent<IsFiring>() &&
+                e->hasComponent<HasFired>()
                 )
             {
                 auto& v = e->getComponent<Velocity>();
@@ -37,27 +41,37 @@ public:
                 auto& transform = e->getComponent<Transform>();
                 auto& keyboardInputs = e->getComponent<KeyboardInputs>();
                 auto& isFacingRight = e->getComponent<IsFacingRight>();
+                auto& projectileStats = e->getComponent<ProjectileStats>();
+                auto& projectileLimit = e->getComponent<ProjectileLimit>();
+                auto& isFiring = e->getComponent<IsFiring>();
+                auto& hasFired = e->getComponent<HasFired>();
+
 
                 if (event.type == SDL_EVENT_KEY_DOWN) {
                     switch (event.key.key) {
                         // Jump
-                        case SDLK_SPACE:
+                        case SDLK_Z:
                             keyboardInputs.isHoldingJump = true;
                             break;
 
+                        // Attack
+                        case SDLK_X:
+                            keyboardInputs.isHoldingAttack = true;
+                            break;
+
                         // Ladder Movement
-                        case SDLK_W:
+                        case SDLK_UP:
                             keyboardInputs.isHoldingUp = true;
                             break;
-                        case SDLK_S:
+                        case SDLK_DOWN:
                             keyboardInputs.isHoldingDown = true;
                             break;
 
                         // Horizontal Movement
-                        case SDLK_A:
+                        case SDLK_LEFT:
                             keyboardInputs.isHoldingLeft = true;
                             break;
-                        case SDLK_D:
+                        case SDLK_RIGHT:
                             keyboardInputs.isHoldingRight = true;
                             break;
                         default:
@@ -68,22 +82,25 @@ public:
                 if (event.type == SDL_EVENT_KEY_UP) {
                     switch (event.key.key) {
                         // Jump
-                        case SDLK_SPACE:
+                        case SDLK_Z:
                             keyboardInputs.isHoldingJump = false;
                             break;
 
+                        case SDLK_X:
+                            keyboardInputs.isHoldingAttack = false;
+
                         // Ladder Movement
-                        case SDLK_W:
+                        case SDLK_UP:
                             keyboardInputs.isHoldingUp = false;
                             break;
-                        case SDLK_S:
+                        case SDLK_DOWN:
                             keyboardInputs.isHoldingDown = false;
                             break;
                         // Horizontal Movement
-                        case SDLK_A:
+                        case SDLK_LEFT:
                             keyboardInputs.isHoldingLeft = false;
                             break;
-                        case SDLK_D:
+                        case SDLK_RIGHT:
                             keyboardInputs.isHoldingRight = false;
                             break;
                         default:
@@ -93,19 +110,21 @@ public:
 
                 // Jump
                 if (keyboardInputs.isHoldingJump) {
-                    if (ladderClimbing.isClimbing) {
-                        ladderClimbing.isClimbing = false;
-                        gravity.gravityEnabled = true;
-                        v.ySpeed = 0;
-                        v.direction.y = 1;
-                    }
-                    if (isGrounded.grounded && !jump.hasJumped) {
-                        isGrounded.grounded = false;
+                    if (!jump.hasJumped) {
                         jump.hasJumped = true;
-                        jump.fastFalling = false;
-                        gravity.gravityEnabled = true;
-                        v.ySpeed = -jump.jumpSpeed;
-                        v.direction.y = 1;
+                        if (ladderClimbing.isClimbing) {
+                            ladderClimbing.isClimbing = false;
+                            gravity.gravityEnabled = true;
+                            v.ySpeed = 0;
+                            v.direction.y = 1;
+                        }
+                        if (isGrounded.grounded) {
+                            isGrounded.grounded = false;
+                            jump.fastFalling = false;
+                            gravity.gravityEnabled = true;
+                            v.ySpeed = -jump.jumpSpeed;
+                            v.direction.y = 1;
+                        }
                     }
                 }
                 else {
@@ -113,6 +132,30 @@ public:
                         jump.fastFalling = true;
                     }
                     jump.hasJumped = false;
+                }
+
+                if (keyboardInputs.isHoldingAttack) {
+                    if (!hasFired.fired) {
+                        hasFired.fired = true;
+                        if (projectileLimit.currentProjectiles != projectileLimit.maxProjectiles) {
+                            projectileLimit.currentProjectiles++;
+                            isFiring.firing = true;
+                            isFiring.timer = isFiring.firingDuration;
+                            if (isFacingRight.facingRight) {
+                                projectileStats.direction.x = 1;
+                                projectileStats.spawnPoint.x = collider.rect.w;
+                            }
+                            else {
+                                projectileStats.direction.x = -1;
+                                projectileStats.spawnPoint.x = collider.rect.x;
+                            }
+                            projectileStats.spawnPoint.y = transform.position.y;
+                            projectileStats.spawnCallback(projectileStats);
+                        }
+                    }
+                }
+                else {
+                    hasFired.fired = false;
                 }
 
                 // Ladder Climbing

@@ -49,7 +49,7 @@ public:
             mainMenuSystem.update(event);
         }
         else {
-            keyboardInputSystem.update(entities, event);
+            keyboardInputSystem.update(entities, event, *this);
             gravitySystem.update(entities, dt);
             movementSystem.update(entities, dt);
             followEntitySystem.update(entities);

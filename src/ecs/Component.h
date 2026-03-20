@@ -112,6 +112,29 @@ struct KeyboardInputs {
     bool isHoldingAttack = false;
 };
 
+struct ProjectileStats {
+    float projectileSpeed{};
+    Sprite sprite{};
+    Vector2D direction{};
+    Vector2D spawnPoint{};
+    std::function<void(ProjectileStats)> spawnCallback{};
+};
+
+struct ProjectileLimit {
+    int maxProjectiles{};
+    int currentProjectiles{};
+};
+
+struct HasFired {
+    bool fired{};
+};
+
+struct IsFiring {
+    bool firing{};
+    float firingDuration{};
+    float timer{};
+};
+
 struct PlayerTag{};
 struct PlayerGroundCheck{};
 struct ProjectileTag{};

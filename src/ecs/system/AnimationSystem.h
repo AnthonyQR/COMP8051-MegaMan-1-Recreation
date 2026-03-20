@@ -23,7 +23,6 @@ public:
             if (e->hasComponent<Animation>() && e->hasComponent<Velocity>()) {
                 std::string newClip;
                 auto& anim = e->getComponent<Animation>();
-                auto& velocity = e->getComponent<Velocity>();
 
                 if (e->hasComponent<PlayerTag>()) {
                     newClip = PlayerAnimationSystem::getAnimationClip(e);
@@ -31,46 +30,6 @@ public:
                 else {
                     return;
                 }
-                /*
-                auto& anim = e->getComponent<Animation>();
-                auto& velocity = e->getComponent<Velocity>();
-
-                // State System
-
-                if (velocity.direction.x > 0.0f) {
-                    newClip = "walk_right";
-                }
-                else if (velocity.direction.x < 0.0f) {
-                    newClip = "walk_left";
-                }
-                else if (velocity.direction.y > 0.0f) {
-                    newClip = "walk_down";
-                }
-                else if (velocity.direction.y < 0.0f) {
-                    newClip = "walk_up";
-                }
-                else {
-                    if (anim.currentClip == "idle_left" ||
-                        anim.currentClip == "idle_right" ||
-                        anim.currentClip == "idle_down" ||
-                        anim.currentClip == "idle_up") {
-                        newClip = anim.currentClip;
-                    }
-                    else if (anim.currentClip == "walk_right") {
-                        newClip = "idle_right";
-                    }
-                    else if (anim.currentClip == "walk_left") {
-                        newClip = "idle_left";
-                    }
-                    else if (anim.currentClip == "walk_down") {
-                        newClip = "idle_down";
-                    }
-                    else{
-                        newClip = "idle_up";
-                    }
-
-                }
-                */
 
                 // Check if the animation has switched
                 // If the chosen clip is different from the current one, switch to new clip, reset time & frame index

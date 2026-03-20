@@ -200,7 +200,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             }
         }
     }
-    
+
 
     else if (std::string(otherTag) == "Projectile") {
         if (e.state !=CollisionState::Enter) return;
@@ -250,4 +250,11 @@ bool EventResponseSystem::getCollisionEntities(
     }
 
     return player && other;
+}
+
+void EventResponseSystem::onPlayerAction(const PlayerActionEvent &e,
+    const std::function<void(Entity *player, PlayerAction action)> &callback) {
+    if (e.action == PlayerAction::Attack) {
+        return;
+    }
 }
