@@ -187,6 +187,10 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                 gravity.gravityEnabled = false;
                 v.ySpeed = 0;
             }
+
+            if (ladderClimbing.isClimbing) {
+                isGrounded.grounded = false;
+            }
         }
 
         if (e.state == CollisionState::Exit) {
