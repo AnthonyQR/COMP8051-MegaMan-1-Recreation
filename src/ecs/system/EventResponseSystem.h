@@ -23,6 +23,7 @@ private:
     // Player Actions
     void onPlayerAction(const PlayerActionEvent& e,
         const std::function<void(Entity* player, PlayerAction action)>& callback);
+    void onDestroy(const DestroyedEvent& e, World& world);
 };
 
 #endif //TUTORIAL1_EVENTRESPONSESYSTEM_H

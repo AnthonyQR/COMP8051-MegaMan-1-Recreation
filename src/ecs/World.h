@@ -60,7 +60,7 @@ public:
             cameraSystem.update(entities);
             spawnTimerSystem.update(entities, dt);
             isFiringTimerSystem.update(entities, dt);
-            destructionSystem.update(entities);
+            destructionSystem.update(entities, *this);
         }
         synchronizeEntities();
         cleanup();

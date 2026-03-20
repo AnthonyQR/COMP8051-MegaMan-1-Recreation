@@ -119,7 +119,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
 
     player.addComponent<IsGrounded>(false);
 
-    player.addComponent<LadderClimbing>(200.0f);
+    player.addComponent<LadderClimbing>(150.0f);
     player.addComponent<KeyboardInputs>();
     player.addComponent<IsFacingRight>();
 
@@ -134,21 +134,22 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     SDL_Texture* playerProjectileTex = TextureManager::load("../Assets/megaman_projectile.png");
     SDL_FRect playerProjectileSrc{0, 0, 8, 8};
     SDL_FRect playerProjectileDest{0, 0, 8 * 3, 8 * 3};
-    player.addComponent<ProjectileStats>(600.0f, Sprite(playerProjectileTex, playerProjectileSrc, playerProjectileDest),
+    player.addComponent<ProjectileStats>(800.0f, Sprite(playerProjectileTex, playerProjectileSrc, playerProjectileDest),
         Vector2D(0, 0), Vector2D(0, 0), [this](ProjectileStats stats) {
             auto& projectile = world.createEntity();
             auto& projectileTransform = projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
             auto& projectileCollider = projectile.addComponent<Collider>("Projectile");
             projectile.addComponent<ProjectileTag>();
+            projectile.addComponent<PlayerTag>();
             auto& projectileVelocity = projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed);
             auto& projectileSprite = projectile.addComponent<Sprite>(stats.sprite);
         }
     );
-    player.addComponent<ProjectileLimit>(30, 0);
+    player.addComponent<ProjectileLimit>(3, 0);
     player.addComponent<IsFiring>(false, 0.2f);
     player.addComponent<HasFired>(false);
 
-    
+
     // Spawn Spawner
     auto& spawner(world.createEntity());
     Transform t = spawner.addComponent<Transform>(Vector2D(windowWidth / 2, windowHeight - 5), 0.0f, 1.0f);

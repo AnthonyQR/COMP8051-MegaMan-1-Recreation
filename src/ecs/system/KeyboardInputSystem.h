@@ -137,7 +137,7 @@ public:
                 if (keyboardInputs.isHoldingAttack) {
                     if (!hasFired.fired) {
                         hasFired.fired = true;
-                        if (projectileLimit.currentProjectiles != projectileLimit.maxProjectiles) {
+                        if (projectileLimit.currentProjectiles < projectileLimit.maxProjectiles) {
                             projectileLimit.currentProjectiles++;
                             isFiring.firing = true;
                             isFiring.timer = isFiring.firingDuration;
@@ -149,7 +149,12 @@ public:
                                 projectileStats.direction.x = -1;
                                 projectileStats.spawnPoint.x = transform.position.x;
                             }
-                            projectileStats.spawnPoint.y = transform.position.y + 48;
+                            if (!isGrounded.grounded) {
+                                projectileStats.spawnPoint.y = transform.position.y + 24;
+                            }
+                            else {
+                                projectileStats.spawnPoint.y = transform.position.y + 48;
+                            }
                             projectileStats.spawnCallback(projectileStats);
                         }
                     }

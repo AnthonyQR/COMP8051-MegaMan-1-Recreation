@@ -9,7 +9,8 @@ class Entity;
 
 enum class EventType {
     Collision,
-    PlayerAction
+    PlayerAction,
+    Destroyed
 };
 
 struct BaseEvent {
@@ -39,6 +40,13 @@ struct PlayerActionEvent : BaseEvent {
     PlayerAction action{};
     PlayerActionEvent(Entity* player, PlayerAction action) : player(player), action(action) {
         type = EventType::PlayerAction;
+    }
+};
+
+struct DestroyedEvent : BaseEvent {
+    Entity* entity = nullptr;
+    DestroyedEvent(Entity* entity) : entity(entity) {
+        type = EventType::Destroyed;
     }
 };
 

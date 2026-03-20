@@ -31,6 +31,14 @@ EventResponseSystem::EventResponseSystem(World &world) {
             // TODO onPlayerAction
         }
     );
+
+    world.getEventManager().subscribe(
+        [this, &world](const BaseEvent& e) {
+            if (e.type != EventType::Destroyed) return;
+            const auto& destroyed = static_cast<const DestroyedEvent&>(e);
+            onDestroy(destroyed, world);
+        }
+    );
 }
 
 void EventResponseSystem::onCollision(const CollisionEvent& e, const char* otherTag, World& world) {
@@ -204,7 +212,6 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
     else if (std::string(otherTag) == "Projectile") {
         if (e.state !=CollisionState::Enter) return;
-        if (player->hasComponent<PlayerGroundCheck>()) return;
 
         // This logic is simple and direct
         // Ideally we would only operate on data in an update function
@@ -256,5 +263,23 @@ void EventResponseSystem::onPlayerAction(const PlayerActionEvent &e,
     const std::function<void(Entity *player, PlayerAction action)> &callback) {
     if (e.action == PlayerAction::Attack) {
         return;
+    }
+}
+
+void EventResponseSystem::onDestroy(const DestroyedEvent &e, World &world) {
+    Entity* destroyedEntity = e.entity;
+    if (destroyedEntity->hasComponent<ProjectileTag>() &&
+        destroyedEntity->hasComponent<PlayerTag>()) {
+        std::vector<std::unique_ptr<Entity>>& entities = world.getEntities();
+        for (auto& e : entities) {
+            if (e->hasComponent<PlayerTag>() && e->hasComponent<ProjectileLimit>()) {
+                auto& projectileLimit = e->getComponent<ProjectileLimit>();
+                projectileLimit.currentProjectiles--;
+                if (projectileLimit.currentProjectiles <= 0) {
+                    projectileLimit.currentProjectiles = 0;
+                }
+                return;
+            }
+        }
     }
 }

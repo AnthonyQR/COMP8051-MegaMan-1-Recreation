@@ -37,6 +37,7 @@ add_executable(Tutorial1 src/main.cpp
         src/scene/Scene.cpp
         src/ecs/system/EventResponseSystem.cpp
         src/ecs/system/MainMenuSystem.cpp
+        src/ecs/system/DestructionSystem.cpp
 )
 
 target_link_libraries(Tutorial1
