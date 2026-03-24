@@ -23,6 +23,7 @@ public:
     std::vector<Collider> colliders;
     std::vector<Collider> ladders;
     std::vector<Collider> cameraBounds;
+    std::vector<Vector2D> beakEnemySpawnPoints;
     std::vector<Vector2D> itemSpawnPoints;
 };
 

@@ -89,6 +89,10 @@ struct TimedSpawner {
     float timer{};
 };
 
+struct SpawnOnVisible {
+
+};
+
 // Our game state, might have multiple scenes
 struct SceneState {
     int coinsCollected = 0;
@@ -135,8 +139,8 @@ struct IsFiring {
     float firingDuration{};
     float startFiringDuration{};
     float endFiringDuration{};
-    bool startFiring = false;
-    bool endFiring = false;
+    bool startFiring;
+    bool endFiring;
     float timer{};
 };
 
@@ -146,15 +150,17 @@ struct FiringPattern {
 };
 
 struct AutoFiring {
+    float firingDelay{};
     std::vector<FiringPattern> patterns{};
+    bool oneShot{};
     float timer{};
     int nextPattern{};
-    bool oneShot{};
 };
 
 
 struct PlayerTag{};
 struct PlayerGroundCheck{};
 struct ProjectileTag{};
+struct BeakEnemyTag{};
 
 #endif //TUTORIAL1_COMPONENT_H

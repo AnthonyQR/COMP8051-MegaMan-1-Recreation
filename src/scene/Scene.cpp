@@ -150,6 +150,54 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     player.addComponent<HasFired>(false);
 
 
+
+    // Spawn Beak Enemy
+    for (auto &beakEnemySpawnPoint : world.getMap().beakEnemySpawnPoints) {
+        auto& beakEnemy = world.createEntity();
+        auto& beakTransform = beakEnemy.addComponent<Transform>
+        (Vector2D(beakEnemySpawnPoint.x, beakEnemySpawnPoint.y), 0.0f, 1.0f);
+
+        Animation anim = AssetManager::getAnimation("beak");
+        beakEnemy.addComponent<Animation>(anim);
+
+        SDL_Texture* beakTex = TextureManager::load("../Assets/Animations/beak_anim.png");
+
+        SDL_FRect beakSrc = anim.clips[anim.currentClip].frameIndices[0];
+        SDL_FRect beakDst {beakTransform.position.x, beakTransform.position.y, 48, 48};
+
+        beakEnemy.addComponent<Sprite>(beakTex, beakSrc, beakDst);
+
+        auto& beakCollider = beakEnemy.addComponent<Collider>("Enemy");
+        beakCollider.rect.w = beakDst.w;
+        beakCollider.rect.h = beakDst.h;
+
+        SDL_Texture* beakProjectileTex = TextureManager::load("../Assets/beak_projectile.png");
+        SDL_FRect beakProjectileSrc{0, 0, 8, 8};
+        SDL_FRect beakProjectileDest{0, 0, 8 * 3, 8 * 3};
+
+        beakEnemy.addComponent<ProjectileStats>(600.0f, Sprite(beakProjectileTex, beakProjectileSrc, beakProjectileDest),
+        Vector2D(0, 0), Vector2D(beakTransform.position.x, beakTransform.position.y), [this](ProjectileStats stats) {
+            auto& projectile = world.createEntity();
+            auto& projectileTransform = projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
+            auto& projectileCollider = projectile.addComponent<Collider>("Projectile");
+            projectile.addComponent<ProjectileTag>();
+            auto& projectileVelocity = projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed, stats.projectileSpeed);
+            auto& projectileSprite = projectile.addComponent<Sprite>(stats.sprite);
+        }
+    );
+
+        beakEnemy.addComponent<IsFiring>(false, 2.0f, 0.2f, 0.2f);
+        beakEnemy.addComponent<BeakEnemyTag>();
+        beakEnemy.addComponent<AutoFiring>(2.0f, std::vector<FiringPattern>
+        {
+            {Vector2D(-1, -1.0f).normalize(), 0.2f},
+            {Vector2D(-1, -0.2f).normalize(), 0.5f},
+            {Vector2D(-1, 0.2f).normalize(), 0.5f},
+            {Vector2D(-1, 1.0f).normalize(), 0.5f}
+        }, true);
+    }
+
+
     // Spawn Spawner
     auto& spawner(world.createEntity());
     Transform t = spawner.addComponent<Transform>(Vector2D(windowWidth / 2, windowHeight - 5), 0.0f, 1.0f);

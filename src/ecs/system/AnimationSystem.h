@@ -11,6 +11,7 @@
 #include "Entity.h"
 
 #include "./AnimationSystems/PlayerAnimationSystem.h"
+#include "AnimationSystems/BeakAnimationSystem.h"
 
 // State System: Deciding which clip to use
 // Check if the animation has been switched
@@ -20,12 +21,15 @@ class AnimationSystem {
 public:
     void update(const std::vector<std::unique_ptr<Entity>>& entities, float dt) {
         for (auto& e : entities) {
-            if (e->hasComponent<Animation>() && e->hasComponent<Velocity>()) {
+            if (e->hasComponent<Animation>()) {
                 std::string newClip;
                 auto& anim = e->getComponent<Animation>();
 
                 if (e->hasComponent<PlayerTag>()) {
                     newClip = PlayerAnimationSystem::getAnimationClip(e);
+                }
+                else if (e->hasComponent<BeakEnemyTag>()) {
+                    newClip = BeakAnimationSystem::getAnimationClip(e);
                 }
                 else {
                     return;

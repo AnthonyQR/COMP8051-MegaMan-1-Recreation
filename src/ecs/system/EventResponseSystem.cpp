@@ -147,7 +147,6 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
         if (e.state == CollisionState::Exit) {
 
             if (player->hasComponent<PlayerGroundCheck>()) {
-                std::cout << "leave" << std::endl;
                 auto& isGrounded = player->getComponent<FollowEntity>().followedEntity.getComponent<IsGrounded>();
                 auto& gravity = player->getComponent<FollowEntity>().followedEntity.getComponent<Gravity>();
                 isGrounded.grounded = false;

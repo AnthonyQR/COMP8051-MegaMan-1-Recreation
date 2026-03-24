@@ -95,6 +95,31 @@ void Map::load(const char* path, SDL_Texture *ts) {
             }
     }
 
+    // Parse beak enemy spawn points
+    auto* beakEnemyObjectGroup = layer->NextSiblingElement("objectgroup");
+    if (beakEnemyObjectGroup->Attribute("name") != std::string("Beak Spawn Layer")) {
+        for (auto* objGroup = beakEnemyObjectGroup->NextSiblingElement("objectgroup");
+            objGroup != nullptr;
+            objGroup = objGroup->NextSiblingElement("objectgroup")) {
+            if (objGroup->Attribute("name") == std::string("Beak Spawn Layer")) {
+                beakEnemyObjectGroup = objGroup;
+                break;
+            }
+        }
+    }
+    if (beakEnemyObjectGroup->Attribute("name") == std::string("Beak Spawn Layer")) {
+        // Create a for loop with initialization, condition and an increment
+        for (auto* obj = beakEnemyObjectGroup->FirstChildElement("object"); // Initialization
+            obj != nullptr; // Condition
+            obj = obj->NextSiblingElement("object")) { // Increment
+
+            Vector2D pos;
+            pos.x = obj->FloatAttribute("x") * 3;
+            pos.y = obj->FloatAttribute("y") * 3;
+            beakEnemySpawnPoints.push_back(pos);
+            }
+    }
+
     // Parse camera bounds
     auto* cameraBoundsObjectGroup = layer->NextSiblingElement("objectgroup");
     if (cameraBoundsObjectGroup->Attribute("name") != std::string("Camera Bounds Layer")) {

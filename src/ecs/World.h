@@ -16,6 +16,7 @@
 #include "MovementSystem.h"
 #include "RenderSystem.h"
 #include "AnimationSystem.h"
+#include "AutoFiringSystem.h"
 #include "CameraSystem.h"
 #include "DestructionSystem.h"
 #include "EventResponseSystem.h"
@@ -44,6 +45,7 @@ class World {
     MainMenuSystem mainMenuSystem;
     FollowEntitySystem followEntitySystem;
     IsFiringTimerSystem isFiringTimerSystem;
+    AutoFiringSystem autoFiringSystem;
 public:
     World() = default;
     void update(float dt, const SDL_Event& event, SceneType sceneType) {
@@ -60,6 +62,7 @@ public:
             cameraSystem.update(entities);
             spawnTimerSystem.update(entities, dt);
             isFiringTimerSystem.update(entities, dt);
+            autoFiringSystem.update(entities, dt);
             destructionSystem.update(entities, *this);
         }
         synchronizeEntities();

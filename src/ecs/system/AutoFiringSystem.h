@@ -4,6 +4,7 @@
 
 #ifndef TUTORIAL1_AUTOFIRINGSYSTEM_H
 #define TUTORIAL1_AUTOFIRINGSYSTEM_H
+#include <iostream>
 #include <memory>
 #include <vector>
 
@@ -15,25 +16,37 @@ public:
     void update(const std::vector<std::unique_ptr<Entity>>& entities, const float dt) {
         for (auto& entity: entities) {
             if (entity->hasComponent<IsFiring>() && entity->hasComponent<AutoFiring>() && entity->hasComponent<ProjectileStats>()) {
-                auto& isFiring = entity->getComponent<IsFiring>().firing;
+                auto& isFiring = entity->getComponent<IsFiring>();
                 auto& autoFiring = entity->getComponent<AutoFiring>();
                 auto& projectileStats = entity->getComponent<ProjectileStats>();
-                if (isFiring) {
+                if (isFiring.firing) {
                     autoFiring.timer -= dt;
                     if (autoFiring.timer <= 0) {
-                        if (autoFiring.oneShot && (autoFiring.nextPattern + 1 > autoFiring.patterns.size())) {
+                        if (autoFiring.oneShot && (autoFiring.nextPattern >= autoFiring.patterns.size())) {
                             return;
                         }
+                        std::cout << "Firing" << std::endl;
                         projectileStats.direction = autoFiring.patterns.at(autoFiring.nextPattern).direction;
                         projectileStats.spawnCallback(projectileStats);
 
-                        autoFiring.nextPattern = (autoFiring.nextPattern + 1) % autoFiring.patterns.size();
-                        autoFiring.timer = autoFiring.patterns.at(autoFiring.nextPattern).interval;
+                        autoFiring.nextPattern++;
+                        if (!autoFiring.oneShot) {
+                            autoFiring.nextPattern %= autoFiring.patterns.size();
+                        }
+                        if (autoFiring.nextPattern < autoFiring.patterns.size()) {
+                            autoFiring.timer = autoFiring.patterns.at(autoFiring.nextPattern).interval;
+                        }
                     }
                 }
-                else {
+
+                else if (!isFiring.startFiring && !isFiring.firing && !isFiring.endFiring) {
                     autoFiring.nextPattern = 0;
-                    autoFiring.timer = autoFiring.patterns.at(autoFiring.nextPattern).interval;
+                    autoFiring.timer -= dt;
+                    if (autoFiring.timer <= 0) {
+                        isFiring.startFiring = true;
+                        isFiring.timer = isFiring.startFiringDuration;
+                        autoFiring.timer = autoFiring.patterns.at(autoFiring.nextPattern).interval;
+                    }
                 }
             }
         }
