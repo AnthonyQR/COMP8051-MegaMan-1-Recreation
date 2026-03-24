@@ -134,15 +134,16 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     SDL_Texture* playerProjectileTex = TextureManager::load("../Assets/megaman_projectile.png");
     SDL_FRect playerProjectileSrc{0, 0, 8, 8};
     SDL_FRect playerProjectileDest{0, 0, 8 * 3, 8 * 3};
-    player.addComponent<ProjectileStats>(800.0f, Sprite(playerProjectileTex, playerProjectileSrc, playerProjectileDest),
+    player.addComponent<ProjectileStats>(800.0f, 1, Sprite(playerProjectileTex, playerProjectileSrc, playerProjectileDest),
         Vector2D(0, 0), Vector2D(0, 0), [this](ProjectileStats stats) {
             auto& projectile = world.createEntity();
-            auto& projectileTransform = projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
-            auto& projectileCollider = projectile.addComponent<Collider>("Projectile");
+            projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
+            projectile.addComponent<Collider>("Player");
             projectile.addComponent<ProjectileTag>();
             projectile.addComponent<PlayerTag>();
-            auto& projectileVelocity = projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed);
-            auto& projectileSprite = projectile.addComponent<Sprite>(stats.sprite);
+            projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed);
+            projectile.addComponent<Sprite>(stats.sprite);
+            projectile.addComponent<ProjectileDamage>(stats.damage);
         }
     );
     player.addComponent<ProjectileLimit>(3, 0);
@@ -175,7 +176,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
         SDL_FRect beakProjectileSrc{0, 0, 8, 8};
         SDL_FRect beakProjectileDest{0, 0, 8 * 3, 8 * 3};
 
-        beakEnemy.addComponent<ProjectileStats>(600.0f, Sprite(beakProjectileTex, beakProjectileSrc, beakProjectileDest),
+        beakEnemy.addComponent<ProjectileStats>(600.0f, 2, Sprite(beakProjectileTex, beakProjectileSrc, beakProjectileDest),
         Vector2D(0, 0), Vector2D(beakTransform.position.x, beakTransform.position.y), [this](ProjectileStats stats) {
             auto& projectile = world.createEntity();
             auto& projectileTransform = projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
@@ -183,6 +184,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
             projectile.addComponent<ProjectileTag>();
             auto& projectileVelocity = projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed, stats.projectileSpeed);
             auto& projectileSprite = projectile.addComponent<Sprite>(stats.sprite);
+            projectile.addComponent<ProjectileDamage>(stats.damage);
         }
     );
 
@@ -195,6 +197,9 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
             {Vector2D(-1, 0.2f).normalize(), 0.5f},
             {Vector2D(-1, 1.0f).normalize(), 0.5f}
         }, true);
+
+        beakEnemy.addComponent<Health>(1);
+        beakEnemy.addComponent<ContactDamage>(1);
     }
 
 

@@ -22,6 +22,7 @@ EventResponseSystem::EventResponseSystem(World &world) {
             onCollision(collision, "Projectile", world);
             onCollision(collision, "Ladder", world);
             onCollision(collision, "Camera Bounds", world);
+            onCollision(collision, "Enemy", world);
         }
     );
 
@@ -51,6 +52,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
     if (std::string(otherTag) == "Item") {
         if (e.state != CollisionState::Enter) return;
         if (player->hasComponent<PlayerGroundCheck>()) return;
+        if (player->hasComponent<ProjectileTag>()) return;
 
         other->destroy();
 
@@ -67,6 +69,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
     }
 
     else if (std::string(otherTag) == "Wall") {
+        if (player->hasComponent<ProjectileTag>()) return;
         if (e.state == CollisionState::Stay) {
             if (player->hasComponent<PlayerGroundCheck>()) return;
 
@@ -161,6 +164,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
         if (player->hasComponent<PlayerGroundCheck>()) return;
 
         auto& ladderClimbing = player->getComponent<LadderClimbing>();
+        if (player->hasComponent<ProjectileTag>()) return;
         if (e.state == CollisionState::Stay) {
             ladderClimbing.canClimb = true;
             ladderClimbing.ladderEntity = other;
@@ -218,22 +222,48 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
         if (e.state !=CollisionState::Enter) return;
         if (player->hasComponent<PlayerGroundCheck>()) return;
 
-        // This logic is simple and direct
-        // Ideally we would only operate on data in an update function
-        // (Hinting at transient entities)
-        auto& health = player->getComponent<Health>();
-        health.currentHealth--;
+        /*
+        if (player->hasComponent<ProjectileTag>() &&
+            player->hasComponent<ProjectileDamage>() &&
+            other->hasComponent<Health>()) {
+            auto& projectileDamage = player->getComponent<ProjectileDamage>();
+            auto& damageEntity(world.createEntity());
+            damageEntity.addComponent<Damage>(projectileDamage.damage, other);
+            return;
+        }
+        */
 
-        Game::gameState.playerHealth = health.currentHealth;
+        if (player->hasComponent<Health>() &&
+                other->hasComponent<ProjectileDamage>()){
+            auto& projectileDamage = other->getComponent<ProjectileDamage>();
+            auto& damageEntity(world.createEntity());
+            damageEntity.addComponent<Damage>(projectileDamage.damage, player);
+            return;
+        }
+    }
 
-        std::cout << health.currentHealth << std::endl;
+    else if (std::string(otherTag) == "Enemy") {
+        if (e.state !=CollisionState::Enter) return;
+        if (player->hasComponent<PlayerGroundCheck>()) return;
 
-        if (health.currentHealth <= 0) {
-            // Destroy Player
-            player->destroy();
+        std::cout << "Damage" << std::endl;
 
-            // Change scenes deferred
-            Game::onSceneChangeRequest("gameover");
+
+        if (player->hasComponent<ProjectileTag>() &&
+            player->hasComponent<ProjectileDamage>() &&
+            other->hasComponent<Health>()) {
+
+            auto& projectileDamage = player->getComponent<ProjectileDamage>();
+            auto& damageEntity(world.createEntity());
+            damageEntity.addComponent<Damage>(projectileDamage.damage, other);
+            return;
+        }
+
+        if (player->hasComponent<Health>() &&
+            other->hasComponent<ContactDamage>()) {
+            auto& contactDamage = other->getComponent<ContactDamage>();
+            auto& damageEntity(world.createEntity());
+            damageEntity.addComponent<Damage>(contactDamage.damage, player);
         }
     }
 }

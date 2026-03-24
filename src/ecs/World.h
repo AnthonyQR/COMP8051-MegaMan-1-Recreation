@@ -18,6 +18,7 @@
 #include "system/AnimationSystems/AnimationSystem.h"
 #include "AutoFiringSystem.h"
 #include "CameraSystem.h"
+#include "DamageSystem.h"
 #include "DestructionSystem.h"
 #include "EventResponseSystem.h"
 #include "FollowEntitySystem.h"
@@ -40,12 +41,14 @@ class World {
     CameraSystem cameraSystem;
     EventManager eventManager;
     SpawnTimerSystem spawnTimerSystem;
-    DestructionSystem destructionSystem;
-    EventResponseSystem eventResponseSystem{*this};
-    MainMenuSystem mainMenuSystem;
     FollowEntitySystem followEntitySystem;
     IsFiringTimerSystem isFiringTimerSystem;
     AutoFiringSystem autoFiringSystem;
+    DamageSystem damageSystem;
+    DestructionSystem destructionSystem;
+    EventResponseSystem eventResponseSystem{*this};
+    MainMenuSystem mainMenuSystem;
+
 public:
     World() = default;
     void update(float dt, const SDL_Event& event, SceneType sceneType) {
@@ -63,6 +66,7 @@ public:
             spawnTimerSystem.update(entities, dt);
             isFiringTimerSystem.update(entities, dt);
             autoFiringSystem.update(entities, dt);
+            damageSystem.update(entities);
             destructionSystem.update(entities, *this);
         }
         synchronizeEntities();

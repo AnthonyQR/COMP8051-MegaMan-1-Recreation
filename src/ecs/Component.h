@@ -100,6 +100,7 @@ struct SceneState {
 
 struct Health {
     int currentHealth{};
+    int maxHealth = currentHealth;
 };
 
 struct FollowEntity {
@@ -119,6 +120,7 @@ struct KeyboardInputs {
 
 struct ProjectileStats {
     float projectileSpeed{};
+    int damage{};
     Sprite sprite{};
     Vector2D direction{};
     Vector2D spawnPoint{};
@@ -155,6 +157,19 @@ struct AutoFiring {
     bool oneShot{};
     float timer{};
     int nextPattern{};
+};
+
+struct ContactDamage {
+    int damage{};
+};
+
+struct ProjectileDamage {
+    int damage{};
+};
+
+struct Damage {
+    int damage{};
+    Entity* damagedEntity{};
 };
 
 
