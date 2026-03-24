@@ -140,12 +140,18 @@ struct IsFiring {
     float timer{};
 };
 
+struct FiringPattern {
+    Vector2D direction{};
+    float interval{};
+};
+
 struct AutoFiring {
-    std::unordered_set<Vector2D,float> pattern{};
+    std::vector<FiringPattern> patterns{};
     float timer{};
     int nextPattern{};
     bool oneShot{};
 };
+
 
 struct PlayerTag{};
 struct PlayerGroundCheck{};
