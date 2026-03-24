@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="184">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="194">
  <tileset firstgid="1" source="CutManTileset.tsx"/>
  <layer id="1" name="Terrain Layer" width="220" height="144">
   <data encoding="csv">
@@ -149,7 +149,7 @@
 4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,2,2,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
- <objectgroup id="3" name="Collision Layer">
+ <objectgroup id="3" name="Collision Layer" visible="0">
   <object id="5" x="0" y="2240" width="480" height="64"/>
   <object id="6" x="480" y="2240" width="192" height="64"/>
   <object id="7" x="576" y="2208" width="96" height="32"/>
@@ -294,7 +294,7 @@
   <object id="148" x="2032" y="0" width="32" height="752"/>
   <object id="149" x="2064" y="720" width="224" height="32"/>
  </objectgroup>
- <objectgroup id="4" name="Ladder Layer">
+ <objectgroup id="4" name="Ladder Layer" visible="0">
   <object id="153" x="80" y="2143" width="16" height="97"/>
   <object id="154" x="160" y="2143" width="16" height="33"/>
   <object id="155" x="336" y="2143" width="16" height="97"/>
@@ -324,11 +324,40 @@
   <object id="179" x="0" y="2056" width="1024" height="248"/>
   <object id="180" x="752" y="1800" width="272" height="224"/>
  </objectgroup>
- <objectgroup id="6" name="Beak Spawn Layer">
+ <objectgroup id="6" name="Beak Right Spawn Layer">
   <object id="182" x="816" y="2112">
    <point/>
   </object>
   <object id="183" x="944" y="2160">
+   <point/>
+  </object>
+  <object id="184" x="976" y="1936">
+   <point/>
+  </object>
+  <object id="185" x="864" y="1872">
+   <point/>
+  </object>
+  <object id="186" x="896" y="1840">
+   <point/>
+  </object>
+  <object id="187" x="864" y="1648">
+   <point/>
+  </object>
+  <object id="188" x="928" y="1584">
+   <point/>
+  </object>
+  <object id="190" x="928" y="1360">
+   <point/>
+  </object>
+  <object id="191" x="896" y="1312">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="7" name="Beak Left Spawn Layer">
+  <object id="192" x="864" y="1488">
+   <point/>
+  </object>
+  <object id="193" x="816" y="1712">
    <point/>
   </object>
  </objectgroup>

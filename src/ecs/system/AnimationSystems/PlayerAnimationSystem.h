@@ -12,13 +12,17 @@
 
 class PlayerAnimationSystem {
 public:
-    static std::string getAnimationClip(const std::unique_ptr<Entity>& player) {
-        std::string clip = checkCurrentAction(player);
-        clip += checkIsFiring(player, clip);
-        return clip;
+    static NextAnimationClip getAnimationClip(const std::unique_ptr<Entity>& player) {
+        NextAnimationClip newClip;
+        newClip = checkCurrentAction(player);
+        newClip.name += checkIsFiring(player, newClip.name);
+        return newClip;
     }
 
-    static std::string checkCurrentAction(const std::unique_ptr<Entity>& player) {
+    static NextAnimationClip checkCurrentAction(const std::unique_ptr<Entity>& player) {
+        NextAnimationClip newClip;
+        float baseAnimationSpeed = player->getComponent<Animation>().speed;
+        newClip.animationSpeed = baseAnimationSpeed;
         auto& velocity = player->getComponent<Velocity>();
         auto& isGrounded = player->getComponent<IsGrounded>().grounded;
         auto& isFacingRight = player->getComponent<IsFacingRight>().facingRight;
@@ -26,37 +30,52 @@ public:
 
 
         if (ladderClimbing.isClimbing) {
-            return "climb";
+            newClip.name = "climb";
+            if (velocity.direction.y == 0) {
+                newClip.animationSpeed = 0.0f;
+            }
+            else {
+                newClip.animationSpeed = 0.16f;
+            }
+            return newClip;
         }
 
         if (isGrounded) {
             if (velocity.direction.x > 0) {
-                return "walk_right";
+                newClip.name = "walk_right";
+                return newClip;
             }
             if (velocity.direction.x < 0) {
-                return "walk_left";
+                newClip.name = "walk_left";
+                return newClip;
             }
             int random_int = rand() % 60;
             if (random_int == 1 && isFacingRight) {
-                return "idle_blink_right";
+                newClip.name = "idle_blink_right";
+                return newClip;
             }
             if (random_int == 1 && !isFacingRight) {
-                return "idle_blink_left";
+                newClip.name = "idle_blink_right";
+                return newClip;
             }
 
             if (isFacingRight) {
-                return "idle_right";
+                newClip.name = "idle_right";
+                return newClip;
             }
-            return "idle_left";
+            newClip.name = "idle_left";
+            return newClip;
         }
 
         if (!isGrounded) {
             if (isFacingRight) {
-                return "jump_right";
+                newClip.name = "jump_right";
+                return newClip;
             }
-            return "jump_left";
+            newClip.name = "jump_left";
+            return newClip;
         }
-        return "";
+        return newClip;
     }
 
     static std::string checkIsFiring(const std::unique_ptr<Entity>& player, const std::string& clip) {

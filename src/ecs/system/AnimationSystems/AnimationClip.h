@@ -9,7 +9,11 @@
 
 struct AnimationClip {
     std::vector<SDL_FRect> frameIndices;
+};
 
+struct NextAnimationClip {
+    std::string name{};
+    float animationSpeed{};
 };
 
 #endif //TUTORIAL1_ANIMATIONCLIP_H

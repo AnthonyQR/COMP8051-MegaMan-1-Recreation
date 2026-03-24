@@ -12,18 +12,35 @@
 
 class BeakAnimationSystem {
 public:
-    static std::string getAnimationClip(const std::unique_ptr<Entity>& beak) {
+    static NextAnimationClip getAnimationClip(const std::unique_ptr<Entity>& beak) {
+        NextAnimationClip newClip;
+        newClip.name = checkCurrentAction(beak);
+        newClip.name += checkFacingDirection(beak);
+        newClip.animationSpeed = 0.16f;
+        return newClip;
+    }
+
+
+    static std::string checkCurrentAction(const std::unique_ptr<Entity>& beak) {
         auto& isFiring = beak->getComponent<IsFiring>();
         if (isFiring.startFiring) {
-            return "opening_right";
+            return "opening";
         }
         if (isFiring.firing) {
-            return "firing_right";
+            return "firing";
         }
         if (isFiring.endFiring) {
-            return "closing_right";
+            return "closing";
         }
-        return "closed_right";
+        return "closed";
+    }
+
+    static std::string checkFacingDirection(const std::unique_ptr<Entity>& beak) {
+        auto& isFacingRight = beak->getComponent<IsFacingRight>().facingRight;
+        if (isFacingRight) {
+            return "_left";
+        }
+        return "_right";
     }
 };
 
