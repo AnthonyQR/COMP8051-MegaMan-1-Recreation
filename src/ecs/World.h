@@ -15,7 +15,7 @@
 #include "Map.h"
 #include "MovementSystem.h"
 #include "RenderSystem.h"
-#include "AnimationSystem.h"
+#include "system/AnimationSystems/AnimationSystem.h"
 #include "AutoFiringSystem.h"
 #include "CameraSystem.h"
 #include "DestructionSystem.h"

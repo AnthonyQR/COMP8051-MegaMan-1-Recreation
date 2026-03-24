@@ -198,6 +198,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     }
 
 
+
     // Spawn Spawner
     auto& spawner(world.createEntity());
     Transform t = spawner.addComponent<Transform>(Vector2D(windowWidth / 2, windowHeight - 5), 0.0f, 1.0f);

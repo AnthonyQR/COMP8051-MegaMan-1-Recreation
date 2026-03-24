@@ -25,7 +25,6 @@ public:
                         if (autoFiring.oneShot && (autoFiring.nextPattern >= autoFiring.patterns.size())) {
                             return;
                         }
-                        std::cout << "Firing" << std::endl;
                         projectileStats.direction = autoFiring.patterns.at(autoFiring.nextPattern).direction;
                         projectileStats.spawnCallback(projectileStats);
 
@@ -37,6 +36,10 @@ public:
                             autoFiring.timer = autoFiring.patterns.at(autoFiring.nextPattern).interval;
                         }
                     }
+                }
+
+                else if (isFiring.endFiring) {
+                    autoFiring.timer = autoFiring.firingDelay;
                 }
 
                 else if (!isFiring.startFiring && !isFiring.firing && !isFiring.endFiring) {

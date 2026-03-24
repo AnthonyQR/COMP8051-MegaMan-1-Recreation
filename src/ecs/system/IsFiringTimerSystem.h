@@ -38,9 +38,6 @@ public:
                     isFiring.timer -= dt;
                     if (isFiring.timer <= 0.0f) {
                         isFiring.endFiring = false;
-                        if (entity->hasComponent<AutoFiring>()) {
-                            entity->getComponent<AutoFiring>().timer = entity->getComponent<AutoFiring>().firingDelay;
-                        }
                     }
                 }
             }

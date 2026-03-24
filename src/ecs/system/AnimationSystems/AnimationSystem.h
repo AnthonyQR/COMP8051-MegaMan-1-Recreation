@@ -10,8 +10,8 @@
 #include "Component.h"
 #include "Entity.h"
 
-#include "./AnimationSystems/PlayerAnimationSystem.h"
-#include "AnimationSystems/BeakAnimationSystem.h"
+#include "PlayerAnimationSystem.h"
+#include "BeakAnimationSystem.h"
 
 // State System: Deciding which clip to use
 // Check if the animation has been switched
