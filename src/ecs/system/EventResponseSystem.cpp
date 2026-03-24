@@ -62,10 +62,6 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
             // Scene State
             auto& sceneState = entity->getComponent<SceneState>();
-            sceneState.coinsCollected++;
-            if (sceneState.coinsCollected > 1) {
-                Game::onSceneChangeRequest("level2");
-            }
         }
     }
 
@@ -247,8 +243,6 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
         if (e.state !=CollisionState::Enter) return;
         if (player->hasComponent<PlayerGroundCheck>()) return;
 
-        std::cout << "Damage" << std::endl;
-
         if (player->hasComponent<ProjectileTag>() &&
             player->hasComponent<ProjectileDamage>() &&
             other->hasComponent<Health>()) {
@@ -256,6 +250,9 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             auto& projectileDamage = player->getComponent<ProjectileDamage>();
             auto& damageEntity(world.createEntity());
             damageEntity.addComponent<Damage>(projectileDamage.damage, other);
+
+            OnDestroyEvent::onDestroy(player, world);
+            player->destroy();
             return;
         }
 

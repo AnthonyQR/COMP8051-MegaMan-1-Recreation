@@ -1,0 +1,9 @@
+<animations>
+    <idle>
+        <frame x="0" y="0" w="256" h="240"/>
+    </idle>
+    <starting>
+        <frame x="0" y="0" w="256" h="240"/>
+        <frame x="256" y="0" w="256" h="240" />
+    </starting>
+</animations>

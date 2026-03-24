@@ -25,6 +25,7 @@
 #include "GravitySystem.h"
 #include "IsFiringTimerSystem.h"
 #include "MainMenuSystem.h"
+#include "SceneTransitionDelaySystem.h"
 #include "SpawnTimerSystem.h"
 #include "scene/SceneType.h"
 
@@ -48,12 +49,15 @@ class World {
     DestructionSystem destructionSystem;
     EventResponseSystem eventResponseSystem{*this};
     MainMenuSystem mainMenuSystem;
+    SceneTransitionDelaySystem sceneTransitionDelaySystem;
 
 public:
     World() = default;
     void update(float dt, const SDL_Event& event, SceneType sceneType) {
         if (sceneType == SceneType::Menu) {
-            mainMenuSystem.update(event);
+            mainMenuSystem.update(entities, event, *this);
+            sceneTransitionDelaySystem.update(entities, dt);
+            animationSystem.update(entities, dt);
         }
         else {
             keyboardInputSystem.update(entities, event, *this);
@@ -66,7 +70,8 @@ public:
             spawnTimerSystem.update(entities, dt);
             isFiringTimerSystem.update(entities, dt);
             autoFiringSystem.update(entities, dt);
-            damageSystem.update(entities);
+            damageSystem.update(entities, *this);
+            sceneTransitionDelaySystem.update(entities, dt);
             destructionSystem.update(entities, *this);
         }
         synchronizeEntities();

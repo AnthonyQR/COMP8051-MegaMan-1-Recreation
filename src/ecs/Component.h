@@ -95,7 +95,7 @@ struct SpawnOnVisible {
 
 // Our game state, might have multiple scenes
 struct SceneState {
-    int coinsCollected = 0;
+    int lives = 3;
 };
 
 struct Health {
@@ -172,10 +172,20 @@ struct Damage {
     Entity* damagedEntity{};
 };
 
+struct SceneTransitionDelay {
+    float timer{};
+    std::string nextScene{};
+};
 
+struct GameStarting {
+    bool isStarting{};
+};
+
+struct TitleScreenTag{};
 struct PlayerTag{};
 struct PlayerGroundCheck{};
 struct ProjectileTag{};
 struct BeakEnemyTag{};
+
 
 #endif //TUTORIAL1_COMPONENT_H

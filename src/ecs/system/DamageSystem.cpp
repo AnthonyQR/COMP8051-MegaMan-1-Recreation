@@ -7,7 +7,7 @@
 #include "Component.h"
 #include "Game.h"
 
-void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities) {
+void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, World& world) {
     for (auto& entity: entities) {
         if (entity->hasComponent<Damage>()) {
             auto& damage = entity->getComponent<Damage>();
@@ -18,13 +18,16 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities) 
 
                 if (damage.damagedEntity->hasComponent<PlayerTag>()) {
                     Game::gameState.playerHealth = health.currentHealth;
-                    std::cout << health.currentHealth << std::endl;
+                    std::cout << "Health: " << health.currentHealth << std::endl;
                 }
 
                 if (health.currentHealth <= 0) {
                     damage.damagedEntity->destroy();
                     if (damage.damagedEntity->hasComponent<PlayerTag>()) {
-                        Game::onSceneChangeRequest("gameover");
+                        Game::gameState.lives--;
+                        std::cout << "Lives: " << Game::gameState.lives << std::endl;
+                        auto& transition (world.createEntity());
+                        transition.addComponent<SceneTransitionDelay>(2.25f, "cutman");
                     }
                 }
             }

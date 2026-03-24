@@ -12,6 +12,7 @@
 
 #include "PlayerAnimationSystem.h"
 #include "BeakAnimationSystem.h"
+#include "TitleScreenAnimationSystem.h"
 
 // State System: Deciding which clip to use
 // Check if the animation has been switched
@@ -30,6 +31,9 @@ public:
                 }
                 else if (e->hasComponent<BeakEnemyTag>()) {
                     newClip = BeakAnimationSystem::getAnimationClip(e);
+                }
+                else if (e->hasComponent<TitleScreenTag>()) {
+                    newClip = TitleScreenAnimationSystem::getAnimationClip(e);
                 }
                 else {
                     continue;

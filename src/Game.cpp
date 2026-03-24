@@ -56,6 +56,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     }
 
     // Load assets
+    AssetManager::loadAnimation("titleScreen", "../Assets/Animations/megaman_title_screen_anim.xml");
     AssetManager::loadAnimation("player", "../Assets/Animations/megaman_anim.xml");
     AssetManager::loadAnimation("enemy", "../Assets/Animations/bird_animations.xml");
     AssetManager::loadAnimation("beak", "../Assets/Animations/beak_anim.xml");
@@ -68,6 +69,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
     // Init game data / state
     gameState.playerHealth = 28;
+    gameState.lives = 3;
 
     // Start Main Menu
     sceneManager.changeSceneDeferred("mainMenu");
@@ -82,7 +84,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
             return;
         }
 
-        if (sceneName == "gameover") {
+        if (sceneName == "cutman" && gameState.lives <= 0) {
             std::cout << "Game Over" << std::endl;
             isRunning = false;
             return;

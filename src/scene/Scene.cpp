@@ -17,11 +17,17 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
         auto &menu(world.createEntity());
         auto menuTransform = menu.addComponent<Transform>(Vector2D(0,0), 0.0f, 1.0f);
 
-        SDL_Texture *text = TextureManager::load("../Assets/MegamanTitleScreen.png");
+        Animation anim = AssetManager::getAnimation("titleScreen");
+        menu.addComponent<Animation>(anim);
+
+        SDL_Texture *text = TextureManager::load("../Assets/Animations/megaman_title_screen_anim.png");
         SDL_FRect menuSrc{0,0,256,240};
         SDL_FRect menuDst{menuTransform.position.x,menuTransform.position.y,(float)windowWidth, (float)windowHeight};
 
         menu.addComponent<Sprite>(text, menuSrc, menuDst);
+
+        menu.addComponent<GameStarting>(false);
+        menu.addComponent<TitleScreenTag>();
         return;
     }
 

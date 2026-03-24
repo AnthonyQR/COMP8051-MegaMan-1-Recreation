@@ -9,9 +9,11 @@
 
 #include "Entity.h"
 
+class World;
+
 class DamageSystem {
 public:
-    void update(const std::vector<std::unique_ptr<Entity>>& entities);
+    void update(const std::vector<std::unique_ptr<Entity>>& entities, World& world);
 };
 
 #endif //TUTORIAL1_DAMAGESYSTEM_H
