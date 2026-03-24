@@ -55,8 +55,6 @@ public:
                     // Wrap around % so it loops when reaching the end of the clip
                     anim.currentFrame = (anim.currentFrame + 1) % totalAnimationFrames;
                 }
-
-
             }
         }
     }

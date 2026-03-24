@@ -139,8 +139,8 @@ public:
                         hasFired.fired = true;
                         if (projectileLimit.currentProjectiles < projectileLimit.maxProjectiles) {
                             projectileLimit.currentProjectiles++;
-                            isFiring.firing = true;
-                            isFiring.timer = isFiring.firingDuration;
+                            isFiring.startFiring = true;
+                            isFiring.timer = isFiring.startFiringDuration;
                             if (isFacingRight.facingRight) {
                                 projectileStats.direction.x = 1;
                                 projectileStats.spawnPoint.x = transform.position.x + collider.rect.w + collider.xOffset;

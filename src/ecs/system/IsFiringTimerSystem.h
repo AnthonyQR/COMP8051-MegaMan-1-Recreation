@@ -16,10 +16,28 @@ public:
         for (auto& entity: entities) {
             if (entity->hasComponent<IsFiring>()) {
                 auto& isFiring = entity->getComponent<IsFiring>();
+                if (isFiring.startFiring) {
+                    isFiring.timer -= dt;
+                    if (isFiring.timer <= 0.0f) {
+                        isFiring.startFiring = false;
+                        isFiring.firing = true;
+                        isFiring.timer = isFiring.firingDuration;
+                    }
+                }
+                
                 if (isFiring.firing) {
                     isFiring.timer -= dt;
                     if (isFiring.timer <= 0) {
                         isFiring.firing = false;
+                        isFiring.endFiring = true;
+                        isFiring.timer = isFiring.endFiringDuration;
+                    }
+                }
+
+                if (isFiring.endFiring) {
+                    isFiring.timer -= dt;
+                    if (isFiring.timer <= 0.0f) {
+                        isFiring.endFiring = false;
                     }
                 }
             }

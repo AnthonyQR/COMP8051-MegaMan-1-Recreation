@@ -10,6 +10,7 @@
 #include "Vector2D.h"
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 
 #include "AnimationClip.h"
 #include "Entity.h"
@@ -132,7 +133,18 @@ struct HasFired {
 struct IsFiring {
     bool firing{};
     float firingDuration{};
+    float startFiringDuration{};
+    float endFiringDuration{};
+    bool startFiring = false;
+    bool endFiring = false;
     float timer{};
+};
+
+struct AutoFiring {
+    std::unordered_set<Vector2D,float> pattern{};
+    float timer{};
+    int nextPattern{};
+    bool oneShot{};
 };
 
 struct PlayerTag{};
