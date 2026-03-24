@@ -120,8 +120,6 @@ void Map::load(const char* path, SDL_Texture *ts) {
             beakEnemyLeftSpawnPoints.push_back(pos);
             }
     }
-
-
     auto* beakEnemyRightObjectGroup = layer->NextSiblingElement("objectgroup");
     if (beakEnemyRightObjectGroup->Attribute("name") != std::string("Beak Right Spawn Layer")) {
         for (auto* objGroup = beakEnemyRightObjectGroup->NextSiblingElement("objectgroup");
@@ -172,6 +170,35 @@ void Map::load(const char* path, SDL_Texture *ts) {
             cameraBounds.push_back(c);
             }
     }
+
+    // Parse Death Colliders
+    auto* deathCollidersObjectGroup = layer->NextSiblingElement("objectgroup");
+    if (deathCollidersObjectGroup->Attribute("name") != std::string("Death Collision Layer")) {
+        for (auto* objGroup = deathCollidersObjectGroup->NextSiblingElement("objectgroup");
+            objGroup != nullptr;
+            objGroup = objGroup->NextSiblingElement("objectgroup")) {
+            if (objGroup->Attribute("name") == std::string("Death Collision Layer")) {
+                deathCollidersObjectGroup = objGroup;
+                break;
+            }
+        }
+    }
+    if (deathCollidersObjectGroup->Attribute("name") == std::string("Death Collision Layer")) {
+        // Create a for loop with initialization, condition and an increment
+        for (auto* obj = deathCollidersObjectGroup->FirstChildElement("object"); // Initialization
+            obj != nullptr; // Condition
+            obj = obj->NextSiblingElement("object")) { // Increment
+
+            Collider c;
+            c.rect.x = obj->FloatAttribute("x") * 3;
+            c.rect.y = obj->FloatAttribute("y") * 3;
+            c.rect.w = obj->FloatAttribute("width") * 3;
+            c.rect.h = obj->FloatAttribute("height") * 3;
+            deathColliders.push_back(c);
+            }
+    }
+
+
 
     // Parse item spawn points
     auto* itemSpawnPointsGroup = layer->NextSiblingElement("objectgroup");

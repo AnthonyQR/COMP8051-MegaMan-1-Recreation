@@ -263,6 +263,16 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
         beakEnemy.addComponent<ContactDamage>(1);
     }
 
+    // Spawn Death Colliders
+    for (auto &collider : world.getMap().deathColliders) {
+        auto& e = world.createEntity();
+        e.addComponent<Transform>(Vector2D(collider.rect.x, collider.rect.y), 0.0f, 1.0f);
+        auto& c = e.addComponent<Collider>("Death");
+        c.rect.x = collider.rect.x;
+        c.rect.y = collider.rect.y;
+        c.rect.w = collider.rect.w;
+        c.rect.h = collider.rect.h;
+    }
 
 
     // Spawn Spawner

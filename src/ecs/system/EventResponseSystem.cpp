@@ -23,6 +23,7 @@ EventResponseSystem::EventResponseSystem(World &world) {
             onCollision(collision, "Ladder", world);
             onCollision(collision, "Camera Bounds", world);
             onCollision(collision, "Enemy", world);
+            onCollision(collision, "Death", world);
         }
     );
 
@@ -248,7 +249,6 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
         std::cout << "Damage" << std::endl;
 
-
         if (player->hasComponent<ProjectileTag>() &&
             player->hasComponent<ProjectileDamage>() &&
             other->hasComponent<Health>()) {
@@ -264,6 +264,17 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             auto& contactDamage = other->getComponent<ContactDamage>();
             auto& damageEntity(world.createEntity());
             damageEntity.addComponent<Damage>(contactDamage.damage, player);
+        }
+    }
+
+    else if (std::string(otherTag) == "Death") {
+        if (player->hasComponent<PlayerGroundCheck>()) return;
+        if (e.state !=CollisionState::Enter) return;
+
+        if (player->hasComponent<Health>()) {
+            auto& health = player->getComponent<Health>();
+            auto& damageEntity(world.createEntity());
+            damageEntity.addComponent<Damage>(health.maxHealth, player);
         }
     }
 }
