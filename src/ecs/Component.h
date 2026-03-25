@@ -141,8 +141,8 @@ struct IsFiring {
     float firingDuration{};
     float startFiringDuration{};
     float endFiringDuration{};
-    bool startFiring;
-    bool endFiring;
+    bool startFiring{};
+    bool endFiring{};
     float timer{};
 };
 
@@ -181,11 +181,16 @@ struct GameStarting {
     bool isStarting{};
 };
 
+struct Invulnerability {
+    bool isInvulnerable{};
+};
+
 struct TitleScreenTag{};
 struct PlayerTag{};
 struct PlayerGroundCheck{};
 struct ProjectileTag{};
 struct BeakEnemyTag{};
+struct InvulnerableWhileNotFiring{};
 
 
 #endif //TUTORIAL1_COMPONENT_H

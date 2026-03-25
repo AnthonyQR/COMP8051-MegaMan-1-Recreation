@@ -167,7 +167,6 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
         (Vector2D(beakEnemySpawnPoint.x, beakEnemySpawnPoint.y), 0.0f, 1.0f);
         beakEnemy.addComponent<IsFacingRight>(false);
 
-
         Animation anim = AssetManager::getAnimation("beak");
         beakEnemy.addComponent<Animation>(anim);
 
@@ -179,7 +178,8 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
         beakEnemy.addComponent<Sprite>(beakTex, beakSrc, beakDst);
 
         auto& beakCollider = beakEnemy.addComponent<Collider>("Enemy");
-        beakCollider.rect.w = beakDst.w;
+        beakCollider.xOffset = beakDst.w / 2;
+        beakCollider.rect.w = beakDst.w / 2;
         beakCollider.rect.h = beakDst.h;
 
         SDL_Texture* beakProjectileTex = TextureManager::load("../Assets/beak_projectile.png");
@@ -212,6 +212,8 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
 
         beakEnemy.addComponent<Health>(1);
         beakEnemy.addComponent<ContactDamage>(1);
+        beakEnemy.addComponent<Invulnerability>(false);
+        beakEnemy.addComponent<InvulnerableWhileNotFiring>();
     }
 
 
@@ -234,7 +236,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
         beakEnemy.addComponent<Sprite>(beakTex, beakSrc, beakDst);
 
         auto& beakCollider = beakEnemy.addComponent<Collider>("Enemy");
-        beakCollider.rect.w = beakDst.w;
+        beakCollider.rect.w = beakDst.w / 2;
         beakCollider.rect.h = beakDst.h;
 
         SDL_Texture* beakProjectileTex = TextureManager::load("../Assets/beak_projectile.png");
@@ -247,7 +249,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
             auto& projectileTransform = projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
             auto& projectileSprite = projectile.addComponent<Sprite>(stats.sprite);
             auto& projectileCollider = projectile.addComponent<Collider>("Projectile");
-            projectileCollider.rect.w = projectileSprite.dst.w;
+            projectileCollider.rect.w = projectileSprite.dst.w / 2;
             projectileCollider.rect.h = projectileSprite.dst.h;
             projectile.addComponent<ProjectileTag>();
             auto& projectileVelocity = projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed, stats.projectileSpeed);
@@ -267,6 +269,9 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
 
         beakEnemy.addComponent<Health>(1);
         beakEnemy.addComponent<ContactDamage>(1);
+        beakEnemy.addComponent<Invulnerability>(false);
+        beakEnemy.addComponent<InvulnerableWhileNotFiring>();
+
     }
 
     // Spawn Death Colliders

@@ -23,6 +23,7 @@
 #include "EventResponseSystem.h"
 #include "FollowEntitySystem.h"
 #include "GravitySystem.h"
+#include "InvulnerableWhileNotFiringSystem.h"
 #include "IsFiringTimerSystem.h"
 #include "MainMenuSystem.h"
 #include "SceneTransitionDelaySystem.h"
@@ -50,6 +51,7 @@ class World {
     EventResponseSystem eventResponseSystem{*this};
     MainMenuSystem mainMenuSystem;
     SceneTransitionDelaySystem sceneTransitionDelaySystem;
+    InvulnerableWhileNotFiringSystem invulnerableWhileNotFiringSystem;
 
 public:
     World() = default;
@@ -70,6 +72,7 @@ public:
             spawnTimerSystem.update(entities, dt);
             isFiringTimerSystem.update(entities, dt);
             autoFiringSystem.update(entities, dt);
+            invulnerableWhileNotFiringSystem.update(entities);
             damageSystem.update(entities, *this);
             sceneTransitionDelaySystem.update(entities, dt);
             destructionSystem.update(entities, *this);

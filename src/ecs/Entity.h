@@ -12,7 +12,7 @@
 
 // Create a const that is evaluated at compile time
 // 32 components fits perfectly in a 32-bit integer
-constexpr std::size_t MAX_COMPONENTS = 32;
+constexpr std::size_t MAX_COMPONENTS = 64;
 
 // bitset[0] = 1 // Entity has component 0
 // Bit operations are fast, and work well for checking each frame

@@ -13,6 +13,15 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
             auto& damage = entity->getComponent<Damage>();
 
             if (damage.damagedEntity != nullptr && damage.damagedEntity->hasComponent<Health>()) {
+                // Check for invulnerability
+                if (damage.damagedEntity->hasComponent<Invulnerability>()) {
+                    auto& invulnerability = damage.damagedEntity->getComponent<Invulnerability>();
+                    if (invulnerability.isInvulnerable) {
+                        entity -> destroy();
+                        continue;
+                    }
+                }
+
                 auto& health = damage.damagedEntity->getComponent<Health>();
                 health.currentHealth -= damage.damage;
 
