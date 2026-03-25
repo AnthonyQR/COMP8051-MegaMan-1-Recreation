@@ -129,14 +129,6 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     player.addComponent<KeyboardInputs>();
     player.addComponent<IsFacingRight>();
 
-    auto& playerGroundCheck (world.createEntity());
-    auto& playerGroundCheckCollider = playerGroundCheck.addComponent<Collider>("Player");
-    playerGroundCheckCollider.rect.w = playerCollider.rect.w;
-    playerGroundCheckCollider.rect.h = 16.0f;
-    playerGroundCheck.addComponent<PlayerGroundCheck>();
-    playerGroundCheck.addComponent<Transform>(playerTransform);
-    playerGroundCheck.addComponent<FollowEntity>(player, 18.0f, playerCollider.rect.h + 24.0f);
-
     SDL_Texture* playerProjectileTex = TextureManager::load("../Assets/megaman_projectile.png");
     SDL_FRect playerProjectileSrc{0, 0, 8, 8};
     SDL_FRect playerProjectileDest{0, 0, 8 * 3, 8 * 3};
@@ -157,6 +149,18 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     player.addComponent<ProjectileLimit>(3, 0);
     player.addComponent<IsFiring>(false, 0.2f);
     player.addComponent<HasFired>(false);
+    player.addComponent<Invulnerability>(false);
+    player.addComponent<HitKnockback>(100.0f, 0.4f);
+
+
+    auto& playerGroundCheck (world.createEntity());
+    auto& playerGroundCheckCollider = playerGroundCheck.addComponent<Collider>("Player");
+    playerGroundCheckCollider.rect.w = playerCollider.rect.w;
+    playerGroundCheckCollider.rect.h = 16.0f;
+    playerGroundCheck.addComponent<PlayerGroundCheck>();
+    playerGroundCheck.addComponent<Transform>(playerTransform);
+    playerGroundCheck.addComponent<FollowEntity>(player, 18.0f, playerCollider.rect.h + 24.0f);
+
 
 
 
@@ -271,7 +275,6 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
         beakEnemy.addComponent<ContactDamage>(1);
         beakEnemy.addComponent<Invulnerability>(false);
         beakEnemy.addComponent<InvulnerableWhileNotFiring>();
-
     }
 
     // Spawn Death Colliders

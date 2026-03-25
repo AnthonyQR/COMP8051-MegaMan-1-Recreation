@@ -27,7 +27,17 @@ public:
         auto& isGrounded = player->getComponent<IsGrounded>().grounded;
         auto& isFacingRight = player->getComponent<IsFacingRight>().facingRight;
         auto& ladderClimbing = player->getComponent<LadderClimbing>();
+        auto& hitKnockback = player->getComponent<HitKnockback>();
 
+        if (hitKnockback.isHitKnockback) {
+            if (hitKnockback.isRightHit) {
+                newClip.name = "ground_hit_right";
+            }
+            else {
+                newClip.name = "ground_hit_left";
+            }
+            return newClip;
+        }
 
         if (ladderClimbing.isClimbing) {
             newClip.name = "climb";
@@ -82,7 +92,9 @@ public:
         auto& isFiring = player->getComponent<IsFiring>().firing;
         auto& isFacingRight = player->getComponent<IsFacingRight>().facingRight;
         auto& ladderClimbing = player->getComponent<LadderClimbing>();
+        auto& hitKnockback = player->getComponent<HitKnockback>();
 
+        if (hitKnockback.isHitKnockback) return "";
         if (!isFiring) return "";
         if (clip == "climb") {
             if (isFacingRight) {

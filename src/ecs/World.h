@@ -23,6 +23,7 @@
 #include "EventResponseSystem.h"
 #include "FollowEntitySystem.h"
 #include "GravitySystem.h"
+#include "HitKnockbackSystem.h"
 #include "InvulnerableWhileNotFiringSystem.h"
 #include "IsFiringTimerSystem.h"
 #include "MainMenuSystem.h"
@@ -52,6 +53,7 @@ class World {
     MainMenuSystem mainMenuSystem;
     SceneTransitionDelaySystem sceneTransitionDelaySystem;
     InvulnerableWhileNotFiringSystem invulnerableWhileNotFiringSystem;
+    HitKnockbackSystem hitKnockbackSystem;
 
 public:
     World() = default;
@@ -64,6 +66,7 @@ public:
         else {
             keyboardInputSystem.update(entities, event, *this);
             gravitySystem.update(entities, dt);
+            hitKnockbackSystem.update(entities, dt);
             movementSystem.update(entities, dt);
             followEntitySystem.update(entities);
             collisionSystem.update(*this);

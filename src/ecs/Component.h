@@ -185,6 +185,19 @@ struct Invulnerability {
     bool isInvulnerable{};
 };
 
+struct InvulnerabilityTimer {
+    float invulnerabilityTime{};
+    float timer{};
+};
+
+struct HitKnockback {
+    float knockbackSpeed{};
+    float minKnockbackTime{};
+    bool isHitKnockback{};
+    bool isRightHit{}; // For knockback direction
+    float timer{};
+};
+
 struct TitleScreenTag{};
 struct PlayerTag{};
 struct PlayerGroundCheck{};

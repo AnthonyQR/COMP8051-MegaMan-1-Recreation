@@ -68,7 +68,19 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
     else if (std::string(otherTag) == "Wall") {
         if (player->hasComponent<ProjectileTag>()) return;
         if (e.state == CollisionState::Stay) {
-            if (player->hasComponent<PlayerGroundCheck>()) return;
+            if (player->hasComponent<PlayerGroundCheck>()) {
+                auto& hitKnockback = player->getComponent<FollowEntity>().followedEntity.getComponent<HitKnockback>();
+                if (hitKnockback.timer <= 0.0f && hitKnockback.isHitKnockback) {
+                    hitKnockback.isHitKnockback = false;
+                }
+                /*
+                if (hitKnockback.timer <= 0.0f && hitKnockback.isHitKnockback) {
+                    hitKnockback.isHitKnockback = false;
+                }
+                */
+                return;
+
+            }
 
             // Player components
             auto& t = player->getComponent<Transform>();
@@ -231,10 +243,28 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
         */
 
         if (player->hasComponent<Health>() &&
-                other->hasComponent<ProjectileDamage>()){
+            player->hasComponent<Invulnerability>() &&
+            player->hasComponent<HitKnockback>() &&
+            other->hasComponent<Velocity>() &&
+            other->hasComponent<ProjectileDamage>()) {
+
+            auto& invulnerability = player->getComponent<Invulnerability>();
+            if (invulnerability.isInvulnerable) return;
+
             auto& projectileDamage = other->getComponent<ProjectileDamage>();
             auto& damageEntity(world.createEntity());
             damageEntity.addComponent<Damage>(projectileDamage.damage, player);
+
+            auto& hitKnockback = player->getComponent<HitKnockback>();
+            auto& velocity = other->getComponent<Velocity>();
+            hitKnockback.isHitKnockback = true;
+            if (velocity.direction.x < 0) {
+                hitKnockback.isRightHit = true;
+            }
+            else {
+                hitKnockback.isRightHit = false;
+            }
+            hitKnockback.timer = hitKnockback.minKnockbackTime;
             return;
         }
     }
