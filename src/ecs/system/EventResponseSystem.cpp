@@ -69,15 +69,13 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
         if (player->hasComponent<ProjectileTag>()) return;
         if (e.state == CollisionState::Stay) {
             if (player->hasComponent<PlayerGroundCheck>()) {
-                auto& hitKnockback = player->getComponent<FollowEntity>().followedEntity.getComponent<HitKnockback>();
+                auto& actualPlayer = player->getComponent<FollowEntity>().followedEntity;
+                auto& hitKnockback = actualPlayer.getComponent<HitKnockback>();
+                auto& invulnerability = actualPlayer.getComponent<Invulnerability>();
                 if (hitKnockback.timer <= 0.0f && hitKnockback.isHitKnockback) {
                     hitKnockback.isHitKnockback = false;
+                    invulnerability.isInvulnerable = false;
                 }
-                /*
-                if (hitKnockback.timer <= 0.0f && hitKnockback.isHitKnockback) {
-                    hitKnockback.isHitKnockback = false;
-                }
-                */
                 return;
 
             }
@@ -265,6 +263,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                 hitKnockback.isRightHit = false;
             }
             hitKnockback.timer = hitKnockback.minKnockbackTime;
+            invulnerability.isInvulnerable = true;
             return;
         }
     }
@@ -296,12 +295,12 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
     else if (std::string(otherTag) == "Death") {
         if (player->hasComponent<PlayerGroundCheck>()) return;
-        if (e.state !=CollisionState::Enter) return;
+        if (e.state !=CollisionState::Stay) return;
 
         if (player->hasComponent<Health>()) {
             auto& health = player->getComponent<Health>();
             auto& damageEntity(world.createEntity());
-            damageEntity.addComponent<Damage>(health.maxHealth, player);
+            damageEntity.addComponent<Damage>(health.maxHealth, player, true);
         }
     }
 }

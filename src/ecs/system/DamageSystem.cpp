@@ -16,7 +16,7 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                 // Check for invulnerability
                 if (damage.damagedEntity->hasComponent<Invulnerability>()) {
                     auto& invulnerability = damage.damagedEntity->getComponent<Invulnerability>();
-                    if (invulnerability.isInvulnerable) {
+                    if (invulnerability.isInvulnerable && !damage.invulIgnore) {
                         entity -> destroy();
                         continue;
                     }

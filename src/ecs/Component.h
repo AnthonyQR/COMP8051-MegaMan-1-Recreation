@@ -170,6 +170,7 @@ struct ProjectileDamage {
 struct Damage {
     int damage{};
     Entity* damagedEntity{};
+    bool invulIgnore{};
 };
 
 struct SceneTransitionDelay {
