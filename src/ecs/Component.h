@@ -28,6 +28,16 @@ struct Velocity {
     float ySpeed{};
 };
 
+struct PlayerHorizontalMovement {
+    float maxSpeed{};
+    float acceleration{};
+    float deacceleration{};
+    float inchDistance{};
+    float inchDuration{};
+    bool isInching{};
+    float timer{};
+};
+
 struct Gravity {
     float gravitySpeed{};
     float fallingCap{};

@@ -14,10 +14,11 @@
 
 class KeyboardInputSystem {
 public:
-    void update(const std::vector<std::unique_ptr<Entity>>& entities, const SDL_Event event, World& world) {
+    void update(const std::vector<std::unique_ptr<Entity>>& entities, const SDL_Event event, float dt) {
         for (auto& e : entities) {
             if (e->hasComponent<PlayerTag>() &&
                 e->hasComponent<Velocity>() &&
+                e->hasComponent<PlayerHorizontalMovement>() &&
                 e->hasComponent<IsGrounded>() &&
                 e->hasComponent<Jump>() &&
                 e->hasComponent<Gravity>() &&
@@ -33,6 +34,7 @@ public:
                 )
             {
                 auto& v = e->getComponent<Velocity>();
+                auto& movement = e->getComponent<PlayerHorizontalMovement>();
                 auto& isGrounded = e->getComponent<IsGrounded>();
                 auto& jump = e->getComponent<Jump>();
                 auto& gravity = e->getComponent<Gravity>();
@@ -201,8 +203,8 @@ public:
                 }
 
                 if (keyboardInputs.isHoldingLeft && !keyboardInputs.isHoldingRight) {
-                        v.direction.x = -1;
-                        isFacingRight.facingRight = false;
+                    v.direction.x = -1;
+                    isFacingRight.facingRight = false;
                 }
                 else if (keyboardInputs.isHoldingRight && !keyboardInputs.isHoldingLeft) {
                     v.direction.x = 1;
@@ -211,6 +213,48 @@ public:
                 else {
                     v.direction.x = 0;
                 }
+
+                if (v.direction.x != 0) {
+                    if (v.xSpeed == 0 && isGrounded.grounded) {
+                        if (movement.isInching == false) {
+                            movement.isInching = true;
+                            transform.position.x += v.direction.x * movement.inchDistance;
+                            movement.timer = movement.inchDuration;
+                        }
+                        else {
+                            movement.timer -= dt;
+                            if (movement.timer <= 0) {
+                                v.xSpeed += movement.acceleration * dt;
+                                movement.isInching = false;
+                            }
+                        }
+                    }
+                    else {
+                        movement.isInching = false;
+                        v.xSpeed += movement.acceleration * dt;
+                        if (v.xSpeed > movement.maxSpeed) {
+                            v.xSpeed = movement.maxSpeed;
+                        }
+                    }
+                }
+                else {
+                    movement.isInching = false;
+                    if (v.xSpeed != 0) {
+                        if (isFacingRight.facingRight) {
+                            v.direction.x = 1;
+                        }
+                        else {
+                            v.direction.x = -1;
+                        }
+                    }
+                    v.xSpeed -= movement.deacceleration * dt;
+                    if (v.xSpeed < 0) {
+                        v.xSpeed = 0;
+                    }
+                }
+
+
+
 
                 if (ladderClimbing.isClimbing) {
                     v.direction.x = 0;

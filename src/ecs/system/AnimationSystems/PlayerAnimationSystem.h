@@ -28,6 +28,7 @@ public:
         auto& isFacingRight = player->getComponent<IsFacingRight>().facingRight;
         auto& ladderClimbing = player->getComponent<LadderClimbing>();
         auto& hitKnockback = player->getComponent<HitKnockback>();
+        auto& movement = player->getComponent<PlayerHorizontalMovement>();
 
         if (hitKnockback.isHitKnockback) {
             newClip.animationSpeed = 0.05f;
@@ -52,6 +53,16 @@ public:
         }
 
         if (isGrounded) {
+            if (movement.isInching) {
+                if (isFacingRight) {
+                    newClip.name = "inch_right";
+                    return newClip;
+                }
+                else {
+                    newClip.name = "inch_left";
+                    return newClip;
+                }
+            }
             if (velocity.direction.x > 0) {
                 newClip.name = "walk_right";
                 return newClip;

@@ -100,7 +100,8 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     // Spawn Player
     auto& player(world.createEntity());
     auto& playerTransform = player.addComponent<Transform>(Vector2D(50, 6300), 0.0f, 1.0f);
-    player.addComponent<Velocity>(Vector2D(0.0f,1.0f), 250.0f, 0.0f);
+    player.addComponent<Velocity>(Vector2D(0.0f,1.0f), 0.0f, 0.0f);
+    player.addComponent<PlayerHorizontalMovement>(250.0f, 1500.0f, 1250.0f, 8.0f, 0.125f, false);
     player.addComponent<Gravity>(2400.0f, 2400.0f, true);
     player.addComponent<Jump>(880.0f, 9600.0f);
 

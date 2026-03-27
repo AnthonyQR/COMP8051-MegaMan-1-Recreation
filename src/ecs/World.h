@@ -64,7 +64,7 @@ public:
             animationSystem.update(entities, dt);
         }
         else {
-            keyboardInputSystem.update(entities, event, *this);
+            keyboardInputSystem.update(entities, event, dt);
             gravitySystem.update(entities, dt);
             hitKnockbackSystem.update(entities, dt);
             movementSystem.update(entities, dt);
