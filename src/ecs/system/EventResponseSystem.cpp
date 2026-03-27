@@ -68,17 +68,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
     else if (std::string(otherTag) == "Wall") {
         if (player->hasComponent<ProjectileTag>()) return;
         if (e.state == CollisionState::Stay) {
-            if (player->hasComponent<PlayerGroundCheck>()) {
-                auto& actualPlayer = player->getComponent<FollowEntity>().followedEntity;
-                auto& hitKnockback = actualPlayer.getComponent<HitKnockback>();
-                auto& invulnerability = actualPlayer.getComponent<Invulnerability>();
-                if (hitKnockback.timer <= 0.0f && hitKnockback.isHitKnockback) {
-                    hitKnockback.isHitKnockback = false;
-                    invulnerability.isInvulnerable = false;
-                }
-                return;
-
-            }
+            if (player->hasComponent<PlayerGroundCheck>()) return;
 
             // Player components
             auto& t = player->getComponent<Transform>();

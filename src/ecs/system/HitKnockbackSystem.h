@@ -29,6 +29,9 @@ public:
                     velocity.xSpeed = hitKnockback.knockbackSpeed;
 
                     hitKnockback.timer -= dt;
+                    if (hitKnockback.timer <= 0) {
+                        hitKnockback.isHitKnockback = false;
+                    }
                 }
             }
         }
