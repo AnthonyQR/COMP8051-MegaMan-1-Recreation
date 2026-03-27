@@ -42,7 +42,9 @@ public:
                     sprite.src = anim.clips[anim.currentClip].frameIndices[anim.currentFrame];
                 }
 
-                TextureManager::draw(sprite.texture, sprite.src, sprite.dst);
+                if (sprite.isVisible) {
+                    TextureManager::draw(sprite.texture, sprite.src, sprite.dst);
+                }
             }
         }
     }

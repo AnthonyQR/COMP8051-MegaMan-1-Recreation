@@ -24,6 +24,7 @@
 #include "FollowEntitySystem.h"
 #include "GravitySystem.h"
 #include "HitKnockbackSystem.h"
+#include "InvulnerabilityTimerSystem.h"
 #include "InvulnerableWhileNotFiringSystem.h"
 #include "IsFiringTimerSystem.h"
 #include "MainMenuSystem.h"
@@ -54,6 +55,7 @@ class World {
     SceneTransitionDelaySystem sceneTransitionDelaySystem;
     InvulnerableWhileNotFiringSystem invulnerableWhileNotFiringSystem;
     HitKnockbackSystem hitKnockbackSystem;
+    InvulnerabilityTimerSystem invulnerabilityTimerSystem;
 
 public:
     World() = default;
@@ -76,6 +78,7 @@ public:
             isFiringTimerSystem.update(entities, dt);
             autoFiringSystem.update(entities, dt);
             invulnerableWhileNotFiringSystem.update(entities);
+            invulnerabilityTimerSystem.update(entities, dt);
             damageSystem.update(entities, *this);
             sceneTransitionDelaySystem.update(entities, dt);
             destructionSystem.update(entities, *this);

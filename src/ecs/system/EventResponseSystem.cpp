@@ -237,6 +237,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             other->hasComponent<ProjectileDamage>()) {
 
             auto& invulnerability = player->getComponent<Invulnerability>();
+            auto& invulTimer = player->getComponent<InvulnerabilityTimer>();
             if (invulnerability.isInvulnerable) return;
 
             auto& projectileDamage = other->getComponent<ProjectileDamage>();
@@ -253,6 +254,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                 hitKnockback.isRightHit = false;
             }
             hitKnockback.timer = hitKnockback.minKnockbackTime;
+            invulTimer.timer = invulTimer.invulnerabilityTime;
             invulnerability.isInvulnerable = true;
             return;
         }
@@ -280,6 +282,8 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             auto& invulnerability = player->getComponent<Invulnerability>();
             if (invulnerability.isInvulnerable) return;
 
+            auto& invulTimer = player->getComponent<InvulnerabilityTimer>();
+
             auto& contactDamage = other->getComponent<ContactDamage>();
             auto& damageEntity(world.createEntity());
             damageEntity.addComponent<Damage>(contactDamage.damage, player);
@@ -299,6 +303,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                 hitKnockback.isRightHit = true;
             }
             hitKnockback.timer = hitKnockback.minKnockbackTime;
+            invulTimer.timer = invulTimer.invulnerabilityTime;
             invulnerability.isInvulnerable = true;
         }
     }

@@ -63,6 +63,7 @@ struct Sprite {
     SDL_Texture* texture = nullptr;
     SDL_FRect src{};
     SDL_FRect dst{};
+    bool isVisible = true;
 };
 
 struct Collider {

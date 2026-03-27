@@ -151,6 +151,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     player.addComponent<IsFiring>(false, 0.2f);
     player.addComponent<HasFired>(false);
     player.addComponent<Invulnerability>(false);
+    player.addComponent<InvulnerabilityTimer>(3.0f);
     player.addComponent<HitKnockback>(80.0f, 0.6f);
 
 
