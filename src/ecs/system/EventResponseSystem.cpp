@@ -287,9 +287,29 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
         if (player->hasComponent<Health>() &&
             other->hasComponent<ContactDamage>()) {
+            auto& invulnerability = player->getComponent<Invulnerability>();
+            if (invulnerability.isInvulnerable) return;
+
             auto& contactDamage = other->getComponent<ContactDamage>();
             auto& damageEntity(world.createEntity());
             damageEntity.addComponent<Damage>(contactDamage.damage, player);
+
+            auto& hitKnockback = player->getComponent<HitKnockback>();
+            auto& velocity = other->getComponent<Velocity>();
+            auto& playerCollider = player->getComponent<Collider>().rect;
+            auto& enemyCollider = other->getComponent<Collider>().rect;
+            hitKnockback.isHitKnockback = true;
+
+            float leftPenetrationDepth = playerCollider.x - (enemyCollider.x + enemyCollider.w);
+            float rightPenetrationDepth = (playerCollider.x + playerCollider.w) - enemyCollider.x;
+            if (std::abs(leftPenetrationDepth) < std::abs(rightPenetrationDepth)) {
+                hitKnockback.isRightHit = false;
+            }
+            else {
+                hitKnockback.isRightHit = true;
+            }
+            hitKnockback.timer = hitKnockback.minKnockbackTime;
+            invulnerability.isInvulnerable = true;
         }
     }
 
