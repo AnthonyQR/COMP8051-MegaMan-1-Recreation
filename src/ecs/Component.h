@@ -202,6 +202,11 @@ struct InvulnerabilityTimer {
     float timer{};
 };
 
+struct FlashWhileInvulnerable {
+    float flashInterval{};
+    float timer{};
+};
+
 struct HitKnockback {
     float knockbackSpeed{};
     float minKnockbackTime{};

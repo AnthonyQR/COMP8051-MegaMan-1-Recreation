@@ -86,7 +86,6 @@
 
     <ground_hit_left>
         <frame x="0" y="224" w="32" h="32" />
-        <frame x="160" y="224" w="32" h="32" />
     </ground_hit_left>
     <air_hit_left>
         <frame x="32" y="224" w="32" h="32" />
@@ -94,7 +93,6 @@
 
     <ground_hit_right>
         <frame x="64" y="224" w="32" h="32" />
-        <frame x="160" y="224" w="32" h="32" />
     </ground_hit_right>
     <air_hit_right>
         <frame x="96" y="224" w="32" h="32" />

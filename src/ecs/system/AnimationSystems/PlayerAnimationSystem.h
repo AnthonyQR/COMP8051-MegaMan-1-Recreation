@@ -31,7 +31,6 @@ public:
         auto& movement = player->getComponent<PlayerHorizontalMovement>();
 
         if (hitKnockback.isHitKnockback) {
-            newClip.animationSpeed = 0.05f;
             if (hitKnockback.isRightHit) {
                 newClip.name = "ground_hit_right";
             }
