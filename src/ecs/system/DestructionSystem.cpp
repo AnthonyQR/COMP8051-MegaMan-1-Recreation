@@ -22,7 +22,7 @@ void DestructionSystem::update(const std::vector<std::unique_ptr<Entity>>& entit
         auto& cam = cameraEntity->getComponent<Camera>();
 
         for (auto& e : entities) {
-            if (e->hasComponent<Transform>() && e -> hasComponent<ProjectileTag>()) {
+            if (e->hasComponent<Transform>() && e -> hasComponent<DestroyOutOfViewTag>()) {
 
                 auto&t = e -> getComponent<Transform>();
                 // Destroy entity if it goes out the cam view

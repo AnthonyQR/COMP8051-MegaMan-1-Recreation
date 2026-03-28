@@ -224,6 +224,7 @@ struct ProjectileTag{};
 struct BeakEnemyTag{};
 struct InvulnerableWhileNotFiring{};
 struct SpawnedEnemyTag{};
+struct DestroyOutOfViewTag{};
 
 
 #endif //TUTORIAL1_COMPONENT_H

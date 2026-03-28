@@ -163,6 +163,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
             projectileCollider.rect.w = projectileSprite.dst.w;
             projectileCollider.rect.h = projectileSprite.dst.h;
             projectile.addComponent<ProjectileDamage>(stats.damage);
+            projectile.addComponent<DestroyOutOfViewTag>();
         }
     );
     player.addComponent<ProjectileLimit>(3, 0);
@@ -225,6 +226,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
                 projectile.addComponent<ProjectileTag>();
                 auto& projectileVelocity = projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed, stats.projectileSpeed);
                 projectile.addComponent<ProjectileDamage>(stats.damage);
+                projectile.addComponent<DestroyOutOfViewTag>();
             }
         );
 
@@ -244,6 +246,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
             beakEnemy.addComponent<InvulnerableWhileNotFiring>();
 
             beakEnemy.addComponent<SpawnedEnemyTag>();
+            beakEnemy.addComponent<DestroyOutOfViewTag>();
             return &beakEnemy;
         });
     }
@@ -290,6 +293,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
                 projectile.addComponent<ProjectileTag>();
                 auto& projectileVelocity = projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed, stats.projectileSpeed);
                 projectile.addComponent<ProjectileDamage>(stats.damage);
+                projectile.addComponent<DestroyOutOfViewTag>();
             }
         );
 
@@ -309,6 +313,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
             beakEnemy.addComponent<InvulnerableWhileNotFiring>();
 
             beakEnemy.addComponent<SpawnedEnemyTag>();
+            beakEnemy.addComponent<DestroyOutOfViewTag>();
 
             return &beakEnemy;
         });
