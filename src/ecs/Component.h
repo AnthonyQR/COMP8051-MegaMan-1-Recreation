@@ -101,7 +101,9 @@ struct TimedSpawner {
 };
 
 struct SpawnOnVisible {
-
+    bool isVisible{};
+    std::function<Entity*(Transform)> spawnCallback{};
+    Entity* spawnedEntity = nullptr;
 };
 
 // Our game state, might have multiple scenes
@@ -221,6 +223,7 @@ struct PlayerGroundCheck{};
 struct ProjectileTag{};
 struct BeakEnemyTag{};
 struct InvulnerableWhileNotFiring{};
+struct SpawnedEnemyTag{};
 
 
 #endif //TUTORIAL1_COMPONENT_H

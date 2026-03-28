@@ -23,5 +23,19 @@ void OnDestroyEvent::onDestroy(const DestroyedEvent &e, World &world) {
             }
         }
     }
+
+    else if (destroyedEntity->hasComponent<SpawnedEnemyTag>()) {
+        std::vector<std::unique_ptr<Entity>>& entities = world.getEntities();
+        for (auto& entity : entities) {
+            if (entity->hasComponent<SpawnOnVisible>()) {
+                auto& spawnOnVisible = entity->getComponent<SpawnOnVisible>();
+                if (spawnOnVisible.spawnedEntity == destroyedEntity) {
+                    spawnOnVisible.spawnedEntity = nullptr;
+                    std::cout << "Destroy Enemy" << std::endl;
+                    return;
+                }
+            }
+        }
+    };
 }
 

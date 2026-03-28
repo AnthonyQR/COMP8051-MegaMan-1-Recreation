@@ -30,6 +30,7 @@
 #include "IsFiringTimerSystem.h"
 #include "MainMenuSystem.h"
 #include "SceneTransitionDelaySystem.h"
+#include "SpawnOnVisibleSystem.h"
 #include "SpawnTimerSystem.h"
 #include "scene/SceneType.h"
 
@@ -58,6 +59,7 @@ class World {
     HitKnockbackSystem hitKnockbackSystem;
     InvulnerabilityTimerSystem invulnerabilityTimerSystem;
     FlashWhileInvulnerableSystem flashWhileInvulnerableSystem;
+    SpawnOnVisibleSystem spawnOnVisibleSystem;
 
 public:
     World() = default;
@@ -77,6 +79,7 @@ public:
             animationSystem.update(entities, dt);
             cameraSystem.update(entities);
             spawnTimerSystem.update(entities, dt);
+            spawnOnVisibleSystem.update(entities);
             isFiringTimerSystem.update(entities, dt);
             autoFiringSystem.update(entities, dt);
             invulnerableWhileNotFiringSystem.update(entities);
@@ -129,7 +132,7 @@ public:
     void synchronizeEntities() {
         if (!deferredEntities.empty()) {
             // Push back all deferred entities to the entities vector
-            // Using moe so we don't create a copy
+            // Using move so we don't create a copy
             std::move(
                 deferredEntities.begin(),
                 deferredEntities.end(),
