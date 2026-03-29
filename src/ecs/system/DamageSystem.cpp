@@ -13,6 +13,7 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
             auto& damage = entity->getComponent<Damage>();
 
             if (damage.damagedEntity != nullptr && damage.damagedEntity->hasComponent<Health>()) {
+                /*
                 // Check for invulnerability
                 if (damage.damagedEntity->hasComponent<Invulnerability>()) {
                     auto& invulnerability = damage.damagedEntity->getComponent<Invulnerability>();
@@ -21,14 +22,17 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                         continue;
                     }
                 }
-
+                */
+                
                 auto& health = damage.damagedEntity->getComponent<Health>();
                 health.currentHealth -= damage.damage;
 
                 if (damage.damagedEntity->hasComponent<PlayerTag>()) {
                     Game::gameState.playerHealth = health.currentHealth;
                     std::cout << "Health: " << health.currentHealth << std::endl;
+                    world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanDamage"));
                 }
+
 
                 if (health.currentHealth <= 0) {
                     world.getEventManager().emit(DestroyedEvent(damage.damagedEntity));
@@ -38,6 +42,7 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                         std::cout << "Lives: " << Game::gameState.lives << std::endl;
                         auto& transition (world.createEntity());
                         transition.addComponent<SceneTransitionDelay>(2.25f, "cutman");
+                        world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanDefeat"));
                     }
                 }
             }

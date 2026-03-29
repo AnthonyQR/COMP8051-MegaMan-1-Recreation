@@ -164,6 +164,8 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
             projectileCollider.rect.h = projectileSprite.dst.h;
             projectile.addComponent<ProjectileDamage>(stats.damage);
             projectile.addComponent<DestroyOutOfViewTag>();
+
+            world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanBuster"));
         }
     );
     player.addComponent<ProjectileLimit>(3, 0);

@@ -135,6 +135,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                 if (std::abs(bottomPenetrationDepth) < std::abs(topPenetrationDepth)) {
                     t.position.y = wallCollider.y - playerCollider.h - positionOffset - yOffset;
                     isGrounded.grounded = true;
+                    world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanLand"));
                     ladderClimbing.isClimbing = false;
                     gravity.gravityEnabled = false;
                 }

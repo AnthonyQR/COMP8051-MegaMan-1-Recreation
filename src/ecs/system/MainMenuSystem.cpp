@@ -17,6 +17,7 @@ void MainMenuSystem::update(std::vector<std::unique_ptr<Entity>>& entities, cons
 
                         auto& transition(world.createEntity());
                         transition.addComponent<SceneTransitionDelay>(2.0f, "cutman");
+                        world.getAudioEventQueue().push(std::make_unique<AudioEvent>("gameStart"));
                         isStarting = true;
                     }
                 }

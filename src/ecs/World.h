@@ -32,6 +32,7 @@
 #include "SceneTransitionDelaySystem.h"
 #include "SpawnOnVisibleSystem.h"
 #include "SpawnTimerSystem.h"
+#include "event/AudioEventQueue.h"
 #include "scene/SceneType.h"
 
 class World {
@@ -60,6 +61,7 @@ class World {
     InvulnerabilityTimerSystem invulnerabilityTimerSystem;
     FlashWhileInvulnerableSystem flashWhileInvulnerableSystem;
     SpawnOnVisibleSystem spawnOnVisibleSystem;
+    AudioEventQueue audioEventQueue;
 
 public:
     World() = default;
@@ -89,6 +91,8 @@ public:
             sceneTransitionDelaySystem.update(entities, dt);
             destructionSystem.update(entities, *this);
         }
+        audioEventQueue.process(); // Process all the audio events
+
         synchronizeEntities();
         cleanup();
     }
@@ -144,6 +148,7 @@ public:
     }
 
     EventManager& getEventManager() {return eventManager;}
+    AudioEventQueue& getAudioEventQueue() {return audioEventQueue;}
     Map& getMap() {return map;}
 };
 

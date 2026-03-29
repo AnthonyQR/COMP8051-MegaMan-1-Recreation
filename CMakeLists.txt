@@ -8,9 +8,11 @@ set(CMAKE_CXX_STANDARD 20)
 if (WIN32)
     set(SDL3_PATH "C:/Users/antho/OneDrive/Desktop/GameArchitecture/sdl3")
     set(SDL3_IMAGE_PATH "C:/Users/antho/OneDrive/Desktop/GameArchitecture/sdl3_image")
+    set(SDL3_MIXER_PATH "C:/Users/antho/OneDrive/Desktop/GameArchitecture/sdl3_mixer 3.1.0")
     include_directories(
             ${SDL3_PATH}/include
             ${SDL3_IMAGE_PATH}/include
+            ${SDL3_MIXER_PATH}/include
             ${PROJECT_SOURCE_DIR}/src
             ${PROJECT_SOURCE_DIR}/src/utils
             ${PROJECT_SOURCE_DIR}/src/ecs
@@ -20,6 +22,7 @@ if (WIN32)
     link_directories(
             ${SDL3_PATH}/lib
             ${SDL3_IMAGE_PATH}/lib
+            ${SDL3_MIXER_PATH}/lib
     )
 endif()
 
@@ -41,9 +44,11 @@ add_executable(Tutorial1 src/main.cpp
         src/ecs/system/ERS/OnDestroyEvent.cpp
         src/ecs/system/DamageSystem.cpp
         src/ecs/system/SceneTransitionDelaySystem.cpp
+        src/manager/AudioManager.cpp
 )
 
 target_link_libraries(Tutorial1
         SDL3
         SDL3_image
+        SDL3_mixer
 )

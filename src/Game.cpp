@@ -55,6 +55,26 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
         isRunning = false;
     }
 
+    // Check SDL Version
+    int compiled = SDL_VERSION;
+    const int linked = SDL_GetVersion();
+    SDL_Log("We compiled against SDL version %d.%d.%d ...\n",
+        SDL_VERSIONNUM_MAJOR(compiled),
+        SDL_VERSIONNUM_MINOR(compiled),
+        SDL_VERSIONNUM_MICRO(compiled));
+
+    SDL_Log("But we are linking against SDL version %d.%d.%d.\n",
+        SDL_VERSIONNUM_MAJOR(linked),
+        SDL_VERSIONNUM_MINOR(linked),
+        SDL_VERSIONNUM_MICRO(linked));
+
+    // Load audio
+    audioManager.loadAudio("gameStart", "../Assets/Audio/GameStart.mp3");
+    audioManager.loadAudio("megamanBuster", "../Assets/Audio/MegaBuster.mp3");
+    audioManager.loadAudio("megamanDamage", "../Assets/Audio/MegamanDamage.mp3");
+    audioManager.loadAudio("megamanDefeat", "../Assets/Audio/MegamanDefeat.mp3");
+    audioManager.loadAudio("megamanLand", "../Assets/Audio/MegamanLand.mp3");
+
     // Load assets
     AssetManager::loadAnimation("titleScreen", "../Assets/Animations/megaman_title_screen_anim.xml");
     AssetManager::loadAnimation("player", "../Assets/Animations/megaman_anim.xml");
