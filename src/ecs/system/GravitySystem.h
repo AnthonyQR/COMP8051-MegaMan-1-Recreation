@@ -23,7 +23,7 @@ public:
                         auto& jump = e->getComponent<Jump>();
                         if (jump.fastFalling && velocity.ySpeed <= 0) {
                             velocity.ySpeed += jump.fastFallSpeed * dt;
-                            return;
+                            continue;
                         }
                         else if (velocity.ySpeed >= 0) {
                             jump.fastFalling = false;

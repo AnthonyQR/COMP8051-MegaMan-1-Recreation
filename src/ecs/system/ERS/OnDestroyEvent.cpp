@@ -31,7 +31,6 @@ void OnDestroyEvent::onDestroy(const DestroyedEvent &e, World &world) {
                 auto& spawnOnVisible = entity->getComponent<SpawnOnVisible>();
                 if (spawnOnVisible.spawnedEntity == destroyedEntity) {
                     spawnOnVisible.spawnedEntity = nullptr;
-                    std::cout << "Destroy Enemy" << std::endl;
                     return;
                 }
             }

@@ -153,7 +153,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     SDL_FRect playerProjectileDest{0, 0, 8 * 3, 8 * 3};
     player.addComponent<ProjectileStats>(800.0f, 1, Sprite(playerProjectileTex, playerProjectileSrc, playerProjectileDest),
         Vector2D(0, 0), Vector2D(0, 0), [this](ProjectileStats stats) {
-            auto& projectile = world.createEntity();
+            auto& projectile = world.createDeferredEntity();
             projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
             projectile.addComponent<ProjectileTag>();
             projectile.addComponent<PlayerTag>();
@@ -217,7 +217,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
 
             beakEnemy.addComponent<ProjectileStats>(600.0f, 2, Sprite(beakProjectileTex, beakProjectileSrc, beakProjectileDest),
             Vector2D(0, 0), Vector2D(beakTransform.position.x, beakTransform.position.y), [this](ProjectileStats stats) {
-                auto& projectile = world.createEntity();
+                auto& projectile = world.createDeferredEntity();
                 auto& projectileTransform = projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
                 auto& projectileSprite = projectile.addComponent<Sprite>(stats.sprite);
                 auto& projectileCollider = projectile.addComponent<Collider>("Projectile");
@@ -284,7 +284,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
 
             beakEnemy.addComponent<ProjectileStats>(600.0f, 2, Sprite(beakProjectileTex, beakProjectileSrc, beakProjectileDest),
             Vector2D(0, 0), Vector2D(beakTransform.position.x, beakTransform.position.y), [this](ProjectileStats stats) {
-                auto& projectile = world.createEntity();
+                auto& projectile = world.createDeferredEntity();
                 auto& projectileTransform = projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
                 auto& projectileSprite = projectile.addComponent<Sprite>(stats.sprite);
                 auto& projectileCollider = projectile.addComponent<Collider>("Projectile");
