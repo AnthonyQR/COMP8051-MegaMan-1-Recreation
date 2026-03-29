@@ -229,6 +229,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
                 auto& projectileVelocity = projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed, stats.projectileSpeed);
                 projectile.addComponent<ProjectileDamage>(stats.damage);
                 projectile.addComponent<DestroyOutOfViewTag>();
+                world.getAudioEventQueue().push(std::make_unique<AudioEvent>("enemyShoot"));
             }
         );
 
@@ -296,6 +297,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
                 auto& projectileVelocity = projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed, stats.projectileSpeed);
                 projectile.addComponent<ProjectileDamage>(stats.damage);
                 projectile.addComponent<DestroyOutOfViewTag>();
+                world.getAudioEventQueue().push(std::make_unique<AudioEvent>("enemyShoot"));
             }
         );
 
@@ -307,7 +309,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
                 {Vector2D(1, -0.2f).normalize(), 0.5f},
                 {Vector2D(1, 0.2f).normalize(), 0.5f},
                 {Vector2D(1, 1.0f).normalize(), 0.5f}
-            }, true);
+            }, true, 2.0f);
 
             beakEnemy.addComponent<Health>(1);
             beakEnemy.addComponent<ContactDamage>(1);

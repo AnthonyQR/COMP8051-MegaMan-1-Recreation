@@ -159,11 +159,11 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
     else if (std::string(otherTag) == "Ladder") {
         if (e.state == CollisionState::Enter) return;
-        if (player->hasComponent<PlayerGroundCheck>()) return;
 
         auto& ladderClimbing = player->getComponent<LadderClimbing>();
         if (player->hasComponent<ProjectileTag>()) return;
         if (e.state == CollisionState::Stay) {
+            if (player->hasComponent<PlayerGroundCheck>()) return;
             ladderClimbing.canClimb = true;
             ladderClimbing.ladderEntity = other;
 
@@ -188,6 +188,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                 ladderClimbing.isClimbing = false;
                 gravity.gravityEnabled = false;
                 v.ySpeed = 0;
+                //world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanLand"));
             }
 
             if (ladderClimbing.isClimbing) {
@@ -196,9 +197,19 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
         }
 
         if (e.state == CollisionState::Exit) {
+            if (player->hasComponent<PlayerGroundCheck>()) {
+                auto& isGrounded = player->getComponent<FollowEntity>().followedEntity.getComponent<IsGrounded>();
+                auto& gravity = player->getComponent<FollowEntity>().followedEntity.getComponent<Gravity>();
+                isGrounded.grounded = false;
+                gravity.gravityEnabled = true;
+
+                return;
+            }
             auto& gravity = player->getComponent<Gravity>();
             ladderClimbing.canClimb = false;
             ladderClimbing.ladderEntity = nullptr;
+
+
         }
     }
 
@@ -235,6 +246,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             return;
         }
         */
+
 
         if (player->hasComponent<Health>() &&
             player->hasComponent<Invulnerability>() &&
@@ -275,10 +287,20 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
         if (player->hasComponent<ProjectileTag>() &&
             player->hasComponent<ProjectileDamage>() &&
             other->hasComponent<Health>()) {
+            if (other->hasComponent<Invulnerability>()) {
+                auto& invulnerability =other->getComponent<Invulnerability>();
+                if (invulnerability.isInvulnerable) {
+                    world.getAudioEventQueue().push(std::make_unique<AudioEvent>("dink"));
+                    OnDestroyEvent::onDestroy(player, world);
+                    player->destroy();
+                    return;
+                }
+            }
 
             auto& projectileDamage = player->getComponent<ProjectileDamage>();
             auto& damageEntity(world.createEntity());
             damageEntity.addComponent<Damage>(projectileDamage.damage, other);
+            world.getAudioEventQueue().push(std::make_unique<AudioEvent>("enemyDamage"));
 
             OnDestroyEvent::onDestroy(player, world);
             player->destroy();
@@ -295,6 +317,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             auto& contactDamage = other->getComponent<ContactDamage>();
             auto& damageEntity(world.createEntity());
             damageEntity.addComponent<Damage>(contactDamage.damage, player);
+            world.getAudioEventQueue().push(std::make_unique<AudioEvent>("enemyShoot"));
 
             auto& hitKnockback = player->getComponent<HitKnockback>();
             auto& velocity = other->getComponent<Velocity>();

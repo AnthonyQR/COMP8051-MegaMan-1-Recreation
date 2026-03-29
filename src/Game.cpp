@@ -70,10 +70,15 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
     // Load audio
     audioManager.loadAudio("gameStart", "../Assets/Audio/GameStart.mp3");
+
     audioManager.loadAudio("megamanBuster", "../Assets/Audio/MegaBuster.mp3");
     audioManager.loadAudio("megamanDamage", "../Assets/Audio/MegamanDamage.mp3");
     audioManager.loadAudio("megamanDefeat", "../Assets/Audio/MegamanDefeat.mp3");
     audioManager.loadAudio("megamanLand", "../Assets/Audio/MegamanLand.mp3");
+
+    audioManager.loadAudio("enemyShoot", "../Assets/Audio/EnemyShoot.mp3");
+    audioManager.loadAudio("enemyDamage", "../Assets/Audio/EnemyDamage.mp3");
+    audioManager.loadAudio("dink", "../Assets/Audio/Dink.mp3");
 
     // Load assets
     AssetManager::loadAnimation("titleScreen", "../Assets/Animations/megaman_title_screen_anim.xml");

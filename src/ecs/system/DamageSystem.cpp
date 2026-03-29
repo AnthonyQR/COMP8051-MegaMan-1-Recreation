@@ -23,7 +23,7 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                     }
                 }
                 */
-                
+
                 auto& health = damage.damagedEntity->getComponent<Health>();
                 health.currentHealth -= damage.damage;
 
