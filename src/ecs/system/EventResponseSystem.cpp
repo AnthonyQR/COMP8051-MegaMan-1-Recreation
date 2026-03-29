@@ -203,12 +203,17 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
     else if (std::string(otherTag) == "Camera Bounds") {
         if (e.state !=CollisionState::Enter) return;
+        if (player->hasComponent<ProjectileTag>()) return;
         auto& cameraBounds = other->getComponent<Collider>();
 
         // Find the camera
         for (auto& e : world.getEntities()) {
             if (e->hasComponent<Camera>()) {
                 auto& camera = e->getComponent<Camera>();
+                camera.worldX = cameraBounds.rect.x;
+                camera.worldY = cameraBounds.rect.y;
+                camera.worldWidth = cameraBounds.rect.w;
+                camera.worldHeight = cameraBounds.rect.h;
                 break;
             }
         }
@@ -259,6 +264,8 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             return;
         }
     }
+
+
 
     else if (std::string(otherTag) == "Enemy") {
         if (e.state !=CollisionState::Enter) return;

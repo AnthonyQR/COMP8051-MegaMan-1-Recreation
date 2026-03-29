@@ -92,6 +92,8 @@ struct Camera {
     SDL_FRect view;
     float worldWidth;
     float worldHeight;
+    float worldX;
+    float worldY;
 };
 
 struct TimedSpawner {
