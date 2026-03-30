@@ -24,7 +24,7 @@ AudioManager::AudioManager() {
 
     musicTrack = MIX_CreateTrack(mixer);
     sfxTrack = MIX_CreateTrack(mixer);
-    MIX_SetTrackGain(musicTrack, 1.0f);
+    MIX_SetTrackGain(musicTrack, 0.8f);
 }
 
 void AudioManager::loadAudio(const std::string& name, const char* path) const {
@@ -46,8 +46,9 @@ void AudioManager::playMusic(const std::string& name) const {
         std::cout << "MIX_SetTrackAudio() failed" << std::endl;
         return;
     }
-
-    MIX_PlayTrack(musicTrack, -1); // -1 means loop endlessly
+    SDL_PropertiesID props = MIX_GetTrackProperties(musicTrack);
+    SDL_SetNumberProperty(props, MIX_PROP_PLAY_LOOPS_NUMBER, -1);
+    MIX_PlayTrack(musicTrack, props); // -1 means loop endlessly
     std::cout << "Playing music: " << name << std::endl;
 }
 

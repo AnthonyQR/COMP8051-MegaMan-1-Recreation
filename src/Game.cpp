@@ -71,6 +71,8 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     // Load audio
     audioManager.loadAudio("gameStart", "../Assets/Audio/GameStart.mp3");
 
+    audioManager.loadAudio("cutmanStage", "../Assets/Audio/CutManStageLoop.mp3");
+
     audioManager.loadAudio("megamanBuster", "../Assets/Audio/MegaBuster.mp3");
     audioManager.loadAudio("megamanDamage", "../Assets/Audio/MegamanDamage.mp3");
     audioManager.loadAudio("megamanDefeat", "../Assets/Audio/MegamanDefeat.mp3");
@@ -107,6 +109,10 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
             std::cout << "You Win!" << std::endl;
             isRunning = false;
             return;
+        }
+
+        if (sceneName == "cutman") {
+            audioManager.playMusic("cutmanStage");
         }
 
         if (sceneName == "cutman" && gameState.lives <= 0) {

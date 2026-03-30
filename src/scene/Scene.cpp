@@ -33,7 +33,6 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
 
 
 
-
     // Load our map
     world.getMap().load(mapPath, TextureManager::load("../Assets/CutManTileset.png"));
 
