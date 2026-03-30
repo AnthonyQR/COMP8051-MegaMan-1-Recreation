@@ -8,7 +8,8 @@
 #include <ostream>
 
 MIX_Track* AudioManager::sfxTrack;
-std::unordered_map<std::string, MIX_Audio*> AudioManager::audio;
+std::string AudioManager::currentSfx;
+std::unordered_map<std::string, AudioManager::clip> AudioManager::audio;
 
 AudioManager::AudioManager() {
     if (MIX_Init() == 0) {
@@ -28,7 +29,7 @@ AudioManager::AudioManager() {
     MIX_SetTrackGain(sfxTrack, 0.3f);
 }
 
-void AudioManager::loadAudio(const std::string& name, const char* path) const {
+void AudioManager::loadAudio(const std::string& name, const char* path, int priority) const {
     if (audio.contains(path)) {
         return;
     }
@@ -38,12 +39,12 @@ void AudioManager::loadAudio(const std::string& name, const char* path) const {
         std::cout << "MIX_LoadAudio() failed" << std::endl;
         return;
     }
-
-    audio.emplace(name, audioPtr);
+    clip newClip{audioPtr, priority};
+    audio.emplace(name, newClip);
 }
 
 void AudioManager::playMusic(const std::string& name) const {
-    if (MIX_SetTrackAudio(musicTrack, audio[name]) == 0) {
+    if (MIX_SetTrackAudio(musicTrack, audio[name].sound) == 0) {
         std::cout << "MIX_SetTrackAudio() failed" << std::endl;
         return;
     }
@@ -59,11 +60,22 @@ void AudioManager::stopMusic() const {
 }
 
 void AudioManager::playSfx(const std::string &name) {
-    if (MIX_SetTrackAudio(sfxTrack, audio[name]) == 0) {
+    // Check for priority first & return early if priority is too low
+    if (audio.contains(currentSfx)) {
+        if (audio[currentSfx].priority > audio[name].priority) return;
+    }
+
+    if (MIX_SetTrackAudio(sfxTrack, audio[name].sound) == 0) {
         std::cout << "MIX_SetTrackAudio() failed" << std::endl;
         return;
     }
 
     MIX_PlayTrack(sfxTrack, 0); // 0 means play once
+    MIX_SetTrackStoppedCallback(sfxTrack, onSfxFinish, nullptr); // Execute function when sfx stops playing
+    currentSfx = name;
     std::cout << "Playing sfx: " << name << std::endl;
+}
+
+void AudioManager::onSfxFinish(void *userdata, MIX_Track *track) {
+    currentSfx = ""; // Set current sfx as empty
 }
