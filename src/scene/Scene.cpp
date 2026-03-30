@@ -5,34 +5,41 @@
 
 #include "../manager/AssetManager.h"
 #include "Game.h"
+#include "SpawnBeakEnemy.h"
 
 Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, const int windowWidth, const int windowHeight)
 : name(sceneName), type(sceneType) {
     if (sceneType == SceneType::Menu) {
-        // Camera
-        auto &cam = world.createEntity();
-        cam.addComponent<Camera>();
-
-        // Menu
-        auto &menu(world.createEntity());
-        auto menuTransform = menu.addComponent<Transform>(Vector2D(0,0), 0.0f, 1.0f);
-
-        Animation anim = AssetManager::getAnimation("titleScreen");
-        menu.addComponent<Animation>(anim);
-
-        SDL_Texture *text = TextureManager::load("../Assets/Animations/megaman_title_screen_anim.png");
-        SDL_FRect menuSrc{0,0,256,240};
-        SDL_FRect menuDst{menuTransform.position.x,menuTransform.position.y,(float)windowWidth, (float)windowHeight};
-
-        menu.addComponent<Sprite>(text, menuSrc, menuDst);
-
-        menu.addComponent<GameStarting>(false);
-        menu.addComponent<TitleScreenTag>();
+        initMainMenu(windowWidth, windowHeight);
         return;
     }
 
+    initGameplay(mapPath, windowWidth, windowHeight);
+}
 
+void Scene::initMainMenu(int windowWidth, int windowHeight) {
+    // Camera
+    auto &cam = world.createEntity();
+    cam.addComponent<Camera>();
 
+    // Menu
+    auto &menu(world.createEntity());
+    auto menuTransform = menu.addComponent<Transform>(Vector2D(0,0), 0.0f, 1.0f);
+
+    Animation anim = AssetManager::getAnimation("titleScreen");
+    menu.addComponent<Animation>(anim);
+
+    SDL_Texture *text = TextureManager::load("../Assets/Animations/megaman_title_screen_anim.png");
+    SDL_FRect menuSrc{0,0,256,240};
+    SDL_FRect menuDst{menuTransform.position.x,menuTransform.position.y,(float)windowWidth, (float)windowHeight};
+
+    menu.addComponent<Sprite>(text, menuSrc, menuDst);
+
+    menu.addComponent<GameStarting>(false);
+    menu.addComponent<TitleScreenTag>();
+}
+
+void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight) {
     // Load our map
     world.getMap().load(mapPath, TextureManager::load("../Assets/CutManTileset.png"));
 
@@ -185,8 +192,8 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     playerGroundCheck.addComponent<Transform>(playerTransform);
     playerGroundCheck.addComponent<FollowEntity>(player, 18.0f, playerCollider.rect.h + 24.0f);
 
-
-
+    SpawnBeakEnemy::spawn(world);
+    /*
     for (auto& beakEnemySpawnPoint : world.getMap().beakEnemyRightSpawnPoints) {
         auto& beakSpawner(world.createEntity());
         auto& spawnerTransform = beakSpawner.addComponent<Transform>
@@ -322,6 +329,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
             return &beakEnemy;
         });
     }
+    */
     /*
     // Spawn Beak Enemy
     for (auto &beakEnemySpawnPoint : world.getMap().beakEnemyRightSpawnPoints) {

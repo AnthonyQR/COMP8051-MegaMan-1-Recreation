@@ -31,6 +31,11 @@ private:
     std::string name;
     SceneType type;
     void createProjectile(Vector2D pos, Vector2D dir, int speed);
+
+    void initMainMenu(int windowWidth, int windowHeight);
+    void initGameplay(const char* mapPath, int windowWidth, int windowHeight);
+
+
 };
 
 #endif //TUTORIAL1_SCENE_H

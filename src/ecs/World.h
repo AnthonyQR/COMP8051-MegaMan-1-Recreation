@@ -33,6 +33,7 @@
 #include "SceneTransitionDelaySystem.h"
 #include "SpawnOnVisibleSystem.h"
 #include "SpawnTimerSystem.h"
+#include "UIRenderSystem.h"
 #include "event/AudioEventQueue.h"
 #include "scene/SceneType.h"
 
@@ -64,6 +65,7 @@ class World {
     SpawnOnVisibleSystem spawnOnVisibleSystem;
     AudioEventQueue audioEventQueue;
     CoyoteTimeSystem coyoteTimeSystem;
+    UIRenderSystem uiRenderSystem;
 
 public:
     World() = default;
@@ -108,6 +110,7 @@ public:
             }
         }
         renderSystem.render(entities);
+        uiRenderSystem.render(entities);
     }
 
     Entity& createEntity() {

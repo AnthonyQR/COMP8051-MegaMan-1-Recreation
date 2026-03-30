@@ -45,6 +45,8 @@ add_executable(Tutorial1 src/main.cpp
         src/ecs/system/DamageSystem.cpp
         src/ecs/system/SceneTransitionDelaySystem.cpp
         src/manager/AudioManager.cpp
+        src/scene/SpawnBeakEnemy.cpp
+        src/scene/SpawnBeakEnemy.h
 )
 
 target_link_libraries(Tutorial1

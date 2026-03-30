@@ -32,6 +32,8 @@ public:
                 auto& t = entity->getComponent<Transform>();
                 auto& sprite = entity->getComponent<Sprite>();
 
+                if (sprite.renderLayer != RenderLayer::World) continue;
+
                 // Convert from World Space to Screen Space
                 sprite.dst.x = t.position.x - cam.view.x;
                 sprite.dst.y = t.position.y - cam.view.y;

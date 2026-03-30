@@ -65,10 +65,16 @@ struct CoyoteTime {
     float timer{};
 };
 
+enum class RenderLayer {
+    World,
+    UI
+};
+
 struct Sprite {
     SDL_Texture* texture = nullptr;
     SDL_FRect src{};
     SDL_FRect dst{};
+    RenderLayer renderLayer = RenderLayer::World;
     bool isVisible = true;
 };
 
