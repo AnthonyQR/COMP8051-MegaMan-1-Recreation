@@ -76,7 +76,7 @@ public:
                 return newClip;
             }
             if (random_int == 1 && !isFacingRight) {
-                newClip.name = "idle_blink_right";
+                newClip.name = "idle_blink_left";
                 return newClip;
             }
 
