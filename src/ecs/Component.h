@@ -59,6 +59,12 @@ struct Jump {
     bool fastFalling = false;
 };
 
+struct CoyoteTime {
+    bool isCoyoteTime{};
+    float duration{};
+    float timer{};
+};
+
 struct Sprite {
     SDL_Texture* texture = nullptr;
     SDL_FRect src{};

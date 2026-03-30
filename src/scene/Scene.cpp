@@ -122,6 +122,7 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
     player.addComponent<PlayerHorizontalMovement>(250.0f, 1500.0f, 1250.0f, 8.0f, 0.125f, false);
     player.addComponent<Gravity>(2400.0f, 2400.0f, true);
     player.addComponent<Jump>(860.0f, 9600.0f);
+    player.addComponent<CoyoteTime>(false, 0.05f);
 
     Animation anim = AssetManager::getAnimation("player");
     player.addComponent<Animation>(anim);

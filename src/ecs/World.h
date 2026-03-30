@@ -18,6 +18,7 @@
 #include "system/AnimationSystems/AnimationSystem.h"
 #include "AutoFiringSystem.h"
 #include "CameraSystem.h"
+#include "CoyoteTimeSystem.h"
 #include "DamageSystem.h"
 #include "DestructionSystem.h"
 #include "EventResponseSystem.h"
@@ -62,6 +63,7 @@ class World {
     FlashWhileInvulnerableSystem flashWhileInvulnerableSystem;
     SpawnOnVisibleSystem spawnOnVisibleSystem;
     AudioEventQueue audioEventQueue;
+    CoyoteTimeSystem coyoteTimeSystem;
 
 public:
     World() = default;
@@ -73,6 +75,7 @@ public:
         }
         else {
             keyboardInputSystem.update(entities, event, dt);
+            coyoteTimeSystem.update(entities, dt);
             gravitySystem.update(entities, dt);
             hitKnockbackSystem.update(entities, dt);
             movementSystem.update(entities, dt);

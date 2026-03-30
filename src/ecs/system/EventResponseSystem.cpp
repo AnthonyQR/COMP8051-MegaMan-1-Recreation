@@ -68,7 +68,12 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
     else if (std::string(otherTag) == "Wall") {
         if (player->hasComponent<ProjectileTag>()) return;
         if (e.state == CollisionState::Stay) {
-            if (player->hasComponent<PlayerGroundCheck>()) return;
+            if (player->hasComponent<PlayerGroundCheck>()) {
+                auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
+                coyoteTime.timer = coyoteTime.duration;
+                coyoteTime.isCoyoteTime = false;
+                return;
+            }
 
             // Player components
             auto& t = player->getComponent<Transform>();
@@ -149,25 +154,35 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
         if (e.state == CollisionState::Exit) {
 
             if (player->hasComponent<PlayerGroundCheck>()) {
+                auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
+                coyoteTime.timer = coyoteTime.duration;
+                coyoteTime.isCoyoteTime = true;
+                /*
                 auto& isGrounded = player->getComponent<FollowEntity>().followedEntity.getComponent<IsGrounded>();
                 auto& gravity = player->getComponent<FollowEntity>().followedEntity.getComponent<Gravity>();
                 isGrounded.grounded = false;
                 gravity.gravityEnabled = true;
+                */
             }
         }
     }
 
     else if (std::string(otherTag) == "Ladder") {
         if (e.state == CollisionState::Enter) return;
-
-        auto& ladderClimbing = player->getComponent<LadderClimbing>();
         if (player->hasComponent<ProjectileTag>()) return;
+
         if (e.state == CollisionState::Stay) {
-            if (player->hasComponent<PlayerGroundCheck>()) return;
+            if (player->hasComponent<PlayerGroundCheck>()) {
+                auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
+                coyoteTime.timer = coyoteTime.duration;
+                coyoteTime.isCoyoteTime = false;
+                return;
+            }
+            if (e.axis == CollisionAxis::Horizontal) return;
+
+            auto& ladderClimbing = player->getComponent<LadderClimbing>();
             ladderClimbing.canClimb = true;
             ladderClimbing.ladderEntity = other;
-
-            if (e.axis == CollisionAxis::Horizontal) return;
 
             auto& playerCollider = player->getComponent<Collider>().rect;
             auto& ladderCollider = ladderClimbing.ladderEntity->getComponent<Collider>().rect;
@@ -181,14 +196,18 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             float ladderColliderTopOffset = 3.0f;
             float positionOffset = .1f;
 
-            if (ladderCollider.y > playerCollider.y) {
+            // if (ladderCollider.y > playerCollider.y) {
+            if (ladderCollider.y > playerCollider.y &&
+                (playerCollider.y + playerCollider.h - positionOffset > ladderCollider.y + ladderColliderTopOffset)) {
+                if (!ladderClimbing.isClimbing) {
+                    world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanLand"));
+                }
                 t.position.y = ladderCollider.y + ladderColliderTopOffset - playerCollider.h - positionOffset - yOffset;
                 playerCollider.y = t.position.y + yOffset;
                 isGrounded.grounded = true;
                 ladderClimbing.isClimbing = false;
                 gravity.gravityEnabled = false;
                 v.ySpeed = 0;
-                //world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanLand"));
             }
 
             if (ladderClimbing.isClimbing) {
@@ -198,14 +217,19 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
         if (e.state == CollisionState::Exit) {
             if (player->hasComponent<PlayerGroundCheck>()) {
+                auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
+                coyoteTime.timer = coyoteTime.duration;
+                coyoteTime.isCoyoteTime = true;
+
+                /*
                 auto& isGrounded = player->getComponent<FollowEntity>().followedEntity.getComponent<IsGrounded>();
                 auto& gravity = player->getComponent<FollowEntity>().followedEntity.getComponent<Gravity>();
                 isGrounded.grounded = false;
                 gravity.gravityEnabled = true;
-
+                */
                 return;
             }
-            auto& gravity = player->getComponent<Gravity>();
+            auto& ladderClimbing = player->getComponent<LadderClimbing>();
             ladderClimbing.canClimb = false;
             ladderClimbing.ladderEntity = nullptr;
 
