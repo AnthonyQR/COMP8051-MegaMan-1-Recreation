@@ -15,6 +15,7 @@
 
 GameState Game::gameState;
 std::function<void(std::string)> Game::onSceneChangeRequest;
+std::function<void()> Game::checkSceneState;
 
 Game::Game() {}
 
@@ -122,6 +123,12 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
         }
 
         sceneManager.changeSceneDeferred(sceneName);
+    };
+
+    checkSceneState = [this]() {
+        if (gameState.playerHealth <= 0) {
+            audioManager.stopMusic();
+        }
     };
 }
 

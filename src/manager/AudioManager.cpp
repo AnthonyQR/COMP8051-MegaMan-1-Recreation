@@ -54,6 +54,7 @@ void AudioManager::playMusic(const std::string& name) const {
 
 void AudioManager::stopMusic() const {
     MIX_StopTrack(musicTrack, 0);
+    std::cout << "Stopped music: " << musicTrack << std::endl;
 }
 
 void AudioManager::playSfx(const std::string &name) {

@@ -45,6 +45,7 @@ class Game {
 
     SceneManager sceneManager;
     static std::function<void(std::string)> onSceneChangeRequest;
+    static std::function<void()> checkSceneState;
     static GameState gameState;
 
     World world;

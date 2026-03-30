@@ -43,6 +43,7 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                         auto& transition (world.createEntity());
                         transition.addComponent<SceneTransitionDelay>(2.25f, "cutman");
                         world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanDefeat"));
+                        Game::checkSceneState();
                     }
                 }
             }
