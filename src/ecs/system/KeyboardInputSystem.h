@@ -30,7 +30,8 @@ public:
                 e->hasComponent<ProjectileStats>() &&
                 e->hasComponent<ProjectileLimit>() &&
                 e->hasComponent<IsFiring>() &&
-                e->hasComponent<HasFired>()
+                e->hasComponent<HasFired>() &&
+                e->hasComponent<HitKnockback>()
                 )
             {
                 auto& v = e->getComponent<Velocity>();
@@ -47,7 +48,7 @@ public:
                 auto& projectileLimit = e->getComponent<ProjectileLimit>();
                 auto& isFiring = e->getComponent<IsFiring>();
                 auto& hasFired = e->getComponent<HasFired>();
-
+                auto& hitKnockback = e->getComponent<HitKnockback>();
 
                 if (event.type == SDL_EVENT_KEY_DOWN) {
                     switch (event.key.key) {
@@ -109,6 +110,7 @@ public:
                             break;
                     }
                 }
+                if (hitKnockback.isHitKnockback) return;
 
                 // Jump
                 if (keyboardInputs.isHoldingJump) {

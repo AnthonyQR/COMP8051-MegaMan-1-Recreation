@@ -31,6 +31,7 @@ public:
                     }
 
                     velocity.ySpeed += gravity.gravitySpeed * dt;
+                    velocity.direction.y = 1;
                     if (velocity.ySpeed >= gravity.fallingCap) {
                         velocity.ySpeed = gravity.fallingCap;
                     }

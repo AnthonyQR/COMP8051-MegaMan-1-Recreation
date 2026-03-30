@@ -157,12 +157,6 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                 auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
                 coyoteTime.timer = coyoteTime.duration;
                 coyoteTime.isCoyoteTime = true;
-                /*
-                auto& isGrounded = player->getComponent<FollowEntity>().followedEntity.getComponent<IsGrounded>();
-                auto& gravity = player->getComponent<FollowEntity>().followedEntity.getComponent<Gravity>();
-                isGrounded.grounded = false;
-                gravity.gravityEnabled = true;
-                */
             }
         }
     }
@@ -212,6 +206,9 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
             if (ladderClimbing.isClimbing) {
                 isGrounded.grounded = false;
+                auto& coyoteTime = player->getComponent<CoyoteTime>();
+                coyoteTime.timer = coyoteTime.duration;
+                coyoteTime.isCoyoteTime = false;
             }
         }
 
@@ -220,17 +217,15 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                 auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
                 coyoteTime.timer = coyoteTime.duration;
                 coyoteTime.isCoyoteTime = true;
-
-                /*
-                auto& isGrounded = player->getComponent<FollowEntity>().followedEntity.getComponent<IsGrounded>();
-                auto& gravity = player->getComponent<FollowEntity>().followedEntity.getComponent<Gravity>();
-                isGrounded.grounded = false;
-                gravity.gravityEnabled = true;
-                */
                 return;
             }
+            auto& coyoteTime = player->getComponent<CoyoteTime>();
+            coyoteTime.timer = coyoteTime.duration;
+            coyoteTime.isCoyoteTime = true;
+
             auto& ladderClimbing = player->getComponent<LadderClimbing>();
             ladderClimbing.canClimb = false;
+            ladderClimbing.isClimbing = false;
             ladderClimbing.ladderEntity = nullptr;
 
 
