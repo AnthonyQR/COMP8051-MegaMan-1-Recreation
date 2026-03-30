@@ -9,6 +9,7 @@
 class SpawnBeakEnemy {
 public:
     static void spawn(World& world);
+    static void finishSpawn(World& world, Entity& spawner, bool facingRight, float initialFiringDelay);
 };
 
 #endif //TUTORIAL1_SPAWNBEAKENEMY_H

@@ -106,7 +106,7 @@ void Map::load(const char* path, SDL_Texture *ts) {
                 beakEnemyLeftObjectGroup = objGroup;
                 break;
             }
-            }
+        }
     }
     if (beakEnemyLeftObjectGroup->Attribute("name") == std::string("Beak Left Spawn Layer")) {
         // Create a for loop with initialization, condition and an increment
@@ -141,6 +141,30 @@ void Map::load(const char* path, SDL_Texture *ts) {
             pos.x = obj->FloatAttribute("x") * 3;
             pos.y = obj->FloatAttribute("y") * 3;
             beakEnemyRightSpawnPoints.push_back(pos);
+            }
+    }
+
+    auto* beakEnemyRightEarlyObjectGroup = layer->NextSiblingElement("objectgroup");
+    if (beakEnemyRightEarlyObjectGroup->Attribute("name") != std::string("Beak Right Early Spawn Layer")) {
+        for (auto* objGroup = beakEnemyRightEarlyObjectGroup->NextSiblingElement("objectgroup");
+            objGroup != nullptr;
+            objGroup = objGroup->NextSiblingElement("objectgroup")) {
+            if (objGroup->Attribute("name") == std::string("Beak Right Early Spawn Layer")) {
+                beakEnemyRightEarlyObjectGroup = objGroup;
+                break;
+            }
+        }
+    }
+    if (beakEnemyRightEarlyObjectGroup->Attribute("name") == std::string("Beak Right Early Spawn Layer")) {
+        // Create a for loop with initialization, condition and an increment
+        for (auto* obj = beakEnemyRightEarlyObjectGroup->FirstChildElement("object"); // Initialization
+            obj != nullptr; // Condition
+            obj = obj->NextSiblingElement("object")) { // Increment
+
+            Vector2D pos;
+            pos.x = obj->FloatAttribute("x") * 3;
+            pos.y = obj->FloatAttribute("y") * 3;
+            beakEnemyRightEarlySpawnPoints.push_back(pos);
             }
     }
 
