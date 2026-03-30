@@ -6,6 +6,7 @@
 #include "../manager/AssetManager.h"
 #include "Game.h"
 #include "SpawnBeakEnemy.h"
+#include "SpawnPlayer.h"
 
 Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, const int windowWidth, const int windowHeight)
 : name(sceneName), type(sceneType) {
@@ -13,7 +14,6 @@ Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, c
         initMainMenu(windowWidth, windowHeight);
         return;
     }
-
     initGameplay(mapPath, windowWidth, windowHeight);
 }
 
@@ -62,9 +62,6 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
         */
     }
 
-
-
-
     // Spawn Ladders
     for (auto &ladder : world.getMap().ladders) {
         auto& e = world.createEntity();
@@ -76,9 +73,6 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
         c.rect.h = ladder.rect.h;
     }
 
-
-
-
     // Spawn Camera Bounds
     for (auto &cameraBounds : world.getMap().cameraBounds) {
         auto& e = world.createEntity();
@@ -89,9 +83,6 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
         c.rect.w = cameraBounds.rect.w;
         c.rect.h = cameraBounds.rect.h;
     }
-
-
-
 
     // Spawn items
     for (auto &itemSpawnPoint : world.getMap().itemSpawnPoints) {
@@ -109,90 +100,12 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
         itemCollider.rect.h = itemDest.h;
     }
 
-
-
     // Spawn Camera
     auto& cam = world.createEntity();
     SDL_FRect camView{};
     camView.w = windowWidth;
     camView.h = windowHeight;
     cam.addComponent<Camera>(camView, world.getMap().width * 48.0f, world.getMap().height * 48.0f);
-
-
-
-
-    // Spawn Player
-    auto& player(world.createEntity());
-    auto& playerTransform = player.addComponent<Transform>(Vector2D(50, 6300), 0.0f, 1.0f);
-    player.addComponent<Velocity>(Vector2D(0.0f,1.0f), 0.0f, 0.0f);
-    player.addComponent<PlayerHorizontalMovement>(250.0f, 1500.0f, 1250.0f, 8.0f, 0.125f, false);
-    player.addComponent<Gravity>(2400.0f, 2400.0f, true);
-    player.addComponent<Jump>(860.0f, 9600.0f);
-    player.addComponent<CoyoteTime>(false, 0.05f);
-
-    Animation anim = AssetManager::getAnimation("player");
-    player.addComponent<Animation>(anim);
-
-    SDL_Texture* tex = TextureManager::load("../Assets/Animations/megaman_anim.png");
-    // SDL_FRect playerSrc {0, 0, 32, 44};
-    SDL_FRect playerSrc = anim.clips[anim.currentClip].frameIndices[0];
-    SDL_FRect playerDst {playerTransform.position.x, playerTransform.position.y, 96, 96};
-
-    player.addComponent<Sprite>(tex, playerSrc, playerDst);
-
-    auto& playerCollider = player.addComponent<Collider>("Player");
-    playerCollider.rect.w = playerDst.w - 36;
-    playerCollider.rect.h = playerDst.h - 24;
-    playerCollider.xOffset = 18;
-    playerCollider.yOffset = 24;
-
-    player.addComponent<PlayerTag>();
-    player.addComponent<Health>(Game::gameState.playerHealth);
-
-    player.addComponent<IsGrounded>(false);
-
-    player.addComponent<LadderClimbing>(150.0f);
-    player.addComponent<KeyboardInputs>();
-    player.addComponent<IsFacingRight>();
-
-    SDL_Texture* playerProjectileTex = TextureManager::load("../Assets/megaman_projectile.png");
-    SDL_FRect playerProjectileSrc{0, 0, 8, 8};
-    SDL_FRect playerProjectileDest{0, 0, 8 * 3, 8 * 3};
-    player.addComponent<ProjectileStats>(800.0f, 1, Sprite(playerProjectileTex, playerProjectileSrc, playerProjectileDest),
-        Vector2D(0, 0), Vector2D(0, 0), [this](ProjectileStats stats) {
-            auto& projectile = world.createDeferredEntity();
-            projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
-            projectile.addComponent<ProjectileTag>();
-            projectile.addComponent<PlayerTag>();
-            projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed);
-            auto& projectileSprite = projectile.addComponent<Sprite>(stats.sprite);
-            auto& projectileCollider = projectile.addComponent<Collider>("Player");
-            projectileCollider.rect.w = projectileSprite.dst.w;
-            projectileCollider.rect.h = projectileSprite.dst.h;
-            projectile.addComponent<ProjectileDamage>(stats.damage);
-            projectile.addComponent<DestroyOutOfViewTag>();
-
-            world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanBuster"));
-        }
-    );
-    player.addComponent<ProjectileLimit>(3, 0);
-    player.addComponent<IsFiring>(false, 0.2f);
-    player.addComponent<HasFired>(false);
-    player.addComponent<Invulnerability>(false);
-    player.addComponent<InvulnerabilityTimer>(2.0f);
-    player.addComponent<HitKnockback>(80.0f, 0.6f);
-    player.addComponent<FlashWhileInvulnerable>(0.05f);
-
-
-    auto& playerGroundCheck (world.createEntity());
-    auto& playerGroundCheckCollider = playerGroundCheck.addComponent<Collider>("Player");
-    playerGroundCheckCollider.rect.w = playerCollider.rect.w;
-    playerGroundCheckCollider.rect.h = 16.0f;
-    playerGroundCheck.addComponent<PlayerGroundCheck>();
-    playerGroundCheck.addComponent<Transform>(playerTransform);
-    playerGroundCheck.addComponent<FollowEntity>(player, 18.0f, playerCollider.rect.h + 24.0f);
-
-    SpawnBeakEnemy::spawn(world);
 
     // Spawn Death Colliders
     for (auto &collider : world.getMap().deathColliders) {
@@ -205,32 +118,9 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
         c.rect.h = collider.rect.h;
     }
 
-
-
-
-    // Spawn Spawner
-    auto& spawner(world.createEntity());
-    Transform t = spawner.addComponent<Transform>(Vector2D(windowWidth / 2, windowHeight - 5), 0.0f, 1.0f);
-    spawner.addComponent<TimedSpawner>(2.0f, [this, t] {
-        // Create our projectile
-        auto& e(world.createDeferredEntity());
-        e.addComponent<Transform>(Vector2D(t.position.x, t.position.y), 0.0f, 1.0f);
-        e.addComponent<Velocity>(Vector2D(0,-1), 100.0f);
-
-        Animation anim = AssetManager::getAnimation("enemy");
-        e.addComponent<Animation>(anim);
-
-        SDL_Texture* tex = TextureManager::load("../Assets/Animations/bird_anim.png");
-        SDL_FRect src {0, 0, 32, 32};
-        SDL_FRect dest {t.position.x, t.position.y, 32, 32};
-        e.addComponent<Sprite>(tex, src, dest);
-
-        Collider c = e.addComponent<Collider>("Projectile");
-        c.rect.w = dest.w;
-        c.rect.h = dest.h;
-
-        e.addComponent<ProjectileTag>();
-    });
+    // More complex spawns
+    SpawnPlayer::spawn(world);
+    SpawnBeakEnemy::spawn(world);
 
     // Add Scene State
     auto &state(world.createEntity());
