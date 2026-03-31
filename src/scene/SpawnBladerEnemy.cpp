@@ -38,7 +38,7 @@ void SpawnBladerEnemy::spawn(World &world) {
             bladerCollider.rect.h = bladerDst.h;
 
             bladerEnemy.addComponent<Health>(1);
-            bladerEnemy.addComponent<ContactDamage>(1);
+            bladerEnemy.addComponent<ContactDamage>(3);
 
             bladerEnemy.addComponent<SpawnedEnemyTag>();
             bladerEnemy.addComponent<DestroyOutOfViewTag>();
