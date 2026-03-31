@@ -19,6 +19,8 @@ void SpawnBladerEnemy::spawn(World &world) {
             (Vector2D(spawnerTransform.position.x, spawnerTransform.position.y), 0.0f, 1.0f);
             bladerEnemy.addComponent<Velocity>(Vector2D{-1, 0}, 200.0f, 0.0f);
 
+            bladerEnemy.addComponent<MoveTowardsPlayer>(true, true, false, 200.0f);
+
             Animation anim = AssetManager::getAnimation("blader");
             bladerEnemy.addComponent<Animation>(anim);
 

@@ -136,6 +136,14 @@ struct FollowEntity {
     float yOffset{};
 };
 
+struct MoveTowardsPlayer {
+    bool isMovingTowards{};
+    bool moveX{};
+    bool moveY{};
+    float xSpeed{};
+    float ySpeed{};
+};
+
 struct KeyboardInputs {
     bool isHoldingLeft = false;
     bool isHoldingRight = false;

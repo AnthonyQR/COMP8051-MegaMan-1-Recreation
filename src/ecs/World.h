@@ -30,6 +30,7 @@
 #include "InvulnerableWhileNotFiringSystem.h"
 #include "IsFiringTimerSystem.h"
 #include "MainMenuSystem.h"
+#include "MoveTowardsPlayerSystem.h"
 #include "SceneTransitionDelaySystem.h"
 #include "SpawnOnVisibleSystem.h"
 #include "SpawnTimerSystem.h"
@@ -66,6 +67,7 @@ class World {
     AudioEventQueue audioEventQueue;
     CoyoteTimeSystem coyoteTimeSystem;
     UIRenderSystem uiRenderSystem;
+    MoveTowardsPlayerSystem moveTowardsPlayerSystem;
 
 public:
     World() = default;
@@ -80,6 +82,7 @@ public:
             coyoteTimeSystem.update(entities, dt);
             gravitySystem.update(entities, dt);
             hitKnockbackSystem.update(entities, dt);
+            moveTowardsPlayerSystem.update(entities);
             movementSystem.update(entities, dt);
             followEntitySystem.update(entities);
             collisionSystem.update(*this);
