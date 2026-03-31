@@ -39,6 +39,19 @@ void SpawnBladerEnemy::spawn(World &world) {
             bladerEnemy.addComponent<SpawnedEnemyTag>();
             bladerEnemy.addComponent<DestroyOutOfViewTag>();
 
+            auto& bladerPlayerDetection(world.createEntity());
+            auto& bladerDetectionTransform = bladerPlayerDetection.addComponent<Transform>(Vector2D(0.0f, 0.0f), 0.0f, 1.0f);
+            auto& bladerDetectionCollider = bladerPlayerDetection.addComponent<Collider>("EnemyDetect");
+            bladerDetectionCollider.rect.w = bladerDst.w * 5;
+            bladerDetectionCollider.rect.h = 1000.0f;
+
+            bladerPlayerDetection.addComponent<FollowEntity>
+            (bladerEnemy, -bladerDetectionCollider.rect.w / 2, -bladerDetectionCollider.rect.h / 2);
+
+            bladerPlayerDetection.addComponent<OnPlayerDetectCallback>([](Entity* bladerPlayerDetection) {
+                std::cout << "Enemy detected player" << std::endl;
+            });
+
             Animation newDeathAnim = AssetManager::getAnimation("enemyDeath");
 
             bladerEnemy.addComponent<OnDeathCallback>([&world, newDeathAnim] (Entity* blader) {

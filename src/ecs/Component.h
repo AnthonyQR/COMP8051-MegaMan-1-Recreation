@@ -212,6 +212,10 @@ struct OnDeathCallback {
     std::function<void(Entity*)> callback{};
 };
 
+struct OnPlayerDetectCallback {
+    std::function<void(Entity*)> callback{};
+};
+
 struct SceneTransitionDelay {
     float timer{};
     std::string nextScene{};

@@ -24,6 +24,7 @@ EventResponseSystem::EventResponseSystem(World &world) {
             onCollision(collision, "Camera Bounds", world);
             onCollision(collision, "Enemy", world);
             onCollision(collision, "Death", world);
+            onCollision(collision, "EnemyDetect", world);
         }
     );
 
@@ -371,6 +372,13 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             auto& damageEntity(world.createEntity());
             damageEntity.addComponent<Damage>(health.maxHealth, player, true);
         }
+    }
+
+    else if (std::string(otherTag) == "EnemyDetect") {
+        if (e.state != CollisionState::Enter) return;
+        if (!other->hasComponent<OnPlayerDetectCallback>())return;
+
+        other->getComponent<OnPlayerDetectCallback>().callback(other);
     }
 }
 
