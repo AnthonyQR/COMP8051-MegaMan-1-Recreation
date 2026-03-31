@@ -4,6 +4,8 @@
 
 #include "SpawnBladerEnemy.h"
 
+#include <cmath>
+
 #include "manager/AssetManager.h"
 
 void SpawnBladerEnemy::spawn(World &world) {
@@ -17,7 +19,7 @@ void SpawnBladerEnemy::spawn(World &world) {
 
             auto& bladerTransform = bladerEnemy.addComponent<Transform>
             (Vector2D(spawnerTransform.position.x, spawnerTransform.position.y), 0.0f, 1.0f);
-            bladerEnemy.addComponent<Velocity>(Vector2D{-1, 0}, 200.0f, 0.0f);
+            bladerEnemy.addComponent<Velocity>(Vector2D{-1, 1}, 200.0f, 0.0f);
 
             bladerEnemy.addComponent<MoveTowardsPlayer>(true, true, false, 200.0f);
 
@@ -31,9 +33,9 @@ void SpawnBladerEnemy::spawn(World &world) {
 
             bladerEnemy.addComponent<Sprite>(bladerTex, bladerSrc, bladerDst);
 
-            auto& beakCollider = bladerEnemy.addComponent<Collider>("Enemy");
-            beakCollider.rect.w = bladerDst.w;
-            beakCollider.rect.h = bladerDst.h;
+            auto& bladerCollider = bladerEnemy.addComponent<Collider>("Enemy");
+            bladerCollider.rect.w = bladerDst.w;
+            bladerCollider.rect.h = bladerDst.h;
 
             bladerEnemy.addComponent<Health>(1);
             bladerEnemy.addComponent<ContactDamage>(1);
@@ -41,17 +43,50 @@ void SpawnBladerEnemy::spawn(World &world) {
             bladerEnemy.addComponent<SpawnedEnemyTag>();
             bladerEnemy.addComponent<DestroyOutOfViewTag>();
 
+            bladerEnemy.addComponent<BladerAttack>(false, bladerTransform.position.y, 1.0f, 0.5f, 0.0f);
+
             auto& bladerPlayerDetection(world.createEntity());
             auto& bladerDetectionTransform = bladerPlayerDetection.addComponent<Transform>(Vector2D(0.0f, 0.0f), 0.0f, 1.0f);
             auto& bladerDetectionCollider = bladerPlayerDetection.addComponent<Collider>("EnemyDetect");
             bladerDetectionCollider.rect.w = bladerDst.w * 5;
-            bladerDetectionCollider.rect.h = 1000.0f;
+            bladerDetectionCollider.rect.h = 2000.0f;
 
             bladerPlayerDetection.addComponent<FollowEntity>
-            (bladerEnemy, -bladerDetectionCollider.rect.w / 2, -bladerDetectionCollider.rect.h / 2);
+            (bladerEnemy, (-bladerDetectionCollider.rect.w / 2) + (bladerCollider.rect.w / 2),
+                -bladerDetectionCollider.rect.h / 2);
 
-            bladerPlayerDetection.addComponent<OnPlayerDetectCallback>([](Entity* bladerPlayerDetection) {
-                std::cout << "Enemy detected player" << std::endl;
+            bladerPlayerDetection.addComponent<OnPlayerDetectCallback>([](Entity* bladerPlayerDetection, Entity* player) {
+                auto& bladerEnemy = bladerPlayerDetection->getComponent<FollowEntity>().followedEntity;
+                auto& bladerAttack = bladerEnemy.getComponent<BladerAttack>();
+                if (bladerAttack.isAttacking) return;
+
+                bladerAttack.isAttacking = true;
+                bladerAttack.firstPhase = true;
+                bladerAttack.timer = bladerAttack.firstAttackDuration;
+
+                auto& playerTransform = player->getComponent<Transform>();
+                auto& playerCollider = player->getComponent<Collider>();
+                auto& bladerTransform = bladerEnemy.getComponent<Transform>();
+                auto& bladerDetectionCollider = bladerPlayerDetection->getComponent<Collider>();
+                bladerAttack.yAcceleration = (2 * (playerTransform.position.y + playerCollider.yOffset - bladerTransform.position.y)
+                / std::pow(bladerAttack.firstAttackDuration, 2));
+
+                auto& bladerVelocity = bladerEnemy.getComponent<Velocity>();
+                bladerVelocity.xSpeed = 0;
+                bladerVelocity.ySpeed = 0;
+                bladerVelocity.direction.y = 1;
+                if (playerTransform.position.x < bladerTransform.position.x) {
+                    bladerVelocity.direction.x = -1;
+                }
+                else {
+                    bladerVelocity.direction.x = 1;
+                }
+                bladerAttack.xAcceleration = (2 * (playerTransform.position.x + playerCollider.xOffset - bladerTransform.position.x)
+                    / std::pow(bladerAttack.firstAttackDuration, 2)) * bladerVelocity.direction.x;
+                bladerAttack.maxXDistance = (bladerDetectionCollider.rect.w - std::abs(playerTransform.position.x + playerCollider.xOffset - bladerTransform.position.x)) * 2 * bladerVelocity.direction.x;
+
+                bladerEnemy.getComponent<MoveTowardsPlayer>().isMovingTowards = false;
+                std::cout << "Blader detected player" << std::endl;
             });
 
             Animation newDeathAnim = AssetManager::getAnimation("enemyDeath");

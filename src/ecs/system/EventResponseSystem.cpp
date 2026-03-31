@@ -375,10 +375,12 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
     }
 
     else if (std::string(otherTag) == "EnemyDetect") {
-        if (e.state != CollisionState::Enter) return;
+        if (e.state != CollisionState::Stay) return;
+        if (player->hasComponent<ProjectileTag>()) return;
+        if (player->hasComponent<PlayerGroundCheck>()) return;
         if (!other->hasComponent<OnPlayerDetectCallback>())return;
 
-        other->getComponent<OnPlayerDetectCallback>().callback(other);
+        other->getComponent<OnPlayerDetectCallback>().callback(other, player);
     }
 }
 

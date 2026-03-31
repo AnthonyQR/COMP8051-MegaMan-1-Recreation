@@ -17,6 +17,7 @@
 #include "RenderSystem.h"
 #include "system/AnimationSystems/AnimationSystem.h"
 #include "AutoFiringSystem.h"
+#include "BladerAttackSystem.h"
 #include "CameraSystem.h"
 #include "CoyoteTimeSystem.h"
 #include "DamageSystem.h"
@@ -68,6 +69,7 @@ class World {
     CoyoteTimeSystem coyoteTimeSystem;
     UIRenderSystem uiRenderSystem;
     MoveTowardsPlayerSystem moveTowardsPlayerSystem;
+    BladerAttackSystem bladerAttackSystem;
 
 public:
     World() = default;
@@ -83,6 +85,7 @@ public:
             gravitySystem.update(entities, dt);
             hitKnockbackSystem.update(entities, dt);
             moveTowardsPlayerSystem.update(entities);
+            bladerAttackSystem.update(entities, dt);
             movementSystem.update(entities, dt);
             followEntitySystem.update(entities);
             collisionSystem.update(*this);

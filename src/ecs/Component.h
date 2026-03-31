@@ -221,7 +221,20 @@ struct OnDeathCallback {
 };
 
 struct OnPlayerDetectCallback {
-    std::function<void(Entity*)> callback{};
+    std::function<void(Entity*, Entity*)> callback{};
+};
+
+struct BladerAttack {
+    bool isAttacking{};
+    float initialYPosition{};
+    float totalAttackDuration{};
+    float firstAttackDuration{};
+    float maxXDistance{};
+    float xAcceleration{};
+    float yAcceleration{};
+    float timer{};
+    bool firstPhase{};
+    bool secondPhase{};
 };
 
 struct SceneTransitionDelay {
