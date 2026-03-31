@@ -12,6 +12,7 @@
 
 #include "PlayerAnimationSystem.h"
 #include "BeakAnimationSystem.h"
+#include "BladerAnimationSystem.h"
 #include "TitleScreenAnimationSystem.h"
 
 // State System: Deciding which clip to use
@@ -31,6 +32,9 @@ public:
                 }
                 else if (e->hasComponent<BeakEnemyTag>()) {
                     newClip = BeakAnimationSystem::getAnimationClip(e);
+                }
+                else if (e->hasComponent<BladerEnemyTag>()) {
+                    newClip = BladerAnimationSystem::getAnimationClip(e);
                 }
                 else if (e->hasComponent<TitleScreenTag>()) {
                     newClip = TitleScreenAnimationSystem::getAnimationClip(e);

@@ -112,8 +112,9 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
 
         Animation newDeathAnim = AssetManager::getAnimation("enemyDeath");
 
-        beakEnemy.addComponent<OnDeathCallback>([&world, newDeathAnim, beakTransform] {
+        beakEnemy.addComponent<OnDeathCallback>([&world, newDeathAnim](Entity* beak) {
             auto& beakDeath (world.createDeferredEntity());
+            auto& beakTransform = beak->getComponent<Transform>();
             auto& deathTransform = beakDeath.addComponent<Transform>
             (Vector2D(beakTransform.position.x, beakTransform.position.y), 0.0f, 1.0f);
 

@@ -209,7 +209,7 @@ struct OnHitCallback {
 };
 
 struct OnDeathCallback {
-    std::function<void()> callback{};
+    std::function<void(Entity*)> callback{};
 };
 
 struct SceneTransitionDelay {
@@ -248,6 +248,7 @@ struct PlayerTag{};
 struct PlayerGroundCheck{};
 struct ProjectileTag{};
 struct BeakEnemyTag{};
+struct BladerEnemyTag{};
 struct EnemyDeathTag{};
 struct InvulnerableWhileNotFiring{};
 struct SpawnedEnemyTag{};

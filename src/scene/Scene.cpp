@@ -6,6 +6,7 @@
 #include "../manager/AssetManager.h"
 #include "Game.h"
 #include "SpawnBeakEnemy.h"
+#include "SpawnBladerEnemy.h"
 #include "SpawnPlayer.h"
 
 Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, const int windowWidth, const int windowHeight)
@@ -149,6 +150,7 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
     // More complex spawns
     SpawnPlayer::spawn(world);
     SpawnBeakEnemy::spawn(world);
+    SpawnBladerEnemy::spawn(world);
 
     // Add Scene State
     auto &state(world.createEntity());

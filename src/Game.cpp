@@ -88,6 +88,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     AssetManager::loadAnimation("player", "../Assets/Animations/megaman_anim.xml");
     AssetManager::loadAnimation("enemy", "../Assets/Animations/bird_animations.xml");
     AssetManager::loadAnimation("beak", "../Assets/Animations/beak_anim.xml");
+    AssetManager::loadAnimation("blader", "../Assets/Animations/blader_anim.xml");
     AssetManager::loadAnimation("enemyDeath", "../Assets/Animations/enemy_death_anim.xml");
 
     // Load scenes

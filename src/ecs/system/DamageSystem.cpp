@@ -50,7 +50,7 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                 if (health.currentHealth <= 0) {
                     world.getEventManager().emit(DestroyedEvent(damage.damagedEntity));
                     if (damage.damagedEntity->hasComponent<OnDeathCallback>()) {
-                        damage.damagedEntity->getComponent<OnDeathCallback>().callback();
+                        damage.damagedEntity->getComponent<OnDeathCallback>().callback(damage.damagedEntity);
                     }
                     damage.damagedEntity->destroy();
 

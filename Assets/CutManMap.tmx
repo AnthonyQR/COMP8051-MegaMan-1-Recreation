@@ -295,26 +295,26 @@
   <object id="149" x="2064" y="720" width="224" height="32"/>
  </objectgroup>
  <objectgroup id="10" name="Blader Enemy Spawn Layer">
-  <object id="222" x="256" y="2128">
+  <object id="222" x="288" y="2128">
    <point/>
   </object>
-  <object id="223" x="320" y="2192">
+  <object id="223" x="352" y="2192">
    <point/>
   </object>
-  <object id="224" x="336" y="2144">
+  <object id="224" x="368" y="2144">
    <point/>
   </object>
-  <object id="225" x="544" y="2128">
+  <object id="225" x="576" y="2128">
    <point/>
   </object>
-  <object id="226" x="624" y="2144">
+  <object id="226" x="656" y="2144">
    <point/>
   </object>
-  <object id="227" x="608" y="2176">
+  <object id="227" x="640" y="2176">
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="4" name="Ladder Layer">
+ <objectgroup id="4" name="Ladder Layer" visible="0">
   <object id="153" x="80" y="2143" width="16" height="97"/>
   <object id="154" x="160" y="2143" width="16" height="33"/>
   <object id="155" x="336" y="2143" width="16" height="97"/>
@@ -376,7 +376,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="9" name="Beak Right Early Spawn Layer">
+ <objectgroup id="9" name="Beak Right Early Spawn Layer" visible="0">
   <object id="218" x="896" y="1840">
    <point/>
   </object>
@@ -395,7 +395,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="8" name="Death Collision Layer">
+ <objectgroup id="8" name="Death Collision Layer" visible="0">
   <object id="197" x="1104" y="1296" width="160" height="64"/>
   <object id="201" x="1984" y="544" width="32" height="16"/>
   <object id="202" x="1904" y="704" width="128" height="16"/>

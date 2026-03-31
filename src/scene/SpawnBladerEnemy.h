@@ -8,7 +8,7 @@
 
 class SpawnBladerEnemy {
 public:
-    void spawn(World& world);
+    static void spawn(World& world);
 };
 
 #endif //TUTORIAL1_SPAWNBLADERENEMY_H
