@@ -1,0 +1,12 @@
+<animations>
+    <start_move>
+        <frame x="0" y="0" w="16" h="16"/>
+        <frame x="16" y="0" w="16" h="16"/>
+        <frame x="32" y="0" w="16" h="16"/>
+    </start_move>
+    <end_move>
+        <frame x="32" y="16" w="16" h="16"/>
+        <frame x="16" y="16" w="16" h="16"/>
+        <frame x="0" y="16" w="16" h="16"/>
+    </end_move>
+</animations>

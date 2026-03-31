@@ -1,0 +1,10 @@
+<animations>
+    <moving_left>
+        <frame x="0" y="0" w="16" h="20"/>
+        <frame x="16" y="0" w="16" h="20"/>
+    </moving_left>
+    <moving_right>
+        <frame x="0" y="20" w="16" h="20"/>
+        <frame x="16" y="20" w="16" h="20"/>
+    </moving_right>
+</animations>
