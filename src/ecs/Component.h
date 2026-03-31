@@ -200,6 +200,10 @@ struct Damage {
     bool invulIgnore{};
 };
 
+struct OnDeathCallback {
+    std::function<void()> callback{};
+};
+
 struct SceneTransitionDelay {
     float timer{};
     std::string nextScene{};
@@ -236,6 +240,7 @@ struct PlayerTag{};
 struct PlayerGroundCheck{};
 struct ProjectileTag{};
 struct BeakEnemyTag{};
+struct EnemyDeathTag{};
 struct InvulnerableWhileNotFiring{};
 struct SpawnedEnemyTag{};
 struct DestroyOutOfViewTag{};

@@ -35,6 +35,11 @@ public:
                 else if (e->hasComponent<TitleScreenTag>()) {
                     newClip = TitleScreenAnimationSystem::getAnimationClip(e);
                 }
+                else if (e->hasComponent<EnemyDeathTag>()) {
+                    newClip.name = "death";
+                    newClip.animationSpeed = 0.05f;
+                    newClip.destroyOnFinish = true;
+                }
                 else {
                     continue;
                 }
@@ -63,6 +68,11 @@ public:
                     anim.time -= animFrameSpeed; // Subtract animFrameSpeed (ex. 0.1f) so the extra time isn't lost
 
                     std::size_t totalAnimationFrames = clip.frameIndices.size();
+
+                    if (anim.currentFrame + 1 >= totalAnimationFrames && newClip.destroyOnFinish) {
+                        e->destroy();
+                        continue;
+                    }
                     // Advance to the next animation frame (currentAnimationFrame + 1)
                     // Wrap around % so it loops when reaching the end of the clip
                     anim.currentFrame = (anim.currentFrame + 1) % totalAnimationFrames;

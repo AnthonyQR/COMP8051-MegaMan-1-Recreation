@@ -14,6 +14,7 @@ struct AnimationClip {
 struct NextAnimationClip {
     std::string name{};
     float animationSpeed{};
+    bool destroyOnFinish{};
 };
 
 #endif //TUTORIAL1_ANIMATIONCLIP_H

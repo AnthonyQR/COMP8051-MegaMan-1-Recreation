@@ -109,6 +109,23 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
 
         beakEnemy.addComponent<SpawnedEnemyTag>();
         beakEnemy.addComponent<DestroyOutOfViewTag>();
+
+        Animation newDeathAnim = AssetManager::getAnimation("enemyDeath");
+
+        beakEnemy.addComponent<OnDeathCallback>([&world, newDeathAnim, beakTransform] {
+            auto& beakDeath (world.createDeferredEntity());
+            auto& deathTransform = beakDeath.addComponent<Transform>
+            (Vector2D(beakTransform.position.x, beakTransform.position.y), 0.0f, 1.0f);
+
+            auto& deathAnim = beakDeath.addComponent<Animation>(newDeathAnim);
+
+            SDL_Texture* beakDeathTex = TextureManager::load("../Assets/Animations/enemy_death_anim.png");
+            SDL_FRect beakSrc = deathAnim.clips[deathAnim.currentClip].frameIndices[0];
+            SDL_FRect beakDst {deathTransform.position.x, deathTransform.position.y, 48, 48};
+
+            beakDeath.addComponent<Sprite>(beakDeathTex, beakSrc, beakDst);
+            beakDeath.addComponent<EnemyDeathTag>();
+        });
         return &beakEnemy;
     });
 }

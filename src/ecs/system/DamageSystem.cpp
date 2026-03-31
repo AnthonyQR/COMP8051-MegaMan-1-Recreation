@@ -41,7 +41,11 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
 
                 if (health.currentHealth <= 0) {
                     world.getEventManager().emit(DestroyedEvent(damage.damagedEntity));
+                    if (damage.damagedEntity->hasComponent<OnDeathCallback>()) {
+                        damage.damagedEntity->getComponent<OnDeathCallback>().callback();
+                    }
                     damage.damagedEntity->destroy();
+
                     if (damage.damagedEntity->hasComponent<PlayerTag>()) {
                         Game::gameState.lives--;
                         std::cout << "Lives: " << Game::gameState.lives << std::endl;
