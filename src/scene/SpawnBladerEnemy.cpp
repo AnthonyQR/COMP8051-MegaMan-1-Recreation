@@ -43,7 +43,7 @@ void SpawnBladerEnemy::spawn(World &world) {
             bladerEnemy.addComponent<SpawnedEnemyTag>();
             bladerEnemy.addComponent<DestroyOutOfViewTag>();
 
-            bladerEnemy.addComponent<BladerAttack>(false, bladerTransform.position.y, 1.0f, 0.5f, 16.0f);
+            bladerEnemy.addComponent<BladerAttack>(false, bladerTransform.position.y, 1.0f, 0.5f, 4.0f);
 
             auto& bladerPlayerDetection(world.createEntity());
             auto& bladerDetectionTransform = bladerPlayerDetection.addComponent<Transform>(Vector2D(0.0f, 0.0f), 0.0f, 1.0f);
