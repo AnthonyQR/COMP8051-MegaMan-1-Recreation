@@ -43,7 +43,7 @@ void SpawnBladerEnemy::spawn(World &world) {
             bladerEnemy.addComponent<SpawnedEnemyTag>();
             bladerEnemy.addComponent<DestroyOutOfViewTag>();
 
-            bladerEnemy.addComponent<BladerAttack>(false, bladerTransform.position.y, 1.0f, 0.5f, 0.0f);
+            bladerEnemy.addComponent<BladerAttack>(false, bladerTransform.position.y, 1.0f, 0.5f, 16.0f);
 
             auto& bladerPlayerDetection(world.createEntity());
             auto& bladerDetectionTransform = bladerPlayerDetection.addComponent<Transform>(Vector2D(0.0f, 0.0f), 0.0f, 1.0f);
@@ -54,6 +54,7 @@ void SpawnBladerEnemy::spawn(World &world) {
             bladerPlayerDetection.addComponent<FollowEntity>
             (bladerEnemy, (-bladerDetectionCollider.rect.w / 2) + (bladerCollider.rect.w / 2),
                 -bladerDetectionCollider.rect.h / 2);
+
 
             bladerPlayerDetection.addComponent<OnPlayerDetectCallback>([](Entity* bladerPlayerDetection, Entity* player) {
                 auto& bladerEnemy = bladerPlayerDetection->getComponent<FollowEntity>().followedEntity;
@@ -68,12 +69,15 @@ void SpawnBladerEnemy::spawn(World &world) {
                 auto& playerCollider = player->getComponent<Collider>();
                 auto& bladerTransform = bladerEnemy.getComponent<Transform>();
                 auto& bladerDetectionCollider = bladerPlayerDetection->getComponent<Collider>();
-                bladerAttack.yAcceleration = (2 * (playerTransform.position.y + playerCollider.yOffset - bladerTransform.position.y)
-                / std::pow(bladerAttack.firstAttackDuration, 2));
+
+                bladerAttack.yAcceleration =
+                    (2 * (playerTransform.position.y + playerCollider.yOffset - bladerTransform.position.y)
+                    / std::pow(bladerAttack.firstAttackDuration, 2));
 
                 auto& bladerVelocity = bladerEnemy.getComponent<Velocity>();
                 bladerVelocity.xSpeed = 0;
                 bladerVelocity.ySpeed = 0;
+
                 bladerVelocity.direction.y = 1;
                 if (playerTransform.position.x < bladerTransform.position.x) {
                     bladerVelocity.direction.x = -1;
@@ -81,9 +85,30 @@ void SpawnBladerEnemy::spawn(World &world) {
                 else {
                     bladerVelocity.direction.x = 1;
                 }
-                bladerAttack.xAcceleration = (2 * (playerTransform.position.x + playerCollider.xOffset - bladerTransform.position.x)
+
+                if (bladerVelocity.direction.x == 1) {
+                    bladerAttack.xAcceleration =
+                    (2 * (playerTransform.position.x - bladerTransform.position.x - bladerAttack.firstPhaseDistanceFromPlayer)
                     / std::pow(bladerAttack.firstAttackDuration, 2)) * bladerVelocity.direction.x;
-                bladerAttack.maxXDistance = (bladerDetectionCollider.rect.w - std::abs(playerTransform.position.x + playerCollider.xOffset - bladerTransform.position.x)) * 2 * bladerVelocity.direction.x;
+
+                    bladerAttack.maxXDistance =
+                        (bladerDetectionCollider.rect.w -
+                        std::abs(playerTransform.position.x - bladerTransform.position.x - bladerAttack.firstPhaseDistanceFromPlayer)) *
+                        1 * bladerVelocity.direction.x;
+                }
+                else {
+                    bladerAttack.xAcceleration =
+                    (2 * (playerTransform.position.x + (2 * playerCollider.xOffset) + playerCollider.rect.w
+                    + bladerAttack.firstPhaseDistanceFromPlayer - bladerTransform.position.x)
+                    / std::pow(bladerAttack.firstAttackDuration, 2)) * bladerVelocity.direction.x;
+
+                    bladerAttack.maxXDistance =
+                        (bladerDetectionCollider.rect.w
+                        - std::abs(playerTransform.position.x + (2 * playerCollider.xOffset) + playerCollider.rect.w
+                        + bladerAttack.firstPhaseDistanceFromPlayer - bladerTransform.position.x))
+                        * 1 * bladerVelocity.direction.x;
+                    }
+
 
                 bladerEnemy.getComponent<MoveTowardsPlayer>().isMovingTowards = false;
                 std::cout << "Blader detected player" << std::endl;

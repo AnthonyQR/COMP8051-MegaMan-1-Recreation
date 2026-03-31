@@ -25,21 +25,27 @@ public:
                 bladerAttack.timer -= dt;
                 velocity.xSpeed += bladerAttack.xAcceleration * dt;
                 velocity.ySpeed += bladerAttack.yAcceleration * dt;
+
                 if (bladerAttack.timer <= 0) {
                     if (bladerAttack.firstPhase) {
                         bladerAttack.firstPhase = false;
                         bladerAttack.secondPhase = true;
+
                         bladerAttack.timer = bladerAttack.totalAttackDuration - bladerAttack.firstAttackDuration;
+
                         bladerAttack.yAcceleration = 0;
                         velocity.ySpeed = (bladerAttack.initialYPosition - transform.position.y) / bladerAttack.timer;
+
                         bladerAttack.xAcceleration = 0;
                         velocity.xSpeed = (bladerAttack.maxXDistance / bladerAttack.timer) * velocity.direction.x;
                     }
                     else if (bladerAttack.secondPhase) {
                         bladerAttack.secondPhase = false;
                         bladerAttack.isAttacking = false;
+
                         velocity.xSpeed = 0;
                         velocity.ySpeed = 0;
+
                         entity->getComponent<MoveTowardsPlayer>().isMovingTowards = true;
                     }
                 }
