@@ -47,6 +47,8 @@ add_executable(Tutorial1 src/main.cpp
         src/manager/AudioManager.cpp
         src/scene/SpawnBeakEnemy.cpp
         src/scene/SpawnPlayer.cpp
+        src/scene/SpawnBladerEnemy.cpp
+        src/scene/SpawnBladerEnemy.h
 )
 
 target_link_libraries(Tutorial1

@@ -26,6 +26,7 @@ public:
     std::vector<Vector2D> beakEnemyRightSpawnPoints;
     std::vector<Vector2D> beakEnemyRightEarlySpawnPoints;
     std::vector<Vector2D> beakEnemyLeftSpawnPoints;
+    std::vector<Vector2D> bladerEnemySpawnPoints;
     std::vector<Collider> deathColliders;
     std::vector<Vector2D> itemSpawnPoints;
 };

@@ -168,6 +168,30 @@ void Map::load(const char* path, SDL_Texture *ts) {
             }
     }
 
+    auto* bladerEnemyObjectGroup = layer->NextSiblingElement("objectgroup");
+    if (bladerEnemyObjectGroup->Attribute("name") != std::string("Blader Enemy Spawn Layer")) {
+        for (auto* objGroup = bladerEnemyObjectGroup->NextSiblingElement("objectgroup");
+            objGroup != nullptr;
+            objGroup = objGroup->NextSiblingElement("objectgroup")) {
+            if (objGroup->Attribute("name") == std::string("Blader Enemy Spawn Layer")) {
+                bladerEnemyObjectGroup = objGroup;
+                break;
+            }
+            }
+    }
+    if (bladerEnemyObjectGroup->Attribute("name") == std::string("Blader Enemy Spawn Layer")) {
+        // Create a for loop with initialization, condition and an increment
+        for (auto* obj = bladerEnemyObjectGroup->FirstChildElement("object"); // Initialization
+            obj != nullptr; // Condition
+            obj = obj->NextSiblingElement("object")) { // Increment
+
+            Vector2D pos;
+            pos.x = obj->FloatAttribute("x") * 3;
+            pos.y = obj->FloatAttribute("y") * 3;
+            bladerEnemySpawnPoints.push_back(pos);
+            }
+    }
+
     // Parse camera bounds
     auto* cameraBoundsObjectGroup = layer->NextSiblingElement("objectgroup");
     if (cameraBoundsObjectGroup->Attribute("name") != std::string("Camera Bounds Layer")) {
