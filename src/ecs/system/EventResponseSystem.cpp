@@ -69,9 +69,11 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
         if (player->hasComponent<ProjectileTag>()) return;
         if (e.state == CollisionState::Stay) {
             if (player->hasComponent<PlayerGroundCheck>()) {
-                auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
-                coyoteTime.timer = coyoteTime.duration;
-                coyoteTime.isCoyoteTime = false;
+                if (e.axis == CollisionAxis::Vertical) {
+                    auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
+                    coyoteTime.timer = coyoteTime.duration;
+                    coyoteTime.isCoyoteTime = false;
+                }
                 return;
             }
 
@@ -167,9 +169,11 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
         if (e.state == CollisionState::Stay) {
             if (player->hasComponent<PlayerGroundCheck>()) {
-                auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
-                coyoteTime.timer = coyoteTime.duration;
-                coyoteTime.isCoyoteTime = false;
+                if (player->getComponent<FollowEntity>().followedEntity.getComponent<Transform>().position.y < other->getComponent<Collider>().rect.y) {
+                    auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
+                    coyoteTime.timer = coyoteTime.duration;
+                    coyoteTime.isCoyoteTime = false;
+                }
                 return;
             }
             if (e.axis == CollisionAxis::Horizontal) return;
