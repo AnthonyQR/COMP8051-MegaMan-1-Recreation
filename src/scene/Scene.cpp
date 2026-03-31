@@ -118,6 +118,34 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
         c.rect.h = collider.rect.h;
     }
 
+    // Spawn Health bar in specific order (background -> fill -> dividers)
+    Transform healthBarTransform = Transform(Vector2D(windowWidth / 12.0f, windowHeight / 12.0f), 0.0f, 1.0f);
+    SDL_Texture* healthBarTex = TextureManager::load("../Assets/megaman_health_bar.png");
+    auto& healthBarBackground (world.createEntity());
+    healthBarBackground.addComponent<Transform>(healthBarTransform);
+
+    SDL_FRect healthBarBackgroundSrc{0, 0, 8, 56};
+    SDL_FRect healthBarDst{healthBarTransform.position.x, healthBarTransform.position.y, 8 * 3, 56 * 3};
+    healthBarBackground.addComponent<Sprite>(healthBarTex, healthBarBackgroundSrc, healthBarDst, RenderLayer::UI);
+
+
+    auto& healthBarFill(world.createEntity());
+    auto& healthBarFillTransform = healthBarFill.addComponent<Transform>
+    (Vector2D(windowWidth / 12.0f, windowHeight / 12.0f + ((28 - Game::gameState.playerHealth) * 6)), 0.0f, 1.0f);
+    SDL_FRect healthBarFillSrc {8, 0, 8, 56};
+    SDL_FRect healthBarFillDst{healthBarTransform.position.x, healthBarTransform.position.y,
+        8 * 3, 56 * 3 - (float)((28 - Game::gameState.playerHealth) * 6)};
+    healthBarFill.addComponent<Sprite>(healthBarTex, healthBarFillSrc, healthBarFillDst, RenderLayer::UI);
+    healthBarFill.addComponent<HealthBarUpdate>([windowHeight](Entity* healthBar) {
+        healthBar->getComponent<Transform>().position.y = windowHeight / 12.0f + ((28 - Game::gameState.playerHealth) * 6);
+        healthBar->getComponent<Sprite>().dst.h = 56 * 3 - (float)((28 - Game::gameState.playerHealth) * 6);
+    });
+
+    auto& healthBarDivider(world.createEntity());
+    healthBarDivider.addComponent<Transform>(healthBarTransform);
+    SDL_FRect healthBarDividerSrc {16, 0, 8, 52};
+    healthBarDivider.addComponent<Sprite>(healthBarTex, healthBarDividerSrc, healthBarDst, RenderLayer::UI);
+
     // More complex spawns
     SpawnPlayer::spawn(world);
     SpawnBeakEnemy::spawn(world);

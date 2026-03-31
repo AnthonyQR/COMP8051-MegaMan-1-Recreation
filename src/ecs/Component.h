@@ -200,6 +200,14 @@ struct Damage {
     bool invulIgnore{};
 };
 
+struct HealthBarUpdate {
+    std::function<void(Entity*)> callback{};
+};
+
+struct OnHitCallback {
+    std::function<void()> callback{};
+};
+
 struct OnDeathCallback {
     std::function<void()> callback{};
 };

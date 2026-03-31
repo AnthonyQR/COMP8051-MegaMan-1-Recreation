@@ -36,6 +36,14 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                     ladderClimbing.isClimbing = false;
                     auto& gravity = damage.damagedEntity->getComponent<Gravity>();
                     gravity.gravityEnabled = true;
+
+                    // Find the health bar & update it
+                    for (auto& e : entities) {
+                        if (e->hasComponent<HealthBarUpdate>()) {
+                            e->getComponent<HealthBarUpdate>().callback(e.get());
+                            break;
+                        };
+                    }
                 }
 
 
@@ -48,6 +56,7 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
 
                     if (damage.damagedEntity->hasComponent<PlayerTag>()) {
                         Game::gameState.lives--;
+                        Game::gameState.playerHealth = Game::gameState.playerMaxHealth;
                         std::cout << "Lives: " << Game::gameState.lives << std::endl;
                         auto& transition (world.createEntity());
                         transition.addComponent<SceneTransitionDelay>(2.25f, "cutman");

@@ -98,6 +98,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
     // Init game data / state
     gameState.playerHealth = 28;
+    gameState.playerMaxHealth = 28;
     gameState.lives = 3;
 
     // Start Main Menu

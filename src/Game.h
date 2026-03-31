@@ -16,6 +16,7 @@
 
 struct GameState {
     int playerHealth;
+    int playerMaxHealth;
     int lives;
 };
 
