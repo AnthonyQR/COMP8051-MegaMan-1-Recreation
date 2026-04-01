@@ -27,6 +27,10 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                 auto& health = damage.damagedEntity->getComponent<Health>();
                 health.currentHealth -= damage.damage;
 
+                if (health.currentHealth < 0) {
+                    health.currentHealth = 0;
+                }
+                
                 if (damage.damagedEntity->hasComponent<PlayerTag>()) {
                     Game::gameState.playerHealth = health.currentHealth;
                     std::cout << "Health: " << health.currentHealth << std::endl;
@@ -56,7 +60,6 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
 
                     if (damage.damagedEntity->hasComponent<PlayerTag>()) {
                         Game::gameState.lives--;
-                        Game::gameState.playerHealth = Game::gameState.playerMaxHealth;
                         std::cout << "Lives: " << Game::gameState.lives << std::endl;
                         auto& transition (world.createEntity());
                         transition.addComponent<SceneTransitionDelay>(2.25f, "cutman");

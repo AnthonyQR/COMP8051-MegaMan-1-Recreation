@@ -130,6 +130,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
     checkSceneState = [this]() {
         if (gameState.playerHealth <= 0) {
+            gameState.playerHealth = gameState.playerMaxHealth;
             audioManager.stopMusic();
         }
     };
