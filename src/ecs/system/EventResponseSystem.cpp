@@ -70,11 +70,9 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
         if (player->hasComponent<ProjectileTag>()) return;
         if (e.state == CollisionState::Stay) {
             if (player->hasComponent<PlayerGroundCheck>()) {
-                if (e.axis == CollisionAxis::Vertical) {
-                    auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
-                    coyoteTime.timer = coyoteTime.duration;
-                    coyoteTime.isCoyoteTime = false;
-                }
+                auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
+                coyoteTime.timer = coyoteTime.duration;
+                coyoteTime.isCoyoteTime = false;
                 return;
             }
 
@@ -94,68 +92,75 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             // Added / Subtracted from position to prevent unnecessary collisions
             float positionOffset = .1f;
 
-            if (e.axis == CollisionAxis::Horizontal) {
-                if (ladderClimbing.isClimbing) return;
+            float leftPenetrationDepth = playerCollider.x - (wallCollider.x + wallCollider.w);
+            float rightPenetrationDepth = (playerCollider.x + playerCollider.w) - wallCollider.x;
+            float topPenetrationDepth = playerCollider.y - (wallCollider.y + wallCollider.h);
+            float bottomPenetrationDepth = (playerCollider.y + playerCollider.h) - wallCollider.y;
 
-                float leftPenetrationDepth = playerCollider.x - (wallCollider.x + wallCollider.w);
-                float rightPenetrationDepth = (playerCollider.x + playerCollider.w) - wallCollider.x;
-                if (std::abs(leftPenetrationDepth) < std::abs(rightPenetrationDepth)) {
-                    t.position.x = (wallCollider.x + wallCollider.w + positionOffset - xOffset);
-                }
-                else {
-                    t.position.x = (wallCollider.x - playerCollider.w - positionOffset - xOffset);
-                }
-                playerCollider.x = t.position.x + xOffset;
-
-            }
-
-            else if (e.axis == CollisionAxis::Vertical) {
-                float topPenetrationDepth = playerCollider.y - (wallCollider.y + wallCollider.h);
-                float bottomPenetrationDepth = (playerCollider.y + playerCollider.h) - wallCollider.y;
-
-                if (ladderClimbing.isClimbing) {
-                    auto& ladderCollider = ladderClimbing.ladderEntity->getComponent<Collider>().rect;
-                    if (std::abs(bottomPenetrationDepth) < std::abs(topPenetrationDepth)) {
-                        t.position.y = wallCollider.y - playerCollider.h - positionOffset - yOffset;
-                        playerCollider.y = t.position.y + yOffset;
-                        isGrounded.grounded = true;
-                        ladderClimbing.isClimbing = false;
-                        gravity.gravityEnabled = false;
-                        v.ySpeed = 0;
-                        return;
-                    }
-
-                    else if (wallCollider.y + (ladderCollider.y - wallCollider.y) < playerCollider.y) return;
-
-                    else if (ladderCollider.y > playerCollider.y) {
-                        t.position.y = wallCollider.y - playerCollider.h - positionOffset - yOffset;
-                        playerCollider.y = t.position.y + yOffset;
-                        isGrounded.grounded = true;
-                        ladderClimbing.isClimbing = false;
-                        gravity.gravityEnabled = false;
-                        playerCollider.y = t.position.y;
-                        v.ySpeed = 0;
-                        return;
-                    }
-                }
-
-                v.ySpeed = 0;
+            if (ladderClimbing.isClimbing) {
+                auto& ladderCollider = ladderClimbing.ladderEntity->getComponent<Collider>().rect;
                 if (std::abs(bottomPenetrationDepth) < std::abs(topPenetrationDepth)) {
                     t.position.y = wallCollider.y - playerCollider.h - positionOffset - yOffset;
+                    playerCollider.y = t.position.y + yOffset;
                     isGrounded.grounded = true;
-                    world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanLand"));
                     ladderClimbing.isClimbing = false;
                     gravity.gravityEnabled = false;
+                    v.ySpeed = 0;
+                    return;
                 }
-                else {
-                    t.position.y = (wallCollider.y + wallCollider.h + positionOffset - yOffset);
+
+                if (wallCollider.y + (ladderCollider.y - wallCollider.y) < playerCollider.y) return;
+
+                if (ladderCollider.y > playerCollider.y) {
+                    t.position.y = wallCollider.y - playerCollider.h - positionOffset - yOffset;
+                    playerCollider.y = t.position.y + yOffset;
+                    isGrounded.grounded = true;
+                    ladderClimbing.isClimbing = false;
+                    gravity.gravityEnabled = false;
+                    playerCollider.y = t.position.y;
+                    v.ySpeed = 0;
+                    return;
                 }
+            }
+
+            if (std::abs(leftPenetrationDepth) < std::abs(rightPenetrationDepth) &&
+                std::abs(leftPenetrationDepth) < std::abs(topPenetrationDepth) &&
+                std::abs(leftPenetrationDepth) < std::abs(bottomPenetrationDepth)) {
+                t.position.x = (wallCollider.x + wallCollider.w + positionOffset - xOffset);
+                playerCollider.x = t.position.x + xOffset;
+                return;
+            }
+            if (std::abs(rightPenetrationDepth) < std::abs(leftPenetrationDepth) &&
+                std::abs(rightPenetrationDepth) < std::abs(topPenetrationDepth) &&
+                std::abs(rightPenetrationDepth) < std::abs(bottomPenetrationDepth)){
+                t.position.x = (wallCollider.x - playerCollider.w - positionOffset - xOffset);
+                playerCollider.x = t.position.x + xOffset;
+                return;
+            }
+
+            if (std::abs(topPenetrationDepth) < std::abs(leftPenetrationDepth) &&
+                std::abs(topPenetrationDepth) < std::abs(rightPenetrationDepth) &&
+                std::abs(topPenetrationDepth) < std::abs(bottomPenetrationDepth)) {
+                v.ySpeed = 0;
+                t.position.y = (wallCollider.y + wallCollider.h + positionOffset - yOffset);
+                return;
+            }
+
+            if (std::abs(bottomPenetrationDepth) < std::abs(leftPenetrationDepth) &&
+                std::abs(bottomPenetrationDepth) < std::abs(rightPenetrationDepth) &&
+                std::abs(bottomPenetrationDepth) < std::abs(topPenetrationDepth)) {
+                v.ySpeed = 0;
+                t.position.y = wallCollider.y - playerCollider.h - positionOffset - yOffset;
+                isGrounded.grounded = true;
+                world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanLand"));
+                ladderClimbing.isClimbing = false;
+                gravity.gravityEnabled = false;
                 playerCollider.y = t.position.y + yOffset;
+                return;
             }
         }
 
         if (e.state == CollisionState::Exit) {
-
             if (player->hasComponent<PlayerGroundCheck>()) {
                 auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
                 coyoteTime.timer = coyoteTime.duration;
@@ -177,8 +182,6 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                 }
                 return;
             }
-            if (e.axis == CollisionAxis::Horizontal) return;
-
             auto& ladderClimbing = player->getComponent<LadderClimbing>();
             ladderClimbing.canClimb = true;
             ladderClimbing.ladderEntity = other;
@@ -197,7 +200,8 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
 
             // if (ladderCollider.y > playerCollider.y) {
             if (ladderCollider.y > playerCollider.y &&
-                (playerCollider.y + playerCollider.h - positionOffset > ladderCollider.y + ladderColliderTopOffset)) {
+                (playerCollider.y + playerCollider.h - positionOffset > ladderCollider.y + ladderColliderTopOffset) &&
+                (ladderClimbing.isClimbing || v.ySpeed > 0)) {
                 if (!ladderClimbing.isClimbing) {
                     world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanLand"));
                 }
@@ -207,6 +211,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                 ladderClimbing.isClimbing = false;
                 gravity.gravityEnabled = false;
                 v.ySpeed = 0;
+                std::cout << "Grounded" << std::endl;
             }
 
             if (ladderClimbing.isClimbing) {
@@ -232,8 +237,6 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             ladderClimbing.canClimb = false;
             ladderClimbing.isClimbing = false;
             ladderClimbing.ladderEntity = nullptr;
-
-
         }
     }
 
