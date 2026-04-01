@@ -49,6 +49,9 @@ class Game {
     static std::function<void()> checkSceneState;
     static GameState gameState;
 
+    static float horizontalAspectMult;
+    static float verticalAspectMult;
+
     World world;
 
 private:

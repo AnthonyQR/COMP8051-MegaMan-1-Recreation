@@ -49,6 +49,9 @@ add_executable(Tutorial1 src/main.cpp
         src/scene/SpawnPlayer.cpp
         src/scene/SpawnBladerEnemy.cpp
         src/scene/SpawnBladerEnemy.h
+        src/utils/AspectRatioUtil.h
+        src/utils/AspectRatioUtil.cpp
+        src/ecs/system/KeyboardInputSystem.cpp
 )
 
 target_link_libraries(Tutorial1

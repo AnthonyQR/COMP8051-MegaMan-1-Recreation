@@ -17,6 +17,9 @@ GameState Game::gameState;
 std::function<void(std::string)> Game::onSceneChangeRequest;
 std::function<void()> Game::checkSceneState;
 
+float Game::horizontalAspectMult;
+float Game::verticalAspectMult;
+
 Game::Game() {}
 
 Game::~Game() {
@@ -68,6 +71,10 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
         SDL_VERSIONNUM_MAJOR(linked),
         SDL_VERSIONNUM_MINOR(linked),
         SDL_VERSIONNUM_MICRO(linked));
+
+    horizontalAspectMult = width / 272;
+    verticalAspectMult = height / 272;
+
 
     // Load audio
     audioManager.loadAudio("gameStart", "../Assets/Audio/GameStart.mp3", 10);

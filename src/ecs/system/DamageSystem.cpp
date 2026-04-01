@@ -30,7 +30,7 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                 if (health.currentHealth < 0) {
                     health.currentHealth = 0;
                 }
-                
+
                 if (damage.damagedEntity->hasComponent<PlayerTag>()) {
                     Game::gameState.playerHealth = health.currentHealth;
                     std::cout << "Health: " << health.currentHealth << std::endl;
