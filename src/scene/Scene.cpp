@@ -3,6 +3,7 @@
 //
 #include "Scene.h"
 
+#include "AspectRatioUtil.h"
 #include "../manager/AssetManager.h"
 #include "Game.h"
 #include "SpawnBeakEnemy.h"
@@ -85,6 +86,7 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
         c.rect.h = cameraBounds.rect.h;
     }
 
+    /*
     // Spawn items
     for (auto &itemSpawnPoint : world.getMap().itemSpawnPoints) {
         auto& item = world.createEntity();
@@ -100,13 +102,15 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
         itemCollider.rect.w = itemDest.w;
         itemCollider.rect.h = itemDest.h;
     }
+    */
 
     // Spawn Camera
     auto& cam = world.createEntity();
     SDL_FRect camView{};
     camView.w = windowWidth;
     camView.h = windowHeight;
-    cam.addComponent<Camera>(camView, world.getMap().width * 48.0f, world.getMap().height * 48.0f);
+    cam.addComponent<Camera>(camView, world.getMap().width * (16.0f * AspectRatioUtil::horizontalAspectMult()),
+        world.getMap().height * (16.0f * AspectRatioUtil::verticalAspectMult()));
 
     // Spawn Death Colliders
     for (auto &collider : world.getMap().deathColliders) {
@@ -126,20 +130,28 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
     healthBarBackground.addComponent<Transform>(healthBarTransform);
 
     SDL_FRect healthBarBackgroundSrc{0, 0, 8, 56};
-    SDL_FRect healthBarDst{healthBarTransform.position.x, healthBarTransform.position.y, 8 * 3, 56 * 3};
+    SDL_FRect healthBarDst{healthBarTransform.position.x, healthBarTransform.position.y, 8 * AspectRatioUtil::horizontalAspectMult(),
+        56 * AspectRatioUtil::verticalAspectMult()};
     healthBarBackground.addComponent<Sprite>(healthBarTex, healthBarBackgroundSrc, healthBarDst, RenderLayer::UI);
 
 
     auto& healthBarFill(world.createEntity());
     auto& healthBarFillTransform = healthBarFill.addComponent<Transform>
-    (Vector2D(windowWidth / 12.0f, windowHeight / 12.0f + ((28 - Game::gameState.playerHealth) * 6)), 0.0f, 1.0f);
+    (Vector2D(windowWidth / 12.0f,
+    windowHeight / 12.0f + ((Game::gameState.playerMaxHealth - Game::gameState.playerHealth) * AspectRatioUtil::verticalAspectMult() * 2)),
+    0.0f, 1.0f);
     SDL_FRect healthBarFillSrc {8, 0, 8, 56};
     SDL_FRect healthBarFillDst{healthBarTransform.position.x, healthBarTransform.position.y,
-        8 * 3, 56 * 3 - (float)((28 - Game::gameState.playerHealth) * 6)};
+        8 * AspectRatioUtil::horizontalAspectMult(),
+        56 * AspectRatioUtil::verticalAspectMult()
+        - (float)((Game::gameState.playerMaxHealth - Game::gameState.playerHealth) * AspectRatioUtil::verticalAspectMult() * 2)};
     healthBarFill.addComponent<Sprite>(healthBarTex, healthBarFillSrc, healthBarFillDst, RenderLayer::UI);
     healthBarFill.addComponent<HealthBarUpdate>([windowHeight](Entity* healthBar) {
-        healthBar->getComponent<Transform>().position.y = windowHeight / 12.0f + ((28 - Game::gameState.playerHealth) * 6);
-        healthBar->getComponent<Sprite>().dst.h = 56 * 3 - (float)((28 - Game::gameState.playerHealth) * 6);
+        healthBar->getComponent<Transform>().position.y =
+            windowHeight / 12.0f + ((Game::gameState.playerMaxHealth - Game::gameState.playerHealth)
+            * AspectRatioUtil::verticalAspectMult() * 2);
+        healthBar->getComponent<Sprite>().dst.h = 56 * AspectRatioUtil::horizontalAspectMult()
+        - (float)((Game::gameState.playerMaxHealth - Game::gameState.playerHealth) * AspectRatioUtil::verticalAspectMult() * 2);
     });
 
     auto& healthBarDivider(world.createEntity());

@@ -4,6 +4,7 @@
 
 #include "SpawnPlayer.h"
 
+#include "AspectRatioUtil.h"
 #include "Game.h"
 #include "manager/AssetManager.h"
 
@@ -22,15 +23,16 @@ void SpawnPlayer::spawn(World& world) {
     SDL_Texture* tex = TextureManager::load("../Assets/Animations/megaman_anim.png");
     // SDL_FRect playerSrc {0, 0, 32, 44};
     SDL_FRect playerSrc = anim.clips[anim.currentClip].frameIndices[0];
-    SDL_FRect playerDst {playerTransform.position.x, playerTransform.position.y, 96, 96};
+    SDL_FRect playerDst {playerTransform.position.x, playerTransform.position.y, 32 * AspectRatioUtil::horizontalAspectMult(),
+        32 * AspectRatioUtil::verticalAspectMult()};
 
     player.addComponent<Sprite>(tex, playerSrc, playerDst);
 
     auto& playerCollider = player.addComponent<Collider>("Player");
-    playerCollider.rect.w = playerDst.w - 36;
-    playerCollider.rect.h = playerDst.h - 24;
-    playerCollider.xOffset = 18;
-    playerCollider.yOffset = 24;
+    playerCollider.rect.w = playerDst.w - 12 * AspectRatioUtil::horizontalAspectMult();
+    playerCollider.rect.h = playerDst.h - 8 * AspectRatioUtil::verticalAspectMult();
+    playerCollider.xOffset = 6 * AspectRatioUtil::horizontalAspectMult();
+    playerCollider.yOffset = 8 * AspectRatioUtil::verticalAspectMult();
 
     player.addComponent<PlayerTag>();
     player.addComponent<Health>(Game::gameState.playerHealth);
@@ -43,7 +45,8 @@ void SpawnPlayer::spawn(World& world) {
 
     SDL_Texture* playerProjectileTex = TextureManager::load("../Assets/megaman_projectile.png");
     SDL_FRect playerProjectileSrc{0, 0, 8, 8};
-    SDL_FRect playerProjectileDest{0, 0, 8 * 3, 8 * 3};
+    SDL_FRect playerProjectileDest{0, 0, 8 * AspectRatioUtil::horizontalAspectMult(),
+        8 * AspectRatioUtil::verticalAspectMult()};
     player.addComponent<ProjectileStats>(800.0f, 1, Sprite(playerProjectileTex, playerProjectileSrc, playerProjectileDest),
         Vector2D(0, 0), Vector2D(0, 0), [&world](ProjectileStats stats) {
             auto& projectile = world.createDeferredEntity();
@@ -73,7 +76,7 @@ void SpawnPlayer::spawn(World& world) {
     auto& playerGroundCheck (world.createEntity());
     auto& playerGroundCheckCollider = playerGroundCheck.addComponent<Collider>("Player");
     playerGroundCheckCollider.rect.w = playerCollider.rect.w;
-    playerGroundCheckCollider.rect.h = 16.0f;
+    playerGroundCheckCollider.rect.h = 5 * AspectRatioUtil::verticalAspectMult();
     playerGroundCheck.addComponent<PlayerGroundCheck>();
     playerGroundCheck.addComponent<Transform>(playerTransform);
     playerGroundCheck.addComponent<FollowEntity>(player, 18.0f, playerCollider.rect.h + 24.0f);

@@ -6,6 +6,7 @@
 
 #include <cmath>
 
+#include "AspectRatioUtil.h"
 #include "manager/AssetManager.h"
 
 void SpawnBladerEnemy::spawn(World &world) {
@@ -29,7 +30,8 @@ void SpawnBladerEnemy::spawn(World &world) {
             SDL_Texture* bladerTex = TextureManager::load("../Assets/Animations/blader_anim.png");
 
             SDL_FRect bladerSrc = anim.clips[anim.currentClip].frameIndices[0];
-            SDL_FRect bladerDst {bladerTransform.position.x, bladerTransform.position.y, 48, 60};
+            SDL_FRect bladerDst {bladerTransform.position.x, bladerTransform.position.y, 16 * AspectRatioUtil::horizontalAspectMult(),
+                20 * AspectRatioUtil::verticalAspectMult()};
 
             bladerEnemy.addComponent<Sprite>(bladerTex, bladerSrc, bladerDst);
 
@@ -126,7 +128,8 @@ void SpawnBladerEnemy::spawn(World &world) {
 
                 SDL_Texture* beakDeathTex = TextureManager::load("../Assets/Animations/enemy_death_anim.png");
                 SDL_FRect beakSrc = deathAnim.clips[deathAnim.currentClip].frameIndices[0];
-                SDL_FRect beakDst {deathTransform.position.x, deathTransform.position.y, 48, 48};
+                SDL_FRect beakDst {deathTransform.position.x, deathTransform.position.y, 16 * AspectRatioUtil::horizontalAspectMult(),
+                    16 * AspectRatioUtil::verticalAspectMult()};
 
                 bladerDeath.addComponent<Sprite>(beakDeathTex, beakSrc, beakDst);
                 bladerDeath.addComponent<EnemyDeathTag>();

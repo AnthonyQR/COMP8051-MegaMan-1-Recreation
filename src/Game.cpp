@@ -72,8 +72,8 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
         SDL_VERSIONNUM_MINOR(linked),
         SDL_VERSIONNUM_MICRO(linked));
 
-    horizontalAspectMult = width / 272;
-    verticalAspectMult = height / 272;
+    horizontalAspectMult = (float)width / 272;
+    verticalAspectMult = (float)height / 224;
 
 
     // Load audio

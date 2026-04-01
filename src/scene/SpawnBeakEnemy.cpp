@@ -4,6 +4,7 @@
 
 #include "SpawnBeakEnemy.h"
 
+#include "AspectRatioUtil.h"
 #include "manager/AssetManager.h"
 
 void SpawnBeakEnemy::spawn(World &world) {
@@ -51,7 +52,8 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
         SDL_Texture* beakTex = TextureManager::load("../Assets/Animations/beak_anim.png");
 
         SDL_FRect beakSrc = anim.clips[anim.currentClip].frameIndices[0];
-        SDL_FRect beakDst {beakTransform.position.x, beakTransform.position.y, 48, 48};
+        SDL_FRect beakDst {beakTransform.position.x, beakTransform.position.y, 16 * AspectRatioUtil::horizontalAspectMult(),
+            16 * AspectRatioUtil::verticalAspectMult()};
 
         beakEnemy.addComponent<Sprite>(beakTex, beakSrc, beakDst);
 
@@ -62,7 +64,8 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
 
         SDL_Texture* beakProjectileTex = TextureManager::load("../Assets/beak_projectile.png");
         SDL_FRect beakProjectileSrc{0, 0, 8, 8};
-        SDL_FRect beakProjectileDest{0, 0, 8 * 3, 8 * 3};
+        SDL_FRect beakProjectileDest{0, 0, 8 * AspectRatioUtil::horizontalAspectMult(),
+            8 * AspectRatioUtil::verticalAspectMult()};
 
         beakEnemy.addComponent<ProjectileStats>(600.0f, 2, Sprite(beakProjectileTex, beakProjectileSrc, beakProjectileDest),
         Vector2D(0, 0), Vector2D(beakTransform.position.x, beakTransform.position.y), [&world](ProjectileStats stats) {
@@ -122,7 +125,8 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
 
             SDL_Texture* beakDeathTex = TextureManager::load("../Assets/Animations/enemy_death_anim.png");
             SDL_FRect beakSrc = deathAnim.clips[deathAnim.currentClip].frameIndices[0];
-            SDL_FRect beakDst {deathTransform.position.x, deathTransform.position.y, 48, 48};
+            SDL_FRect beakDst {deathTransform.position.x, deathTransform.position.y, 16 * AspectRatioUtil::horizontalAspectMult(),
+                16 * AspectRatioUtil::verticalAspectMult()};
 
             beakDeath.addComponent<Sprite>(beakDeathTex, beakSrc, beakDst);
             beakDeath.addComponent<EnemyDeathTag>();

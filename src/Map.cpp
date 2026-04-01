@@ -11,6 +11,8 @@
 #include <sstream>
 #include <tinyxml2.h>
 
+#include "AspectRatioUtil.h"
+
 void Map::load(const char* path, SDL_Texture *ts) {
     tileset = ts;
     tinyxml2::XMLDocument doc;
@@ -61,10 +63,10 @@ void Map::load(const char* path, SDL_Texture *ts) {
             obj = obj->NextSiblingElement("object")) { // Increment
 
             Collider c;
-            c.rect.x = obj->FloatAttribute("x") * 3;
-            c.rect.y = obj->FloatAttribute("y") * 3;
-            c.rect.w = obj->FloatAttribute("width") * 3;
-            c.rect.h = obj->FloatAttribute("height") * 3;
+            c.rect.x = obj->FloatAttribute("x") * AspectRatioUtil::horizontalAspectMult();
+            c.rect.y = obj->FloatAttribute("y") * AspectRatioUtil::verticalAspectMult();
+            c.rect.w = obj->FloatAttribute("width") * AspectRatioUtil::horizontalAspectMult();
+            c.rect.h = obj->FloatAttribute("height") * AspectRatioUtil::verticalAspectMult();
             colliders.push_back(c);
             }
     }
@@ -88,10 +90,10 @@ void Map::load(const char* path, SDL_Texture *ts) {
             obj = obj->NextSiblingElement("object")) { // Increment
 
             Collider c;
-            c.rect.x = obj->FloatAttribute("x") * 3;
-            c.rect.y = obj->FloatAttribute("y") * 3;
-            c.rect.w = obj->FloatAttribute("width") * 3;
-            c.rect.h = obj->FloatAttribute("height") * 3;
+            c.rect.x = obj->FloatAttribute("x") * AspectRatioUtil::horizontalAspectMult();
+            c.rect.y = obj->FloatAttribute("y") * AspectRatioUtil::verticalAspectMult();
+            c.rect.w = obj->FloatAttribute("width") * AspectRatioUtil::horizontalAspectMult();
+            c.rect.h = obj->FloatAttribute("height") * AspectRatioUtil::verticalAspectMult();
             ladders.push_back(c);
             }
     }
@@ -115,8 +117,8 @@ void Map::load(const char* path, SDL_Texture *ts) {
             obj = obj->NextSiblingElement("object")) { // Increment
 
             Vector2D pos;
-            pos.x = obj->FloatAttribute("x") * 3;
-            pos.y = obj->FloatAttribute("y") * 3;
+            pos.x = obj->FloatAttribute("x") * AspectRatioUtil::horizontalAspectMult();
+            pos.y = obj->FloatAttribute("y") * AspectRatioUtil::verticalAspectMult();
             beakEnemyLeftSpawnPoints.push_back(pos);
             }
     }
@@ -138,8 +140,8 @@ void Map::load(const char* path, SDL_Texture *ts) {
             obj = obj->NextSiblingElement("object")) { // Increment
 
             Vector2D pos;
-            pos.x = obj->FloatAttribute("x") * 3;
-            pos.y = obj->FloatAttribute("y") * 3;
+            pos.x = obj->FloatAttribute("x") * AspectRatioUtil::horizontalAspectMult();
+            pos.y = obj->FloatAttribute("y") * AspectRatioUtil::verticalAspectMult();
             beakEnemyRightSpawnPoints.push_back(pos);
             }
     }
@@ -162,8 +164,8 @@ void Map::load(const char* path, SDL_Texture *ts) {
             obj = obj->NextSiblingElement("object")) { // Increment
 
             Vector2D pos;
-            pos.x = obj->FloatAttribute("x") * 3;
-            pos.y = obj->FloatAttribute("y") * 3;
+            pos.x = obj->FloatAttribute("x") * AspectRatioUtil::horizontalAspectMult();
+            pos.y = obj->FloatAttribute("y") * AspectRatioUtil::verticalAspectMult();
             beakEnemyRightEarlySpawnPoints.push_back(pos);
             }
     }
@@ -186,8 +188,8 @@ void Map::load(const char* path, SDL_Texture *ts) {
             obj = obj->NextSiblingElement("object")) { // Increment
 
             Vector2D pos;
-            pos.x = obj->FloatAttribute("x") * 3;
-            pos.y = obj->FloatAttribute("y") * 3;
+            pos.x = obj->FloatAttribute("x") * AspectRatioUtil::horizontalAspectMult();
+            pos.y = obj->FloatAttribute("y") * AspectRatioUtil::verticalAspectMult();
             bladerEnemySpawnPoints.push_back(pos);
             }
     }
@@ -211,10 +213,10 @@ void Map::load(const char* path, SDL_Texture *ts) {
             obj = obj->NextSiblingElement("object")) { // Increment
 
             Collider c;
-            c.rect.x = obj->FloatAttribute("x") * 3;
-            c.rect.y = obj->FloatAttribute("y") * 3;
-            c.rect.w = obj->FloatAttribute("width") * 3;
-            c.rect.h = obj->FloatAttribute("height") * 3;
+            c.rect.x = obj->FloatAttribute("x") * AspectRatioUtil::horizontalAspectMult();
+            c.rect.y = obj->FloatAttribute("y") * AspectRatioUtil::verticalAspectMult();
+            c.rect.w = obj->FloatAttribute("width") * AspectRatioUtil::horizontalAspectMult();
+            c.rect.h = obj->FloatAttribute("height") * AspectRatioUtil::verticalAspectMult();
             cameraBounds.push_back(c);
             }
     }
@@ -238,10 +240,10 @@ void Map::load(const char* path, SDL_Texture *ts) {
             obj = obj->NextSiblingElement("object")) { // Increment
 
             Collider c;
-            c.rect.x = obj->FloatAttribute("x") * 3;
-            c.rect.y = obj->FloatAttribute("y") * 3;
-            c.rect.w = obj->FloatAttribute("width") * 3;
-            c.rect.h = obj->FloatAttribute("height") * 3;
+            c.rect.x = obj->FloatAttribute("x") * AspectRatioUtil::horizontalAspectMult();
+            c.rect.y = obj->FloatAttribute("y") * AspectRatioUtil::verticalAspectMult();
+            c.rect.w = obj->FloatAttribute("width") * AspectRatioUtil::horizontalAspectMult();
+            c.rect.h = obj->FloatAttribute("height") * AspectRatioUtil::verticalAspectMult();
             deathColliders.push_back(c);
             }
     }
@@ -265,8 +267,8 @@ void Map::load(const char* path, SDL_Texture *ts) {
         obj != nullptr;
         obj = obj->NextSiblingElement("object")) {
             Vector2D pos;
-            pos.x = obj->FloatAttribute("x");
-            pos.y = obj->FloatAttribute("y");
+            pos.x = obj->FloatAttribute("x") * AspectRatioUtil::horizontalAspectMult();
+            pos.y = obj->FloatAttribute("y") * AspectRatioUtil::verticalAspectMult();
             itemSpawnPoints.push_back(pos);
         }
     }
@@ -275,7 +277,8 @@ void Map::load(const char* path, SDL_Texture *ts) {
 void Map::draw(const Camera &cam) {
     SDL_FRect src{}, dest{};
 
-    dest.w = dest.h = 48;
+    dest.w = 16 * AspectRatioUtil::horizontalAspectMult();
+    dest.h = 16 * AspectRatioUtil::verticalAspectMult();
 
     for (int row = 0; row < height; row++) {
         for (int col = 0; col < width; col++) {
