@@ -17,6 +17,7 @@ int main() {
 
     game = new Game();
     // game->init("Tutorial Engine", 800, 600, false);
+    //game->init("Megaman 1", 816, 672, false);
     game->init("Megaman 1", 816, 672, false);
 
 

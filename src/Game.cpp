@@ -33,7 +33,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     // Initialize SDL library
     if (SDL_InitSubSystem(SDL_INIT_VIDEO) == 1) {
         std::cout << "Subsystem initialized..." << std::endl;
-        window = SDL_CreateWindow(title, width, height, flags);
+        window = SDL_CreateWindow(title, width, height, SDL_WINDOW_RESIZABLE);
         if (window) {
             std::cout << "Window created..." << std::endl;
         }
@@ -41,9 +41,15 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
         // Windows will be Direct3D (DirectX)
         // Mac will likely be Metal, OpenGL
         renderer = SDL_CreateRenderer(window, nullptr);
+        SDL_Log("Available renderer drivers:");
+        for (int i = 0; i < SDL_GetNumRenderDrivers(); i++) {
+            SDL_Log("%d. %s", i + 1, SDL_GetRenderDriver(i));
+        }
 
         if (renderer) {
             std::cout << "Renderer created..." << std::endl;
+            SDL_SetRenderLogicalPresentation(renderer, 816, 672, SDL_LOGICAL_PRESENTATION_LETTERBOX);
+
         }
         else {
             std::cout << "Renderer could not be created..." << std::endl;
@@ -157,7 +163,7 @@ void Game::update(float deltaTime) {
 }
 
 void Game::render() {
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
     // Every frame, the renderer is cleared with the draw color
     SDL_RenderClear(renderer);

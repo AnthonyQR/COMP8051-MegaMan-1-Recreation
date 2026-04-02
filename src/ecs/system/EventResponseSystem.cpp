@@ -123,6 +123,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                 }
             }
 
+            // Left Side Collision
             if (std::abs(leftPenetrationDepth) < std::abs(rightPenetrationDepth) &&
                 std::abs(leftPenetrationDepth) < std::abs(topPenetrationDepth) &&
                 std::abs(leftPenetrationDepth) < std::abs(bottomPenetrationDepth)) {
@@ -130,6 +131,8 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                 playerCollider.x = t.position.x + xOffset;
                 return;
             }
+
+            // Right Side Collision
             if (std::abs(rightPenetrationDepth) < std::abs(leftPenetrationDepth) &&
                 std::abs(rightPenetrationDepth) < std::abs(topPenetrationDepth) &&
                 std::abs(rightPenetrationDepth) < std::abs(bottomPenetrationDepth)){
@@ -138,6 +141,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                 return;
             }
 
+            // Top Side Collision
             if (std::abs(topPenetrationDepth) < std::abs(leftPenetrationDepth) &&
                 std::abs(topPenetrationDepth) < std::abs(rightPenetrationDepth) &&
                 std::abs(topPenetrationDepth) < std::abs(bottomPenetrationDepth)) {
@@ -146,9 +150,11 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
                 return;
             }
 
+            // Bottom Side Collision
             if (std::abs(bottomPenetrationDepth) < std::abs(leftPenetrationDepth) &&
                 std::abs(bottomPenetrationDepth) < std::abs(rightPenetrationDepth) &&
-                std::abs(bottomPenetrationDepth) < std::abs(topPenetrationDepth)) {
+                std::abs(bottomPenetrationDepth) < std::abs(topPenetrationDepth) &&
+                v.ySpeed >= 0) {
                 v.ySpeed = 0;
                 t.position.y = wallCollider.y - playerCollider.h - positionOffset - yOffset;
                 isGrounded.grounded = true;
@@ -199,9 +205,10 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
             float positionOffset = .1f;
 
             // if (ladderCollider.y > playerCollider.y) {
-            if (ladderCollider.y > playerCollider.y &&
-                (playerCollider.y + playerCollider.h - positionOffset > ladderCollider.y + ladderColliderTopOffset) &&
-                (ladderClimbing.isClimbing || v.ySpeed > 0)) {
+            if ((ladderCollider.y > playerCollider.y && ladderClimbing.isClimbing) ||
+                (ladderCollider.y > playerCollider.y &&
+                (playerCollider.y + (playerCollider.h / 2) - positionOffset < ladderCollider.y + ladderColliderTopOffset) &&
+                v.ySpeed > 0)) {
                 if (!ladderClimbing.isClimbing) {
                     world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanLand"));
                 }
