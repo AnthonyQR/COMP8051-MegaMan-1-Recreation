@@ -8,8 +8,8 @@
 
 #include "Game.h"
 #include "World.h"
-#include "ERS/OnDestroyEvent.h"
-#include "ERS/OnPlayerCollisionEvent.h"
+#include "OnDestroyEvent.h"
+#include "OnPlayerCollisionEvent.h"
 
 EventResponseSystem::EventResponseSystem(World &world) {
     // Subscriptions

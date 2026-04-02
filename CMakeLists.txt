@@ -38,7 +38,7 @@ add_executable(Tutorial1 src/main.cpp
         src/vendor/tinyxml2.cpp
         src/manager/AssetManager.cpp
         src/scene/Scene.cpp
-        src/ecs/system/EventResponseSystem.cpp
+        src/ecs/system/ERS/EventResponseSystem.cpp
         src/ecs/system/MainMenuSystem.cpp
         src/ecs/system/DestructionSystem.cpp
         src/ecs/system/ERS/OnDestroyEvent.cpp

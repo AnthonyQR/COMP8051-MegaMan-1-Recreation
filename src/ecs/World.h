@@ -22,7 +22,7 @@
 #include "CoyoteTimeSystem.h"
 #include "DamageSystem.h"
 #include "DestructionSystem.h"
-#include "EventResponseSystem.h"
+#include "system/ERS/EventResponseSystem.h"
 #include "FlashWhileInvulnerableSystem.h"
 #include "FollowEntitySystem.h"
 #include "GravitySystem.h"
