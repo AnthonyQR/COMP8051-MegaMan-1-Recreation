@@ -339,7 +339,6 @@
   <object id="175" x="1872" y="303" width="16" height="33"/>
   <object id="176" x="1872" y="463" width="16" height="81"/>
   <object id="177" x="1808" y="703" width="16" height="113"/>
-  <object id="230" x="16" y="2080" width="16" height="65"/>
  </objectgroup>
  <objectgroup id="5" name="Camera Bounds Layer" visible="0">
   <object id="179" x="0" y="2056" width="1024" height="224"/>
