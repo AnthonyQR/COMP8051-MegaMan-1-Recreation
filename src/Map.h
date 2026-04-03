@@ -9,12 +9,18 @@
 #include <SDL3/SDL.h>
 #include <Component.h>
 
+#include "tinyxml2.h"
+
 class Map {
 public:
     Map() = default;
     ~Map() = default;
 
     void load(const char *path, SDL_Texture *ts);
+    template <typename T>
+    void parseData(tinyxml2::XMLElement* firstElement, std::string layerName, std::vector<T>& genericVector);
+    void finishParse(tinyxml2::XMLElement* element, std::vector<Collider>& colliderList);
+    void finishParse(tinyxml2::XMLElement* element, std::vector<Vector2D>& vector2DList);
     void draw(const Camera &cam);
 
     SDL_Texture *tileset = nullptr;
