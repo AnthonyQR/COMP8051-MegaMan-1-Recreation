@@ -149,11 +149,14 @@ void OnPlayerCollisionEvent::wallCollision(Entity *player, Entity *other, const 
             if (std::abs(bottomPenetrationDepth) < std::abs(leftPenetrationDepth) &&
                 std::abs(bottomPenetrationDepth) < std::abs(rightPenetrationDepth) &&
                 std::abs(bottomPenetrationDepth) < std::abs(topPenetrationDepth) &&
-                v.ySpeed >= 0) {
+                v.ySpeed >= 0.0f) {
+                if (v.ySpeed >= 175.0f) {
+                    world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanLand"));
+                }
                 v.ySpeed = 0;
                 t.position.y = wallCollider.y - playerCollider.h - positionOffset - yOffset;
                 isGrounded.grounded = true;
-                world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanLand"));
+
                 ladderClimbing.isClimbing = false;
                 gravity.gravityEnabled = false;
                 playerCollider.y = t.position.y + yOffset;
