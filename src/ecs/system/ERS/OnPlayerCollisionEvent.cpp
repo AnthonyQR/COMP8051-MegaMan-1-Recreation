@@ -44,12 +44,40 @@ void OnPlayerCollisionEvent::wallCollision(Entity *player, Entity *other, const 
     if (player->hasComponent<PlayerHurtbox>()) return;
         if (e.state == CollisionState::Stay) {
             if (player->hasComponent<PlayerGroundCheck>()) {
-                auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
+                player = &player->getComponent<FollowEntity>().followedEntity;
+                auto& ladderClimbing = player->getComponent<LadderClimbing>();
+                auto& v = player->getComponent<Velocity>();
+
+                // Colliders
+                auto& playerCollider = player->getComponent<Collider>().rect;
+                auto& wallCollider = other->getComponent<Collider>().rect;
+                float xOffset = player->getComponent<Collider>().xOffset;
+                float yOffset = player->getComponent<Collider>().yOffset;
+
+                // Added / Subtracted from position to prevent unnecessary collisions
+                float positionOffset = .1f;
+
+                if (ladderClimbing.isClimbing) {
+                    auto& ladderCollider = ladderClimbing.ladderEntity->getComponent<Collider>().rect;
+                    if (v.ySpeed >= 0 && playerCollider.y + playerCollider.h > ladderCollider.y + ladderCollider.h) {
+                        auto& t = player->getComponent<Transform>();
+                        auto& isGrounded = player->getComponent<IsGrounded>();
+                        auto& gravity = player->getComponent<Gravity>();
+
+                        t.position.y = wallCollider.y - playerCollider.h - positionOffset - yOffset;
+                        playerCollider.y = t.position.y + yOffset;
+                        isGrounded.grounded = true;
+                        ladderClimbing.isClimbing = false;
+                        gravity.gravityEnabled = false;
+                        v.ySpeed = 0;
+                        std::cout<< "Wall Collision" << std::endl;
+                    }
+                }
+                auto& coyoteTime = player->getComponent<CoyoteTime>();
                 coyoteTime.timer = coyoteTime.duration;
                 coyoteTime.isCoyoteTime = false;
                 return;
             }
-
             // Player components
             auto& t = player->getComponent<Transform>();
             auto& v = player->getComponent<Velocity>();
@@ -73,15 +101,6 @@ void OnPlayerCollisionEvent::wallCollision(Entity *player, Entity *other, const 
 
             if (ladderClimbing.isClimbing) {
                 auto& ladderCollider = ladderClimbing.ladderEntity->getComponent<Collider>().rect;
-                if (std::abs(bottomPenetrationDepth) < std::abs(topPenetrationDepth)) {
-                    t.position.y = wallCollider.y - playerCollider.h - positionOffset - yOffset;
-                    playerCollider.y = t.position.y + yOffset;
-                    isGrounded.grounded = true;
-                    ladderClimbing.isClimbing = false;
-                    gravity.gravityEnabled = false;
-                    v.ySpeed = 0;
-                    return;
-                }
 
                 if (wallCollider.y + (ladderCollider.y - wallCollider.y) < playerCollider.y) return;
 
@@ -95,6 +114,7 @@ void OnPlayerCollisionEvent::wallCollision(Entity *player, Entity *other, const 
                     v.ySpeed = 0;
                     return;
                 }
+                return;
             }
 
             // Left Side Collision

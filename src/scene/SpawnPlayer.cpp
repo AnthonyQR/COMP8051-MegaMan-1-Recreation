@@ -27,9 +27,9 @@ void SpawnPlayer::spawn(World& world) {
     player.addComponent<Sprite>(tex, playerSrc, playerDst);
 
     auto& playerCollider = player.addComponent<Collider>("Player");
-    playerCollider.rect.w = playerDst.w - 36;
+    playerCollider.rect.w = playerDst.w - 52;
     playerCollider.rect.h = playerDst.h - 24;
-    playerCollider.xOffset = 18;
+    playerCollider.xOffset = 26;
     playerCollider.yOffset = 24;
 
     player.addComponent<PlayerTag>();
@@ -79,7 +79,8 @@ void SpawnPlayer::spawn(World& world) {
 
     auto& playerGroundCheck (world.createEntity());
     auto& playerGroundCheckCollider = playerGroundCheck.addComponent<Collider>("Player");
-    playerGroundCheckCollider.rect.w = playerCollider.rect.w;
+    playerGroundCheckCollider.rect.w = playerCollider.rect.w - 14.0f;
+    playerGroundCheckCollider.xOffset = 7.0f;
     playerGroundCheckCollider.rect.h = 16.0f;
     playerGroundCheck.addComponent<PlayerGroundCheck>();
     playerGroundCheck.addComponent<Transform>(playerTransform);
