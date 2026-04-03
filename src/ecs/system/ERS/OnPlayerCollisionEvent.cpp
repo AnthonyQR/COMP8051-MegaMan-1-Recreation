@@ -41,6 +41,7 @@ void OnPlayerCollisionEvent::onCollision(Entity *player, Entity *other,
 void OnPlayerCollisionEvent::wallCollision(Entity *player, Entity *other, const CollisionEvent &e, const char *otherTag,
     World &world) {
     if (player->hasComponent<ProjectileTag>()) return;
+    if (player->hasComponent<PlayerHurtbox>()) return;
         if (e.state == CollisionState::Stay) {
             if (player->hasComponent<PlayerGroundCheck>()) {
                 auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
@@ -151,8 +152,9 @@ void OnPlayerCollisionEvent::wallCollision(Entity *player, Entity *other, const 
 
 void OnPlayerCollisionEvent::ladderCollision(Entity *player, Entity *other, const CollisionEvent &e,
     const char *otherTag, World &world) {
+    if (player->hasComponent<PlayerHurtbox>()) return;
     if (e.state == CollisionState::Enter) return;
-        if (player->hasComponent<ProjectileTag>()) return;
+    if (player->hasComponent<ProjectileTag>()) return;
 
         if (e.state == CollisionState::Stay) {
             if (player->hasComponent<PlayerGroundCheck>()) {
@@ -226,6 +228,7 @@ void OnPlayerCollisionEvent::cameraBoundsCollision(Entity *player, Entity *other
     const char *otherTag, World &world) {
     if (e.state !=CollisionState::Enter) return;
     if (player->hasComponent<ProjectileTag>()) return;
+    if (player->hasComponent<PlayerHurtbox>()) return;
     auto& cameraBounds = other->getComponent<Collider>();
 
     // Find the camera
@@ -269,8 +272,9 @@ void OnPlayerCollisionEvent::enemyCollision(Entity *player, Entity *other, const
             return;
         }
 
-        if (player->hasComponent<Health>() &&
+        if (player->hasComponent<PlayerHurtbox>() &&
             other->hasComponent<ContactDamage>()) {
+            player = &player->getComponent<FollowEntity>().followedEntity;
             auto& invulnerability = player->getComponent<Invulnerability>();
             if (invulnerability.isInvulnerable) return;
 
@@ -318,12 +322,11 @@ void OnPlayerCollisionEvent::projectileCollision(Entity *player, Entity *other, 
     */
 
 
-    if (player->hasComponent<Health>() &&
-        player->hasComponent<Invulnerability>() &&
-        player->hasComponent<HitKnockback>() &&
+    if (player->hasComponent<PlayerHurtbox>() &&
         other->hasComponent<Velocity>() &&
         other->hasComponent<ProjectileDamage>()) {
 
+        player = &player->getComponent<FollowEntity>().followedEntity;
         auto& invulnerability = player->getComponent<Invulnerability>();
         auto& invulTimer = player->getComponent<InvulnerabilityTimer>();
         if (invulnerability.isInvulnerable) return;
@@ -365,6 +368,7 @@ void OnPlayerCollisionEvent::enemyDetectCollision(Entity *player, Entity *other,
     if (e.state != CollisionState::Stay) return;
     if (player->hasComponent<ProjectileTag>()) return;
     if (player->hasComponent<PlayerGroundCheck>()) return;
+    if (player->hasComponent<PlayerHurtbox>()) return;
     if (!other->hasComponent<OnPlayerDetectCallback>())return;
 
     other->getComponent<OnPlayerDetectCallback>().callback(other, player);

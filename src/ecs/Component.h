@@ -282,6 +282,7 @@ struct HitKnockback {
 struct TitleScreenTag{};
 struct PlayerTag{};
 struct PlayerGroundCheck{};
+struct PlayerHurtbox{};
 struct ProjectileTag{};
 struct BeakEnemyTag{};
 struct BladerEnemyTag{};

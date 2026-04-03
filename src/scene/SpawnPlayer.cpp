@@ -69,6 +69,13 @@ void SpawnPlayer::spawn(World& world) {
     player.addComponent<HitKnockback>(80.0f, 0.6f);
     player.addComponent<FlashWhileInvulnerable>(0.05f);
 
+    auto& playerHurtbox(world.createEntity());
+    auto& playerHurtboxCollider = playerHurtbox.addComponent<Collider>("Player");
+    playerHurtboxCollider.rect.w = 30;
+    playerHurtboxCollider.rect.h = 30;
+    playerHurtbox.addComponent<PlayerHurtbox>();
+    playerHurtbox.addComponent<Transform>(playerTransform);
+    playerHurtbox.addComponent<FollowEntity>(player, (96.0f - 30.0f) / 2, (96.0f - 30.0f) / 2);
 
     auto& playerGroundCheck (world.createEntity());
     auto& playerGroundCheckCollider = playerGroundCheck.addComponent<Collider>("Player");
