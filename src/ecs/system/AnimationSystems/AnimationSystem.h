@@ -13,6 +13,7 @@
 #include "PlayerAnimationSystem.h"
 #include "BeakAnimationSystem.h"
 #include "BladerAnimationSystem.h"
+#include "OctopusBatteryAnimationSystem.h"
 #include "TitleScreenAnimationSystem.h"
 
 // State System: Deciding which clip to use
@@ -35,6 +36,9 @@ public:
                 }
                 else if (e->hasComponent<BladerEnemyTag>()) {
                     newClip = BladerAnimationSystem::getAnimationClip(e);
+                }
+                else if (e->hasComponent<OctopusBatteryTag>()) {
+                    newClip = OctopusBatteryAnimationSystem::getAnimationClip(e);
                 }
                 else if (e->hasComponent<TitleScreenTag>()) {
                     newClip = TitleScreenAnimationSystem::getAnimationClip(e);
@@ -73,10 +77,13 @@ public:
 
                     std::size_t totalAnimationFrames = clip.frameIndices.size();
 
+                    if (anim.currentFrame + 1 >= totalAnimationFrames && newClip.stayOnLastFrame) continue;
+
                     if (anim.currentFrame + 1 >= totalAnimationFrames && newClip.destroyOnFinish) {
                         e->destroy();
                         continue;
                     }
+
                     // Advance to the next animation frame (currentAnimationFrame + 1)
                     // Wrap around % so it loops when reaching the end of the clip
                     anim.currentFrame = (anim.currentFrame + 1) % totalAnimationFrames;

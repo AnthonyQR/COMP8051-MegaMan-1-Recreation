@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="232">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="13" nextobjectid="235">
  <tileset firstgid="1" source="CutManTileset.tsx"/>
  <layer id="1" name="Terrain Layer" width="220" height="144">
   <data encoding="csv">
@@ -342,7 +342,7 @@
  </objectgroup>
  <objectgroup id="11" name="Octopus Battery Horizontal Spawn Layer"/>
  <objectgroup id="12" name="Octopus Battery Vertical Spawn Layer">
-  <object id="231" x="112" y="2160">
+  <object id="233" x="112" y="2224">
    <point/>
   </object>
  </objectgroup>

@@ -47,7 +47,8 @@ void Map::load(const char* path, SDL_Texture *ts) {
     parseData(layer, "Beak Right Spawn Layer", beakEnemyRightSpawnPoints);
     parseData(layer, "Beak Right Early Spawn Layer", beakEnemyRightEarlySpawnPoints);
     parseData(layer, "Blader Enemy Spawn Layer", bladerEnemySpawnPoints);
-    std::cout << beakEnemyLeftSpawnPoints.size() << std::endl;
+    parseData(layer, "Octopus Battery Vertical Spawn Layer", octopusBatteryVerticalSpawnPoints);
+    parseData(layer, "Octopus Battery Horizontal Spawn Layer", octopusBatteryHorizontalSpawnPoints);
 
     //parseData(layer, "Item Layer", itemSpawnPoints);
 }

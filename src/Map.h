@@ -33,6 +33,8 @@ public:
     std::vector<Vector2D> beakEnemyRightEarlySpawnPoints;
     std::vector<Vector2D> beakEnemyLeftSpawnPoints;
     std::vector<Vector2D> bladerEnemySpawnPoints;
+    std::vector<Vector2D> octopusBatteryVerticalSpawnPoints;
+    std::vector<Vector2D> octopusBatteryHorizontalSpawnPoints;
     std::vector<Collider> deathColliders;
     std::vector<Vector2D> itemSpawnPoints;
 };

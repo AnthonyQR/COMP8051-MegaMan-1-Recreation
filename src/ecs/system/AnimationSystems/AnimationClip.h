@@ -15,6 +15,7 @@ struct NextAnimationClip {
     std::string name{};
     float animationSpeed{};
     bool destroyOnFinish{};
+    bool stayOnLastFrame{};
 };
 
 #endif //TUTORIAL1_ANIMATIONCLIP_H

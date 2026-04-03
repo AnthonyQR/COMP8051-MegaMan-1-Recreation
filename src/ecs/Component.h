@@ -85,6 +85,10 @@ struct Collider {
     SDL_FRect rect{};
 };
 
+struct WallCollidable {
+    bool isCollidable{};
+};
+
 struct LadderClimbing {
     float climbSpeed{};
     bool canClimb = false;
@@ -275,6 +279,7 @@ struct PlayerGroundCheck{};
 struct ProjectileTag{};
 struct BeakEnemyTag{};
 struct BladerEnemyTag{};
+struct OctopusBatteryTag{};
 struct EnemyDeathTag{};
 struct InvulnerableWhileNotFiring{};
 struct SpawnedEnemyTag{};
