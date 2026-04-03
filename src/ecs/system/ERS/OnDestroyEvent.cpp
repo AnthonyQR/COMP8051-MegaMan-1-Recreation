@@ -8,6 +8,7 @@
 void OnDestroyEvent::onDestroy(const DestroyedEvent &e, World &world) {
     Entity* destroyedEntity = e.entity;
 
+    // Player Projectiles Limit
     if (destroyedEntity->hasComponent<ProjectileTag>() &&
         destroyedEntity->hasComponent<PlayerTag>()) {
         std::vector<std::unique_ptr<Entity>>& entities = world.getEntities();
@@ -24,6 +25,7 @@ void OnDestroyEvent::onDestroy(const DestroyedEvent &e, World &world) {
         }
     }
 
+    // Enemy Spawner Reset
     else if (destroyedEntity->hasComponent<SpawnedEnemyTag>()) {
         std::vector<std::unique_ptr<Entity>>& entities = world.getEntities();
         for (auto& entity : entities) {

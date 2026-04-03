@@ -10,6 +10,7 @@ class OnPlayerCollisionEvent {
 public:
     static void onCollision(Entity *player, Entity *other,
         const CollisionEvent& e, const char* otherTag, World& world);
+
     static void wallCollision(Entity *player, Entity *other,
         const CollisionEvent& e, const char* otherTag, World& world);
     static void ladderCollision(Entity *player, Entity *other,

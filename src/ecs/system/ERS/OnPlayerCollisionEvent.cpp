@@ -6,11 +6,8 @@
 
 #include "OnDestroyEvent.h"
 
-void OnPlayerCollisionEvent::onCollision(Entity *player,
-                                         Entity *other,
-                                         const CollisionEvent &e,
-                                         const char *otherTag,
-                                         World &world) {
+void OnPlayerCollisionEvent::onCollision(Entity *player, Entity *other,
+    const CollisionEvent &e, const char *otherTag, World &world) {
 
     if (std::string(otherTag) == "Wall") {
         wallCollision(player, other, e, otherTag, world);

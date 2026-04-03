@@ -48,8 +48,8 @@ add_executable(Tutorial1 src/main.cpp
         src/scene/SpawnBeakEnemy.cpp
         src/scene/SpawnPlayer.cpp
         src/scene/SpawnBladerEnemy.cpp
-        src/scene/SpawnBladerEnemy.h
         src/ecs/system/ERS/OnPlayerCollisionEvent.cpp
+        src/ecs/system/ERS/OnEnemyCollisionEvent.cpp
 )
 
 target_link_libraries(Tutorial1

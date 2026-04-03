@@ -7,7 +7,6 @@
 
 #include "World.h"
 
-
 class OnDestroyEvent {
 public:
     static void onDestroy(const DestroyedEvent& e, World& world);
