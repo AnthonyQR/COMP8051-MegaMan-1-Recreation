@@ -33,6 +33,7 @@ void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
             if (std::abs(leftPenetrationDepth) < std::abs(rightPenetrationDepth) &&
                 std::abs(leftPenetrationDepth) < std::abs(topPenetrationDepth) &&
                 std::abs(leftPenetrationDepth) < std::abs(bottomPenetrationDepth)) {
+                velocity.xSpeed = 0;
                 transform.position.x = (wallCollider.x + wallCollider.w + positionOffset - xOffset);
                 enemyCollider.x = transform.position.x + xOffset;
                 return;
@@ -42,6 +43,7 @@ void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
             if (std::abs(rightPenetrationDepth) < std::abs(leftPenetrationDepth) &&
                 std::abs(rightPenetrationDepth) < std::abs(topPenetrationDepth) &&
                 std::abs(rightPenetrationDepth) < std::abs(bottomPenetrationDepth)){
+                velocity.xSpeed = 0;
                 transform.position.x = (wallCollider.x - enemyCollider.w - positionOffset - xOffset);
                 enemyCollider.x = transform.position.x + xOffset;
                 return;

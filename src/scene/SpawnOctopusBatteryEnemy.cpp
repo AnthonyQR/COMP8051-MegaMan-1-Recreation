@@ -14,6 +14,14 @@ void SpawnOctopusBatteryEnemy::spawn(World& world) {
 
         finishSpawn(world, octopusSpawner, true);
     }
+
+    for (auto& spawnPoint : world.getMap().octopusBatteryHorizontalSpawnPoints) {
+        auto& octopusSpawner(world.createEntity());
+        auto& spawnerTransform = octopusSpawner.addComponent<Transform>
+        (Vector2D(spawnPoint.x, spawnPoint.y), 0.0f, 1.0f);
+
+        finishSpawn(world, octopusSpawner, false);
+    }
 }
 
 void SpawnOctopusBatteryEnemy::finishSpawn(World &world, Entity &spawner, bool isVertical) {
@@ -23,10 +31,10 @@ void SpawnOctopusBatteryEnemy::finishSpawn(World &world, Entity &spawner, bool i
             (Vector2D(spawnerTransform.position.x, spawnerTransform.position.y), 0.0f, 1.0f);
 
         if (isVertical) {
-            octopusEnemy.addComponent<Velocity>(Vector2D{0, -1}, 0.0f, 300.0f);
+            octopusEnemy.addComponent<Velocity>(Vector2D{0, -1}, 0.0f, 350.0f);
         }
         else {
-            octopusEnemy.addComponent<Velocity>(Vector2D{-1, 0}, 300.0f, 0.0f);
+            octopusEnemy.addComponent<Velocity>(Vector2D{-1, 0}, 350.0f, 0.0f);
         }
 
         Animation anim = AssetManager::getAnimation("octopus");
@@ -45,7 +53,7 @@ void SpawnOctopusBatteryEnemy::finishSpawn(World &world, Entity &spawner, bool i
 
         octopusEnemy.addComponent<WallCollidable>(true);
 
-        octopusEnemy.addComponent<OctopusBatteryStats>(300.0f, 2.0f, 2.0f);
+        octopusEnemy.addComponent<OctopusBatteryStats>(350.0f, 2.0f, 2.0f);
 
         octopusEnemy.addComponent<Health>(5);
         octopusEnemy.addComponent<ContactDamage>(4);
