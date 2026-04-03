@@ -15,7 +15,7 @@ public:
         NextAnimationClip newClip;
 
         auto& velocity = octopus->getComponent<Velocity>();
-        if (velocity.ySpeed != 0) {
+        if (velocity.ySpeed != 0 || velocity.xSpeed != 0) {
             newClip.name = "start_move";
         }
 

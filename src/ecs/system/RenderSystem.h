@@ -36,6 +36,7 @@ public:
 
                 // Convert from World Space to Screen Space
                 sprite.dst.x = t.position.x - cam.view.x;
+
                 sprite.dst.y = t.position.y - cam.view.y;
 
                 // If the entity has animations, update the source rect

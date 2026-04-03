@@ -32,6 +32,7 @@
 #include "IsFiringTimerSystem.h"
 #include "MainMenuSystem.h"
 #include "MoveTowardsPlayerSystem.h"
+#include "OctopusBatterySystem.h"
 #include "SceneTransitionDelaySystem.h"
 #include "SpawnOnVisibleSystem.h"
 #include "SpawnTimerSystem.h"
@@ -70,6 +71,7 @@ class World {
     UIRenderSystem uiRenderSystem;
     MoveTowardsPlayerSystem moveTowardsPlayerSystem;
     BladerAttackSystem bladerAttackSystem;
+    OctopusBatterySystem octopusBatterySystem;
 
 public:
     World() = default;
@@ -86,6 +88,7 @@ public:
             hitKnockbackSystem.update(entities, dt);
             moveTowardsPlayerSystem.update(entities);
             bladerAttackSystem.update(entities, dt);
+            octopusBatterySystem.update(entities, dt);
             movementSystem.update(entities, dt);
             followEntitySystem.update(entities);
             collisionSystem.update(*this);

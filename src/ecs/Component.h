@@ -242,6 +242,12 @@ struct BladerAttack {
     bool secondPhase{};
 };
 
+struct OctopusBatteryStats {
+    float speed{};
+    float waitDuration{};
+    float timer{};
+};
+
 struct SceneTransitionDelay {
     float timer{};
     std::string nextScene{};

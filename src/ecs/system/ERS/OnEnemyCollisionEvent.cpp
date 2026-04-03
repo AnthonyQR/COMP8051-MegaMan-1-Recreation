@@ -28,6 +28,7 @@ void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
         float rightPenetrationDepth = (enemyCollider.x + enemyCollider.w) - wallCollider.x;
         float topPenetrationDepth = enemyCollider.y - (wallCollider.y + wallCollider.h);
         float bottomPenetrationDepth = (enemyCollider.y + enemyCollider.h) - wallCollider.y;
+
         // Left Side Collision
             if (std::abs(leftPenetrationDepth) < std::abs(rightPenetrationDepth) &&
                 std::abs(leftPenetrationDepth) < std::abs(topPenetrationDepth) &&
@@ -50,7 +51,7 @@ void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
             if (std::abs(topPenetrationDepth) < std::abs(leftPenetrationDepth) &&
                 std::abs(topPenetrationDepth) < std::abs(rightPenetrationDepth) &&
                 std::abs(topPenetrationDepth) < std::abs(bottomPenetrationDepth) &&
-                velocity.ySpeed < 0) {
+                velocity.direction.y < 0) {
                 velocity.ySpeed = 0;
                 transform.position.y = (wallCollider.y + wallCollider.h + positionOffset - yOffset);
                 return;
@@ -60,7 +61,7 @@ void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
             if (std::abs(bottomPenetrationDepth) < std::abs(leftPenetrationDepth) &&
                 std::abs(bottomPenetrationDepth) < std::abs(rightPenetrationDepth) &&
                 std::abs(bottomPenetrationDepth) < std::abs(topPenetrationDepth) &&
-                velocity.ySpeed > 0) {
+                velocity.direction.y > 0) {
                 velocity.ySpeed = 0;
                 transform.position.y = wallCollider.y - enemyCollider.h - positionOffset - yOffset;
                 enemyCollider.y = transform.position.y + yOffset;
