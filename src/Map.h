@@ -32,6 +32,7 @@ public:
     std::vector<Collider> deathColliders;
     std::vector<Vector2D> checkPointSpawnPoints;
     std::vector<Collider> checkPointBoundsColliders;
+    std::vector<Vector2D> debugSpawnPoints;
 
     std::vector<Vector2D> beakEnemyRightSpawnPoints;
     std::vector<Vector2D> beakEnemyRightEarlySpawnPoints;

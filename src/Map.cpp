@@ -44,7 +44,7 @@ void Map::load(const char* path, SDL_Texture *ts) {
     parseData(layer, "Death Collision Layer", deathColliders);
     parseData(layer, "Checkpoint Spawn Layer", checkPointSpawnPoints);
     parseData(layer, "Checkpoint Collision Layer", checkPointBoundsColliders);
-
+    parseData(layer, "Debug Spawn Points Layer", debugSpawnPoints);
 
     parseData(layer, "Beak Left Spawn Layer", beakEnemyLeftSpawnPoints);
     parseData(layer, "Beak Right Spawn Layer", beakEnemyRightSpawnPoints);

@@ -52,6 +52,7 @@ add_executable(Tutorial1 src/main.cpp
         src/ecs/system/ERS/OnEnemyCollisionEvent.cpp
         src/scene/SpawnOctopusBatteryEnemy.cpp
         src/scene/SpawnSuperCutterEnemy.cpp
+        src/ecs/system/DebugTeleportSystem.cpp
 )
 
 target_link_libraries(Tutorial1

@@ -21,6 +21,7 @@
 #include "CameraSystem.h"
 #include "CoyoteTimeSystem.h"
 #include "DamageSystem.h"
+#include "DebugTeleportSystem.h"
 #include "DestructionSystem.h"
 #include "system/ERS/EventResponseSystem.h"
 #include "FlashWhileInvulnerableSystem.h"
@@ -72,6 +73,7 @@ class World {
     MoveTowardsPlayerSystem moveTowardsPlayerSystem;
     BladerAttackSystem bladerAttackSystem;
     OctopusBatterySystem octopusBatterySystem;
+    DebugTeleportSystem debugTeleportSystem;
 
 public:
     World() = default;
@@ -82,6 +84,7 @@ public:
             animationSystem.update(entities, dt);
         }
         else {
+            debugTeleportSystem.update(entities, event, *this);
             keyboardInputSystem.update(entities, event, dt);
             coyoteTimeSystem.update(entities, dt);
             gravitySystem.update(entities, dt);
