@@ -43,7 +43,7 @@ void SpawnBladerEnemy::spawn(World &world) {
             bladerEnemy.addComponent<SpawnedEnemyTag>();
             bladerEnemy.addComponent<DestroyOutOfViewTag>();
 
-            bladerEnemy.addComponent<BladerAttack>(false, bladerTransform.position.y, 1.0f, 0.5f, 4.0f);
+            bladerEnemy.addComponent<BladerAttack>(false, bladerTransform.position.y, 0.8f, 0.5f, 12.0f);
 
             auto& bladerPlayerDetection(world.createEntity());
             auto& bladerDetectionTransform = bladerPlayerDetection.addComponent<Transform>(Vector2D(0.0f, 0.0f), 0.0f, 1.0f);
@@ -68,6 +68,7 @@ void SpawnBladerEnemy::spawn(World &world) {
                 auto& playerTransform = player->getComponent<Transform>();
                 auto& playerCollider = player->getComponent<Collider>();
                 auto& bladerTransform = bladerEnemy.getComponent<Transform>();
+                auto& bladerCollider = bladerEnemy.getComponent<Collider>();
                 auto& bladerDetectionCollider = bladerPlayerDetection->getComponent<Collider>();
 
                 bladerAttack.yAcceleration =
@@ -88,7 +89,8 @@ void SpawnBladerEnemy::spawn(World &world) {
 
                 if (bladerVelocity.direction.x == 1) {
                     bladerAttack.xAcceleration =
-                    (2 * (playerTransform.position.x - bladerTransform.position.x - bladerAttack.firstPhaseDistanceFromPlayer)
+                    (2 * (playerTransform.position.x + (playerCollider.rect.w / 2) - (playerCollider.xOffset)
+                        - bladerTransform.position.x - bladerAttack.firstPhaseDistanceFromPlayer)
                     / std::pow(bladerAttack.firstAttackDuration, 2)) * bladerVelocity.direction.x;
 
                     bladerAttack.maxXDistance =
@@ -98,8 +100,8 @@ void SpawnBladerEnemy::spawn(World &world) {
                 }
                 else {
                     bladerAttack.xAcceleration =
-                    (2 * (playerTransform.position.x + (2 * playerCollider.xOffset) + playerCollider.rect.w
-                    + bladerAttack.firstPhaseDistanceFromPlayer - bladerTransform.position.x)
+                    (2 * (playerTransform.position.x + (playerCollider.rect.w / 2) - (playerCollider.xOffset)
+                    + bladerAttack.firstPhaseDistanceFromPlayer - bladerTransform.position.x + bladerCollider.rect.w)
                     / std::pow(bladerAttack.firstAttackDuration, 2)) * bladerVelocity.direction.x;
 
                     bladerAttack.maxXDistance =

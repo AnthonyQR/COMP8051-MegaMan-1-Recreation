@@ -41,10 +41,6 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
         // Windows will be Direct3D (DirectX)
         // Mac will likely be Metal, OpenGL
         renderer = SDL_CreateRenderer(window, nullptr);
-        SDL_Log("Available renderer drivers:");
-        for (int i = 0; i < SDL_GetNumRenderDrivers(); i++) {
-            SDL_Log("%d. %s", i + 1, SDL_GetRenderDriver(i));
-        }
 
         if (renderer) {
             std::cout << "Renderer created..." << std::endl;
@@ -109,6 +105,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     gameState.playerHealth = 28;
     gameState.playerMaxHealth = 28;
     gameState.lives = 3;
+    gameState.currentCheckpoint = 0;
 
     // Start Main Menu
     sceneManager.changeSceneDeferred("mainMenu");

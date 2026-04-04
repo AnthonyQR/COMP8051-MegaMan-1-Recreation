@@ -9,7 +9,12 @@
 
 void SpawnPlayer::spawn(World& world) {
     auto& player(world.createEntity());
-    auto& playerTransform = player.addComponent<Transform>(Vector2D(50, 6300), 0.0f, 1.0f);
+
+    Vector2D spawnPosition = Vector2D(50, 6300);
+    if (Game::gameState.currentCheckpoint < world.getMap().checkPointSpawnPoints.size()) {
+        spawnPosition = world.getMap().checkPointSpawnPoints[Game::gameState.currentCheckpoint];
+    }
+    auto& playerTransform = player.addComponent<Transform>(spawnPosition, 0.0f, 1.0f);
     player.addComponent<Velocity>(Vector2D(0.0f,1.0f), 0.0f, 0.0f);
     player.addComponent<PlayerHorizontalMovement>(250.0f, 1500.0f, 1250.0f, 8.0f, 0.125f, false);
     player.addComponent<Gravity>(2400.0f, 2400.0f, true);

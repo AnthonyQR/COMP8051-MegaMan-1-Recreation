@@ -4,6 +4,7 @@
 
 #include "OnPlayerCollisionEvent.h"
 
+#include "Game.h"
 #include "OnDestroyEvent.h"
 
 void OnPlayerCollisionEvent::onCollision(Entity *player, Entity *other,
@@ -35,6 +36,10 @@ void OnPlayerCollisionEvent::onCollision(Entity *player, Entity *other,
 
     else if (std::string(otherTag) == "EnemyDetect") {
         enemyDetectCollision(player, other, e, otherTag, world);
+    }
+
+    else if (std::string(otherTag) == "Checkpoint") {
+        checkpointCollision(player, other, e, otherTag, world);
     }
 }
 
@@ -403,5 +408,27 @@ void OnPlayerCollisionEvent::enemyDetectCollision(Entity *player, Entity *other,
     else if (e.state == CollisionState::Exit) {
         if (!other->hasComponent<OnPlayerDetectLeaveCallback>()) return;
         other->getComponent<OnPlayerDetectLeaveCallback>().callback(other, player);
+    }
+}
+
+void OnPlayerCollisionEvent::checkpointCollision(Entity *player, Entity *other, const CollisionEvent &e,
+    const char *otherTag, World &world) {
+    if (e.state != CollisionState::Enter) return;
+    if (player->hasComponent<ProjectileTag>()) return;
+    if (player->hasComponent<PlayerGroundCheck>()) return;
+    if (player->hasComponent<PlayerHurtbox>()) return;
+
+    auto& spawnPoints = world.getMap().checkPointSpawnPoints;
+    auto& checkPointCollider = other->getComponent<Collider>().rect;
+
+    for (int i = 0; i < spawnPoints.size(); i++) {
+        if (spawnPoints[i].x > checkPointCollider.x &&
+            spawnPoints[i].x < checkPointCollider.x + checkPointCollider.w &&
+            spawnPoints[i].y > checkPointCollider.y &&
+            spawnPoints[i].y < checkPointCollider.y + checkPointCollider.h) {
+            Game::gameState.currentCheckpoint = i;
+            std::cout << "New Checkpoint" << std::endl;
+            return;
+        }
     }
 }

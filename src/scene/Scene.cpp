@@ -87,22 +87,6 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
         c.rect.h = cameraBounds.rect.h;
     }
 
-    // Spawn items
-    for (auto &itemSpawnPoint : world.getMap().itemSpawnPoints) {
-        auto& item = world.createEntity();
-        auto& itemTransform = item.addComponent<Transform>(Vector2D(itemSpawnPoint.x, itemSpawnPoint.y), 0.0f, 1.0f);
-
-        SDL_Texture* itemTex = TextureManager::load("../Assets/coin.png");
-        SDL_FRect itemSrc{0, 0, 32, 32};
-
-        SDL_FRect itemDest{itemTransform.position.x, itemTransform.position.y, 32, 32};
-        item.addComponent<Sprite>(itemTex, itemSrc, itemDest);
-
-        auto& itemCollider = item.addComponent<Collider>("Item");
-        itemCollider.rect.w = itemDest.w;
-        itemCollider.rect.h = itemDest.h;
-    }
-
     // Spawn Camera
     auto& cam = world.createEntity();
     SDL_FRect camView{};
@@ -115,6 +99,17 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
         auto& e = world.createEntity();
         e.addComponent<Transform>(Vector2D(collider.rect.x, collider.rect.y), 0.0f, 1.0f);
         auto& c = e.addComponent<Collider>("Death");
+        c.rect.x = collider.rect.x;
+        c.rect.y = collider.rect.y;
+        c.rect.w = collider.rect.w;
+        c.rect.h = collider.rect.h;
+    }
+
+    // Spawn checkpoint colliders
+    for (auto &collider : world.getMap().checkPointBoundsColliders) {
+        auto& e = world.createEntity();
+        e.addComponent<Transform>(Vector2D(collider.rect.x, collider.rect.y), 0.0f, 1.0f);
+        auto& c = e.addComponent<Collider>("Checkpoint");
         c.rect.x = collider.rect.x;
         c.rect.y = collider.rect.y;
         c.rect.w = collider.rect.w;

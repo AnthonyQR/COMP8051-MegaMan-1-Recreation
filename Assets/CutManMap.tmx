@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="15" nextobjectid="268">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="17" nextobjectid="273">
  <tileset firstgid="1" source="CutManTileset.tsx"/>
  <layer id="1" name="Terrain Layer" width="220" height="144">
   <data encoding="csv">
@@ -323,6 +323,9 @@
   <object id="263" x="1952" y="88">
    <point/>
   </object>
+  <object id="272" x="1104" y="1104">
+   <point/>
+  </object>
  </objectgroup>
  <objectgroup id="4" name="Ladder Layer" visible="0">
   <object id="153" x="80" y="2143" width="16" height="97"/>
@@ -487,5 +490,17 @@
   <object id="265" x="1808" y="864" width="64" height="16"/>
   <object id="266" x="1872" y="896" width="32" height="16"/>
   <object id="267" x="1904" y="928" width="288" height="16"/>
+ </objectgroup>
+ <objectgroup id="15" name="Checkpoint Collision Layer">
+  <object id="268" x="0" y="2048" width="224" height="256"/>
+  <object id="269" x="1264" y="768" width="288" height="256"/>
+ </objectgroup>
+ <objectgroup id="16" name="Checkpoint Spawn Layer">
+  <object id="270" x="16" y="2192">
+   <point/>
+  </object>
+  <object id="271" x="1408" y="912">
+   <point/>
+  </object>
  </objectgroup>
 </map>

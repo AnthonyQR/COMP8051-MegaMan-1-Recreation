@@ -27,6 +27,7 @@ EventResponseSystem::EventResponseSystem(World &world) {
             onCollision(collision, "Enemy", world);
             onCollision(collision, "Death", world);
             onCollision(collision, "EnemyDetect", world);
+            onCollision(collision, "Checkpoint", world);
         }
     );
 

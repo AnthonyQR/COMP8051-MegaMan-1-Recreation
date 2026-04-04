@@ -29,6 +29,10 @@ public:
     std::vector<Collider> colliders;
     std::vector<Collider> ladders;
     std::vector<Collider> cameraBounds;
+    std::vector<Collider> deathColliders;
+    std::vector<Vector2D> checkPointSpawnPoints;
+    std::vector<Collider> checkPointBoundsColliders;
+
     std::vector<Vector2D> beakEnemyRightSpawnPoints;
     std::vector<Vector2D> beakEnemyRightEarlySpawnPoints;
     std::vector<Vector2D> beakEnemyLeftSpawnPoints;
@@ -37,7 +41,8 @@ public:
     std::vector<Vector2D> octopusBatteryHorizontalSpawnPoints;
     std::vector<Vector2D> superCutterSpawnPoints;
     std::vector<Vector2D> flyingShellSpawnPoints;
-    std::vector<Collider> deathColliders;
+
+
     std::vector<Vector2D> itemSpawnPoints;
 };
 
