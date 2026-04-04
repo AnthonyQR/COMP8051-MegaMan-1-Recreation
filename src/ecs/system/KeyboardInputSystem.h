@@ -177,7 +177,7 @@ public:
                         v.direction.x = 0;
                         v.ySpeed = -ladderClimbing.climbSpeed;
                         gravity.gravityEnabled = false;
-                        transform.position.x = ladderCollider.x - collider.xOffset + 2.0f;
+                        transform.position.x = ladderCollider.x - collider.xOffset + 8.0f;
                     }
                 }
 
@@ -188,7 +188,7 @@ public:
                     v.direction.x = 0;
                     v.ySpeed = ladderClimbing.climbSpeed;
                     gravity.gravityEnabled = false;
-                    transform.position.x = ladderCollider.x - collider.xOffset + 2.0f;
+                    transform.position.x = ladderCollider.x - collider.xOffset + 8.0f;
                     if (ladderCollider.y > collider.rect.y) {
                         transform.position.y = ladderCollider.y - collider.yOffset;
                     }
