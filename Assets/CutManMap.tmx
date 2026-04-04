@@ -341,13 +341,10 @@
   <object id="177" x="1808" y="703" width="16" height="113"/>
  </objectgroup>
  <objectgroup id="13" name="Super Cutter Spawn Layer">
-  <object id="254" x="896" y="1200">
+  <object id="254" x="896" y="1192">
    <point/>
   </object>
-  <object id="255" x="1408" y="176">
-   <point/>
-  </object>
-  <object id="258" x="208" y="2240">
+  <object id="255" x="1408" y="168">
    <point/>
   </object>
  </objectgroup>

@@ -195,6 +195,7 @@ struct AutoFiring {
     std::vector<FiringPattern> patterns{};
     bool oneShot{};
     float timer{};
+    bool loop = true;
     int nextPattern{};
 };
 
@@ -224,7 +225,15 @@ struct OnDeathCallback {
     std::function<void(Entity*)> callback{};
 };
 
-struct OnPlayerDetectCallback {
+struct OnPlayerDetectEnterCallback {
+    std::function<void(Entity*, Entity*)> callback{};
+};
+
+struct OnPlayerDetectStayCallback {
+    std::function<void(Entity*, Entity*)> callback{};
+};
+
+struct OnPlayerDetectLeaveCallback {
     std::function<void(Entity*, Entity*)> callback{};
 };
 

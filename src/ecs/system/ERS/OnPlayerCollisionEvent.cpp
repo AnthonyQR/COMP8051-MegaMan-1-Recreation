@@ -386,11 +386,22 @@ void OnPlayerCollisionEvent::deathCollision(Entity *player, Entity *other, const
 
 void OnPlayerCollisionEvent::enemyDetectCollision(Entity *player, Entity *other, const CollisionEvent &e,
     const char *otherTag, World &world) {
-    if (e.state != CollisionState::Stay) return;
     if (player->hasComponent<ProjectileTag>()) return;
     if (player->hasComponent<PlayerGroundCheck>()) return;
     if (player->hasComponent<PlayerHurtbox>()) return;
-    if (!other->hasComponent<OnPlayerDetectCallback>())return;
 
-    other->getComponent<OnPlayerDetectCallback>().callback(other, player);
+    if (e.state == CollisionState::Enter) {
+        if (!other->hasComponent<OnPlayerDetectEnterCallback>()) return;
+        other->getComponent<OnPlayerDetectEnterCallback>().callback(other, player);
+    }
+
+    else if (e.state == CollisionState::Stay) {
+        if (!other->hasComponent<OnPlayerDetectStayCallback>()) return;
+        other->getComponent<OnPlayerDetectStayCallback>().callback(other, player);
+    }
+
+    else if (e.state == CollisionState::Exit) {
+        if (!other->hasComponent<OnPlayerDetectLeaveCallback>()) return;
+        other->getComponent<OnPlayerDetectLeaveCallback>().callback(other, player);
+    }
 }

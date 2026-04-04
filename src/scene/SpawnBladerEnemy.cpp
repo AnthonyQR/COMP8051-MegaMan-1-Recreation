@@ -56,7 +56,7 @@ void SpawnBladerEnemy::spawn(World &world) {
                 -bladerDetectionCollider.rect.h / 2);
 
 
-            bladerPlayerDetection.addComponent<OnPlayerDetectCallback>([](Entity* bladerPlayerDetection, Entity* player) {
+            bladerPlayerDetection.addComponent<OnPlayerDetectStayCallback>([](Entity* bladerPlayerDetection, Entity* player) {
                 auto& bladerEnemy = bladerPlayerDetection->getComponent<FollowEntity>().followedEntity;
                 auto& bladerAttack = bladerEnemy.getComponent<BladerAttack>();
                 if (bladerAttack.isAttacking) return;

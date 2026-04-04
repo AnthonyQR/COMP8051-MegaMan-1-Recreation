@@ -14,7 +14,7 @@ public:
         NextAnimationClip newClip;
         auto& velocity = superCutter->getComponent<Velocity>();
 
-        if (velocity.xSpeed <= 0) {
+        if (velocity.direction.x >= 0) {
             newClip.name = "left";
         }
         else {
