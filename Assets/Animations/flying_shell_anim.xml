@@ -1,0 +1,11 @@
+<animations>
+    <closed>
+        <frame x="0" y="0" w="17" h="21"/>
+    </closed>
+    <fire_left>
+        <frame x="17" y="0" w="17" h="21"/>
+    </fire_left>
+    <fire_right>
+        <frame x="17" y="21" w="17" h="21"/>
+    </fire_right>
+</animations>
