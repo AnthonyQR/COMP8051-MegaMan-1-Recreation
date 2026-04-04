@@ -9,6 +9,7 @@
 #include "SpawnBladerEnemy.h"
 #include "SpawnOctopusBatteryEnemy.h"
 #include "SpawnPlayer.h"
+#include "SpawnSuperCutterEnemy.h"
 
 Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, const int windowWidth, const int windowHeight)
 : name(sceneName), type(sceneType) {
@@ -153,6 +154,7 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
     SpawnBeakEnemy::spawn(world);
     SpawnBladerEnemy::spawn(world);
     SpawnOctopusBatteryEnemy::spawn(world);
+    SpawnSuperCutterEnemy::spawn(world);
 
     // Add Scene State
     auto &state(world.createEntity());

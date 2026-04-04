@@ -51,7 +51,7 @@ add_executable(Tutorial1 src/main.cpp
         src/ecs/system/ERS/OnPlayerCollisionEvent.cpp
         src/ecs/system/ERS/OnEnemyCollisionEvent.cpp
         src/scene/SpawnOctopusBatteryEnemy.cpp
-        src/scene/SpawnOctopusBatteryEnemy.h
+        src/scene/SpawnSuperCutterEnemy.cpp
 )
 
 target_link_libraries(Tutorial1

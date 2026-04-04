@@ -287,6 +287,7 @@ struct ProjectileTag{};
 struct BeakEnemyTag{};
 struct BladerEnemyTag{};
 struct OctopusBatteryTag{};
+struct SuperCutterTag{};
 struct EnemyDeathTag{};
 struct InvulnerableWhileNotFiring{};
 struct SpawnedEnemyTag{};

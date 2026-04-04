@@ -35,6 +35,8 @@ public:
     std::vector<Vector2D> bladerEnemySpawnPoints;
     std::vector<Vector2D> octopusBatteryVerticalSpawnPoints;
     std::vector<Vector2D> octopusBatteryHorizontalSpawnPoints;
+    std::vector<Vector2D> superCutterSpawnPoints;
+    std::vector<Vector2D> flyingShellSpawnPoints;
     std::vector<Collider> deathColliders;
     std::vector<Vector2D> itemSpawnPoints;
 };

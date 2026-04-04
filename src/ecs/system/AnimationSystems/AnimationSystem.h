@@ -14,6 +14,7 @@
 #include "BeakAnimationSystem.h"
 #include "BladerAnimationSystem.h"
 #include "OctopusBatteryAnimationSystem.h"
+#include "SuperCutterAnimationSystem.h"
 #include "TitleScreenAnimationSystem.h"
 
 // State System: Deciding which clip to use
@@ -39,6 +40,9 @@ public:
                 }
                 else if (e->hasComponent<OctopusBatteryTag>()) {
                     newClip = OctopusBatteryAnimationSystem::getAnimationClip(e);
+                }
+                else if (e->hasComponent<SuperCutterTag>()) {
+                    newClip = SuperCutterAnimationSystem::getAnimationClip(e);
                 }
                 else if (e->hasComponent<TitleScreenTag>()) {
                     newClip = TitleScreenAnimationSystem::getAnimationClip(e);

@@ -101,7 +101,6 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
             }, true, initialFiringDelay);
         }
 
-
         beakEnemy.addComponent<Health>(1);
         beakEnemy.addComponent<ContactDamage>(1);
         beakEnemy.addComponent<Invulnerability>(false);

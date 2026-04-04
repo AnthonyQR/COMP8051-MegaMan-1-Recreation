@@ -9,10 +9,10 @@
 #include "manager/AssetManager.h"
 
 void SpawnBladerEnemy::spawn(World &world) {
-    for (auto& beakEnemySpawnPoint : world.getMap().bladerEnemySpawnPoints) {
+    for (auto& bladerEnemySpawnPoint : world.getMap().bladerEnemySpawnPoints) {
         auto& bladerSpawner(world.createEntity());
         auto& spawnerTransform = bladerSpawner.addComponent<Transform>
-        (Vector2D(beakEnemySpawnPoint.x, beakEnemySpawnPoint.y), 0.0f, 1.0f);
+        (Vector2D(bladerEnemySpawnPoint.x, bladerEnemySpawnPoint.y), 0.0f, 1.0f);
 
         bladerSpawner.addComponent<SpawnOnVisible>(false, [&world](Transform spawnerTransform) {
             auto& bladerEnemy(world.createDeferredEntity());
