@@ -21,7 +21,6 @@ public:
                 auto& projectileStats = entity->getComponent<ProjectileStats>();
                 if (isFiring.firing) {
                     autoFiring.timer -= dt;
-                    std::cout << autoFiring.timer << std::endl;
                     if (autoFiring.timer <= 0) {
                         if (autoFiring.oneShot && (autoFiring.nextPattern >= autoFiring.patterns.size())) {
                             continue;

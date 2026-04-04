@@ -53,7 +53,7 @@ void SpawnOctopusBatteryEnemy::finishSpawn(World &world, Entity &spawner, bool i
 
         octopusEnemy.addComponent<WallCollidable>(true);
 
-        octopusEnemy.addComponent<OctopusBatteryStats>(350.0f, 2.0f, 2.0f);
+        octopusEnemy.addComponent<OctopusBatteryStats>(350.0f, 1.5f, 1.5f);
 
         octopusEnemy.addComponent<Health>(5);
         octopusEnemy.addComponent<ContactDamage>(4);
