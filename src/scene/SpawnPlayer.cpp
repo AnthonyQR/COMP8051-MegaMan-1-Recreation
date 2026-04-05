@@ -80,7 +80,7 @@ void SpawnPlayer::spawn(World& world) {
     playerHurtboxCollider.rect.h = 30;
     playerHurtbox.addComponent<PlayerHurtbox>();
     playerHurtbox.addComponent<Transform>(playerTransform);
-    playerHurtbox.addComponent<FollowEntity>(player, (96.0f - 26.0f) / 2, (96.0f - 30.0f) / 2);
+    playerHurtbox.addComponent<FollowEntity>(&player, (96.0f - 26.0f) / 2, (96.0f - 30.0f) / 2);
 
     auto& playerGroundCheck (world.createEntity());
     auto& playerGroundCheckCollider = playerGroundCheck.addComponent<Collider>("Player");
@@ -88,5 +88,5 @@ void SpawnPlayer::spawn(World& world) {
     playerGroundCheckCollider.rect.h = 16.0f;
     playerGroundCheck.addComponent<PlayerGroundCheck>();
     playerGroundCheck.addComponent<Transform>(playerTransform);
-    playerGroundCheck.addComponent<FollowEntity>(player, playerCollider.xOffset, playerCollider.rect.h + 24.0f);
+    playerGroundCheck.addComponent<FollowEntity>(&player, playerCollider.xOffset, playerCollider.rect.h + 24.0f);
 }

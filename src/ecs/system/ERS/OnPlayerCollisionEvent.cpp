@@ -49,7 +49,7 @@ void OnPlayerCollisionEvent::wallCollision(Entity *player, Entity *other, const 
     if (player->hasComponent<PlayerHurtbox>()) return;
         if (e.state == CollisionState::Stay) {
             if (player->hasComponent<PlayerGroundCheck>()) {
-                player = &player->getComponent<FollowEntity>().followedEntity;
+                player = player->getComponent<FollowEntity>().followedEntity;
                 auto& ladderClimbing = player->getComponent<LadderClimbing>();
                 auto& v = player->getComponent<Velocity>();
 
@@ -169,7 +169,7 @@ void OnPlayerCollisionEvent::wallCollision(Entity *player, Entity *other, const 
 
         if (e.state == CollisionState::Exit) {
             if (player->hasComponent<PlayerGroundCheck>()) {
-                auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
+                auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity->getComponent<CoyoteTime>();
                 coyoteTime.timer = coyoteTime.duration;
                 coyoteTime.isCoyoteTime = true;
             }
@@ -184,8 +184,8 @@ void OnPlayerCollisionEvent::ladderCollision(Entity *player, Entity *other, cons
 
         if (e.state == CollisionState::Stay) {
             if (player->hasComponent<PlayerGroundCheck>()) {
-                if (player->getComponent<FollowEntity>().followedEntity.getComponent<Transform>().position.y < other->getComponent<Collider>().rect.y) {
-                    auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
+                if (player->getComponent<FollowEntity>().followedEntity->getComponent<Transform>().position.y < other->getComponent<Collider>().rect.y) {
+                    auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity->getComponent<CoyoteTime>();
                     coyoteTime.timer = coyoteTime.duration;
                     coyoteTime.isCoyoteTime = false;
                 }
@@ -234,7 +234,7 @@ void OnPlayerCollisionEvent::ladderCollision(Entity *player, Entity *other, cons
 
         if (e.state == CollisionState::Exit) {
             if (player->hasComponent<PlayerGroundCheck>()) {
-                auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity.getComponent<CoyoteTime>();
+                auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity->getComponent<CoyoteTime>();
                 coyoteTime.timer = coyoteTime.duration;
                 coyoteTime.isCoyoteTime = true;
                 return;
@@ -290,7 +290,7 @@ void OnPlayerCollisionEvent::enemyCollision(Entity *player, Entity *other, const
 
             auto& projectileDamage = player->getComponent<ProjectileDamage>();
             auto& damageEntity(world.createEntity());
-            damageEntity.addComponent<Damage>(projectileDamage.damage, other);
+            damageEntity.addComponent<Damage>(projectileDamage.damage, other, true);
             world.getAudioEventQueue().push(std::make_unique<AudioEvent>("enemyDamage"));
 
             OnDestroyEvent::onDestroy(player, world);
@@ -300,20 +300,20 @@ void OnPlayerCollisionEvent::enemyCollision(Entity *player, Entity *other, const
 
         if (player->hasComponent<PlayerHurtbox>() &&
             other->hasComponent<ContactDamage>()) {
-            player = &player->getComponent<FollowEntity>().followedEntity;
-            auto& invulnerability = player->getComponent<Invulnerability>();
+            auto& actualPlayer = player->getComponent<FollowEntity>().followedEntity;
+            auto& invulnerability = actualPlayer->getComponent<Invulnerability>();
             if (invulnerability.isInvulnerable) return;
 
-            auto& invulTimer = player->getComponent<InvulnerabilityTimer>();
+            auto& invulTimer = actualPlayer->getComponent<InvulnerabilityTimer>();
 
             auto& contactDamage = other->getComponent<ContactDamage>();
             auto& damageEntity(world.createEntity());
-            damageEntity.addComponent<Damage>(contactDamage.damage, player);
+            damageEntity.addComponent<Damage>(contactDamage.damage, actualPlayer);
             world.getAudioEventQueue().push(std::make_unique<AudioEvent>("enemyShoot"));
 
-            auto& hitKnockback = player->getComponent<HitKnockback>();
+            auto& hitKnockback = actualPlayer->getComponent<HitKnockback>();
             auto& velocity = other->getComponent<Velocity>();
-            auto& playerCollider = player->getComponent<Collider>().rect;
+            auto& playerCollider = actualPlayer->getComponent<Collider>().rect;
             auto& enemyCollider = other->getComponent<Collider>().rect;
             hitKnockback.isHitKnockback = true;
 
@@ -352,14 +352,14 @@ void OnPlayerCollisionEvent::projectileCollision(Entity *player, Entity *other, 
         other->hasComponent<Velocity>() &&
         other->hasComponent<ProjectileDamage>()) {
 
-        player = &player->getComponent<FollowEntity>().followedEntity;
+        player = player->getComponent<FollowEntity>().followedEntity;
         auto& invulnerability = player->getComponent<Invulnerability>();
         auto& invulTimer = player->getComponent<InvulnerabilityTimer>();
         if (invulnerability.isInvulnerable) return;
 
         auto& projectileDamage = other->getComponent<ProjectileDamage>();
         auto& damageEntity(world.createEntity());
-        damageEntity.addComponent<Damage>(projectileDamage.damage, player);
+        damageEntity.addComponent<Damage>(projectileDamage.damage, player, true);
 
         auto& hitKnockback = player->getComponent<HitKnockback>();
         auto& velocity = other->getComponent<Velocity>();

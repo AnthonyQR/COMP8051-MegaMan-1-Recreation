@@ -135,7 +135,7 @@ struct Health {
 };
 
 struct FollowEntity {
-    Entity followedEntity{};
+    Entity* followedEntity{};
     float xOffset{};
     float yOffset{};
 };

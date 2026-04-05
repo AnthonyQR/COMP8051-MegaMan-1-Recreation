@@ -52,13 +52,13 @@ void SpawnBladerEnemy::spawn(World &world) {
             bladerDetectionCollider.rect.h = 2000.0f;
 
             bladerPlayerDetection.addComponent<FollowEntity>
-            (bladerEnemy, (-bladerDetectionCollider.rect.w / 2) + (bladerCollider.rect.w / 2),
+            (&bladerEnemy, (-bladerDetectionCollider.rect.w / 2) + (bladerCollider.rect.w / 2),
                 -bladerDetectionCollider.rect.h / 2);
 
 
             bladerPlayerDetection.addComponent<OnPlayerDetectStayCallback>([](Entity* bladerPlayerDetection, Entity* player) {
                 auto& bladerEnemy = bladerPlayerDetection->getComponent<FollowEntity>().followedEntity;
-                auto& bladerAttack = bladerEnemy.getComponent<BladerAttack>();
+                auto& bladerAttack = bladerEnemy->getComponent<BladerAttack>();
                 if (bladerAttack.isAttacking) return;
 
                 bladerAttack.isAttacking = true;
@@ -67,15 +67,15 @@ void SpawnBladerEnemy::spawn(World &world) {
 
                 auto& playerTransform = player->getComponent<Transform>();
                 auto& playerCollider = player->getComponent<Collider>();
-                auto& bladerTransform = bladerEnemy.getComponent<Transform>();
-                auto& bladerCollider = bladerEnemy.getComponent<Collider>();
+                auto& bladerTransform = bladerEnemy->getComponent<Transform>();
+                auto& bladerCollider = bladerEnemy->getComponent<Collider>();
                 auto& bladerDetectionCollider = bladerPlayerDetection->getComponent<Collider>();
 
                 bladerAttack.yAcceleration =
                     (2 * (playerTransform.position.y + playerCollider.yOffset - bladerTransform.position.y)
                     / std::pow(bladerAttack.firstAttackDuration, 2));
 
-                auto& bladerVelocity = bladerEnemy.getComponent<Velocity>();
+                auto& bladerVelocity = bladerEnemy->getComponent<Velocity>();
                 bladerVelocity.xSpeed = 0;
                 bladerVelocity.ySpeed = 0;
 
@@ -112,7 +112,7 @@ void SpawnBladerEnemy::spawn(World &world) {
                     }
 
 
-                bladerEnemy.getComponent<MoveTowardsPlayer>().isMovingTowards = false;
+                bladerEnemy->getComponent<MoveTowardsPlayer>().isMovingTowards = false;
                 std::cout << "Blader detected player" << std::endl;
             });
 

@@ -9,7 +9,7 @@
 void MainMenuSystem::update(std::vector<std::unique_ptr<Entity>>& entities, const SDL_Event &event, World& world) {
     if (event.type == SDL_EVENT_KEY_DOWN) {
         switch (event.key.key) {
-            case SDLK_SPACE: {
+            case SDLK_RETURN: {
                 for (auto& entity : entities) {
                     if (entity->hasComponent<GameStarting>()) {
                         auto& isStarting = entity->getComponent<GameStarting>().isStarting;
