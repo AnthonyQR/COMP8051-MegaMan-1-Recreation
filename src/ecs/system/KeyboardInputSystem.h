@@ -157,7 +157,7 @@ public:
                                 projectileStats.spawnPoint.y = transform.position.y + 24;
                             }
                             else {
-                                projectileStats.spawnPoint.y = transform.position.y + 48;
+                                projectileStats.spawnPoint.y = transform.position.y + 50;
                             }
                             projectileStats.spawnCallback(projectileStats);
                         }
