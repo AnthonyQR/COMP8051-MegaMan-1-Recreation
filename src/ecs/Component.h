@@ -140,6 +140,10 @@ struct FollowEntity {
     float yOffset{};
 };
 
+struct Children {
+    std::vector<Entity*> children{};
+};
+
 struct MoveTowardsPlayer {
     bool isMovingTowards{};
     bool moveX{};

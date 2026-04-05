@@ -118,7 +118,11 @@ void SpawnBladerEnemy::spawn(World &world) {
 
             Animation newDeathAnim = AssetManager::getAnimation("enemyDeath");
 
-            bladerEnemy.addComponent<OnDeathCallback>([&world, newDeathAnim] (Entity* blader) {
+            bladerEnemy.addComponent<OnDeathCallback>([&world, newDeathAnim, bladerPlayerDetection] (Entity* blader) {
+                for (auto& child : blader->getComponent<Children>().children) {
+                    child -> destroy();
+                }
+
                 auto& bladerDeath (world.createDeferredEntity());
                 auto& bladerTransform = blader->getComponent<Transform>();
                 auto& deathTransform = bladerDeath.addComponent<Transform>
@@ -133,6 +137,10 @@ void SpawnBladerEnemy::spawn(World &world) {
                 bladerDeath.addComponent<Sprite>(enemyDeathTex, deathSrc, deathDst);
                 bladerDeath.addComponent<EnemyDeathTag>();
             });
+
+            std::vector newChildren = {&bladerPlayerDetection};
+            bladerEnemy.addComponent<Children>(newChildren);
+
 
             bladerEnemy.addComponent<BladerEnemyTag>();
             return &bladerEnemy;

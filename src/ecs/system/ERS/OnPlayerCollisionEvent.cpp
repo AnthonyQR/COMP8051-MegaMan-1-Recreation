@@ -273,13 +273,13 @@ void OnPlayerCollisionEvent::cameraBoundsCollision(Entity *player, Entity *other
 void OnPlayerCollisionEvent::enemyCollision(Entity *player, Entity *other, const CollisionEvent &e,
     const char *otherTag, World &world) {
     if (e.state !=CollisionState::Enter) return;
-        if (player->hasComponent<PlayerGroundCheck>()) return;
+    if (player->hasComponent<PlayerGroundCheck>()) return;
 
         if (player->hasComponent<ProjectileTag>() &&
             player->hasComponent<ProjectileDamage>() &&
             other->hasComponent<Health>()) {
             if (other->hasComponent<Invulnerability>()) {
-                auto& invulnerability =other->getComponent<Invulnerability>();
+                auto& invulnerability = other->getComponent<Invulnerability>();
                 if (invulnerability.isInvulnerable) {
                     world.getAudioEventQueue().push(std::make_unique<AudioEvent>("dink"));
                     OnDestroyEvent::onDestroy(player, world);
@@ -301,6 +301,7 @@ void OnPlayerCollisionEvent::enemyCollision(Entity *player, Entity *other, const
         if (player->hasComponent<PlayerHurtbox>() &&
             other->hasComponent<ContactDamage>()) {
             player = player->getComponent<FollowEntity>().followedEntity;
+            if (player == nullptr) return;
             auto& invulnerability = player->getComponent<Invulnerability>();
             if (invulnerability.isInvulnerable) return;
 
@@ -353,6 +354,7 @@ void OnPlayerCollisionEvent::projectileCollision(Entity *player, Entity *other, 
         other->hasComponent<ProjectileDamage>()) {
 
         player = player->getComponent<FollowEntity>().followedEntity;
+        if (player == nullptr) return;
         auto& invulnerability = player->getComponent<Invulnerability>();
         auto& invulTimer = player->getComponent<InvulnerabilityTimer>();
         if (invulnerability.isInvulnerable) return;

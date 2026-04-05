@@ -16,7 +16,9 @@ public:
         for (auto& e : entities) {
             if (e->hasComponent<FollowEntity>() && e->hasComponent<Transform>()) {
                 auto& followEntityStats = e->getComponent<FollowEntity>();
-                auto& followedEntityTransform = followEntityStats.followedEntity->getComponent<Transform>();
+                auto& followedEntity = followEntityStats.followedEntity;
+
+                auto& followedEntityTransform = followedEntity->getComponent<Transform>();
                 float xOffset = followEntityStats.xOffset;
                 float yOffset = followEntityStats.yOffset;
                 auto& transform = e->getComponent<Transform>();

@@ -12,61 +12,58 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
         if (entity->hasComponent<Damage>()) {
             auto& damage = entity->getComponent<Damage>();
 
-            if (damage.damagedEntity != nullptr && damage.damagedEntity->hasComponent<Health>()) {
-                /*
-                // Check for invulnerability
-                if (damage.damagedEntity->hasComponent<Invulnerability>()) {
-                    auto& invulnerability = damage.damagedEntity->getComponent<Invulnerability>();
-                    if (invulnerability.isInvulnerable && !damage.invulIgnore) {
-                        entity -> destroy();
-                        continue;
-                    }
-                }
-                */
+            if (damage.damagedEntity == nullptr) {
+                entity->destroy();
+                continue;
+            }
 
-                auto& health = damage.damagedEntity->getComponent<Health>();
-                health.currentHealth -= damage.damage;
+            if (!damage.damagedEntity->hasComponent<Health>()) {
+                entity->destroy();
+                continue;
+            }
 
-                if (health.currentHealth < 0) {
-                    health.currentHealth = 0;
+            auto& health = damage.damagedEntity->getComponent<Health>();
+            health.currentHealth -= damage.damage;
+
+            if (health.currentHealth < 0) {
+                health.currentHealth = 0;
+            }
+
+            if (damage.damagedEntity->hasComponent<PlayerTag>()) {
+                Game::gameState.playerHealth = health.currentHealth;
+                std::cout << "Health: " << health.currentHealth << std::endl;
+                world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanDamage"));
+
+                auto& ladderClimbing = damage.damagedEntity->getComponent<LadderClimbing>();
+                ladderClimbing.isClimbing = false;
+                auto& gravity = damage.damagedEntity->getComponent<Gravity>();
+                gravity.gravityEnabled = true;
+
+                // Find the health bar & update it
+                for (auto& e : entities) {
+                    if (e->hasComponent<HealthBarUpdate>()) {
+                        e->getComponent<HealthBarUpdate>().callback(e.get());
+                        break;
+                    };
                 }
-                
+            }
+
+
+            if (health.currentHealth <= 0) {
+                world.getEventManager().emit(DestroyedEvent(damage.damagedEntity));
+                if (damage.damagedEntity->hasComponent<OnDeathCallback>()) {
+                    damage.damagedEntity->getComponent<OnDeathCallback>().callback(damage.damagedEntity);
+                }
+
                 if (damage.damagedEntity->hasComponent<PlayerTag>()) {
-                    Game::gameState.playerHealth = health.currentHealth;
-                    std::cout << "Health: " << health.currentHealth << std::endl;
-                    world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanDamage"));
-
-                    auto& ladderClimbing = damage.damagedEntity->getComponent<LadderClimbing>();
-                    ladderClimbing.isClimbing = false;
-                    auto& gravity = damage.damagedEntity->getComponent<Gravity>();
-                    gravity.gravityEnabled = true;
-
-                    // Find the health bar & update it
-                    for (auto& e : entities) {
-                        if (e->hasComponent<HealthBarUpdate>()) {
-                            e->getComponent<HealthBarUpdate>().callback(e.get());
-                            break;
-                        };
-                    }
+                    Game::gameState.lives--;
+                    std::cout << "Lives: " << Game::gameState.lives << std::endl;
+                    auto& transition (world.createEntity());
+                    transition.addComponent<SceneTransitionDelay>(2.25f, "cutman");
+                    world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanDefeat"));
+                    Game::checkSceneState();
                 }
-
-
-                if (health.currentHealth <= 0) {
-                    world.getEventManager().emit(DestroyedEvent(damage.damagedEntity));
-                    if (damage.damagedEntity->hasComponent<OnDeathCallback>()) {
-                        damage.damagedEntity->getComponent<OnDeathCallback>().callback(damage.damagedEntity);
-                    }
-                    damage.damagedEntity->destroy();
-
-                    if (damage.damagedEntity->hasComponent<PlayerTag>()) {
-                        Game::gameState.lives--;
-                        std::cout << "Lives: " << Game::gameState.lives << std::endl;
-                        auto& transition (world.createEntity());
-                        transition.addComponent<SceneTransitionDelay>(2.25f, "cutman");
-                        world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanDefeat"));
-                        Game::checkSceneState();
-                    }
-                }
+                damage.damagedEntity->destroy();
             }
             entity -> destroy();
         }
