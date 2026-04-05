@@ -63,7 +63,13 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                     world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanDefeat"));
                     Game::checkSceneState();
                 }
-                damage.damagedEntity->destroy();
+                if (damage.damagedEntity->hasComponent<Children>()) {
+                    for (auto& child : damage.damagedEntity->getComponent<Children>().children) {
+                        child->destroy();
+                    }
+                }
+                auto& damagedEntity = damage.damagedEntity;
+                damagedEntity->destroy();
             }
             entity -> destroy();
         }

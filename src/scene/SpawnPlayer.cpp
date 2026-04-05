@@ -89,4 +89,7 @@ void SpawnPlayer::spawn(World& world) {
     playerGroundCheck.addComponent<PlayerGroundCheck>();
     playerGroundCheck.addComponent<Transform>(playerTransform);
     playerGroundCheck.addComponent<FollowEntity>(&player, playerCollider.xOffset, playerCollider.rect.h + 24.0f);
+
+    std::vector newChildren = {&playerHurtbox, &playerGroundCheck};
+    player.addComponent<Children>(newChildren);
 }

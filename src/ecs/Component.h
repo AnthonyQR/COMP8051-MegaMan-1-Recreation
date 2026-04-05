@@ -5,6 +5,7 @@
 #ifndef TUTORIAL1_COMPONENT_H
 #define TUTORIAL1_COMPONENT_H
 #include <functional>
+#include <memory>
 #include <SDL3/SDL_render.h>
 
 #include "Vector2D.h"

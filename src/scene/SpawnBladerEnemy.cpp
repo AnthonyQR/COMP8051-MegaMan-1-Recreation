@@ -45,7 +45,7 @@ void SpawnBladerEnemy::spawn(World &world) {
 
             bladerEnemy.addComponent<BladerAttack>(false, bladerTransform.position.y, 0.8f, 0.5f, 12.0f);
 
-            auto& bladerPlayerDetection(world.createEntity());
+            auto& bladerPlayerDetection(world.createDeferredEntity());
             auto& bladerDetectionTransform = bladerPlayerDetection.addComponent<Transform>(Vector2D(0.0f, 0.0f), 0.0f, 1.0f);
             auto& bladerDetectionCollider = bladerPlayerDetection.addComponent<Collider>("EnemyDetect");
             bladerDetectionCollider.rect.w = bladerDst.w * 5;
@@ -119,10 +119,6 @@ void SpawnBladerEnemy::spawn(World &world) {
             Animation newDeathAnim = AssetManager::getAnimation("enemyDeath");
 
             bladerEnemy.addComponent<OnDeathCallback>([&world, newDeathAnim, bladerPlayerDetection] (Entity* blader) {
-                for (auto& child : blader->getComponent<Children>().children) {
-                    child -> destroy();
-                }
-
                 auto& bladerDeath (world.createDeferredEntity());
                 auto& bladerTransform = blader->getComponent<Transform>();
                 auto& deathTransform = bladerDeath.addComponent<Transform>
@@ -140,7 +136,6 @@ void SpawnBladerEnemy::spawn(World &world) {
 
             std::vector newChildren = {&bladerPlayerDetection};
             bladerEnemy.addComponent<Children>(newChildren);
-
 
             bladerEnemy.addComponent<BladerEnemyTag>();
             return &bladerEnemy;

@@ -19,7 +19,6 @@ EventResponseSystem::EventResponseSystem(World &world) {
             if (e.type != EventType::Collision) return;
             const auto& collision = static_cast<const CollisionEvent&>(e); // Cast base type to collision type
 
-            onCollision(collision, "Item", world);
             onCollision(collision, "Wall", world);
             onCollision(collision, "Projectile", world);
             onCollision(collision, "Ladder", world);
