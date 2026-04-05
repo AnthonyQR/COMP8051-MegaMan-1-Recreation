@@ -300,20 +300,20 @@ void OnPlayerCollisionEvent::enemyCollision(Entity *player, Entity *other, const
 
         if (player->hasComponent<PlayerHurtbox>() &&
             other->hasComponent<ContactDamage>()) {
-            auto& actualPlayer = player->getComponent<FollowEntity>().followedEntity;
-            auto& invulnerability = actualPlayer->getComponent<Invulnerability>();
+            player = player->getComponent<FollowEntity>().followedEntity;
+            auto& invulnerability = player->getComponent<Invulnerability>();
             if (invulnerability.isInvulnerable) return;
 
-            auto& invulTimer = actualPlayer->getComponent<InvulnerabilityTimer>();
+            auto& invulTimer = player->getComponent<InvulnerabilityTimer>();
 
             auto& contactDamage = other->getComponent<ContactDamage>();
             auto& damageEntity(world.createEntity());
-            damageEntity.addComponent<Damage>(contactDamage.damage, actualPlayer);
+            damageEntity.addComponent<Damage>(contactDamage.damage, player);
             world.getAudioEventQueue().push(std::make_unique<AudioEvent>("enemyShoot"));
 
-            auto& hitKnockback = actualPlayer->getComponent<HitKnockback>();
+            auto& hitKnockback = player->getComponent<HitKnockback>();
             auto& velocity = other->getComponent<Velocity>();
-            auto& playerCollider = actualPlayer->getComponent<Collider>().rect;
+            auto& playerCollider = player->getComponent<Collider>().rect;
             auto& enemyCollider = other->getComponent<Collider>().rect;
             hitKnockback.isHitKnockback = true;
 
