@@ -32,13 +32,14 @@ void DestructionSystem::update(const std::vector<std::unique_ptr<Entity>>& entit
                     t.position.y > cam.view.y + cam.view.h || // Bottom edge
                     t.position.y < cam.view.y // Top edge
                 ) {
-                    world.getEventManager().emit(DestroyedEvent{e.get()});
-                    e -> destroy();
                     if (e->hasComponent<Children>()) {
                         for (auto& child : e->getComponent<Children>().children) {
                             child->destroy();
                         }
                     }
+
+                    world.getEventManager().emit(DestroyedEvent{e.get()});
+                    e -> destroy();
                 }
             }
         }

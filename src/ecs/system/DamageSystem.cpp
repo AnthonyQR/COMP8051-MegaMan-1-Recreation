@@ -84,7 +84,6 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                     damage.damagedEntity->getComponent<OnHitCallback>().callback(damage.damagedEntity, damage.damageDealerEntity);
                 }
             }
-
             entity -> destroy();
         }
     }
