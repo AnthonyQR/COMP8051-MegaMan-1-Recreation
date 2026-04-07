@@ -25,7 +25,7 @@ public:
                             velocity.ySpeed += jump.fastFallSpeed * dt;
                             continue;
                         }
-                        else if (velocity.ySpeed >= 0) {
+                        if (velocity.ySpeed >= 0) {
                             jump.fastFalling = false;
                         }
                     }

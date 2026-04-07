@@ -23,8 +23,6 @@ public:
                 float yOffset = followEntityStats.yOffset;
                 auto& transform = e->getComponent<Transform>();
 
-                transform.oldPosition = transform.position;
-
                 transform.position.x = followedEntityTransform.position.x + xOffset;
                 transform.position.y = followedEntityTransform.position.y + yOffset;
             }

@@ -49,20 +49,23 @@ void SpawnPlayer::spawn(World& world) {
     SDL_Texture* playerProjectileTex = TextureManager::load("../Assets/megaman_projectile.png");
     SDL_FRect playerProjectileSrc{0, 0, 8, 8};
     SDL_FRect playerProjectileDest{0, 0, 8 * 3, 8 * 3};
-    player.addComponent<ProjectileStats>(800.0f, 1, Sprite(playerProjectileTex, playerProjectileSrc, playerProjectileDest),
-        Vector2D(0, 0), Vector2D(0, 0), [&world](ProjectileStats stats) {
+    Sprite newProjectileSprite {playerProjectileTex, playerProjectileSrc, playerProjectileDest};
+
+    player.addComponent<ProjectileStats>(800.0f, 1, Vector2D(0, 0), Vector2D(0, 0),
+        [&world, newProjectileSprite](ProjectileStats stats) {
             auto& projectile = world.createDeferredEntity();
             projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
-            projectile.addComponent<ProjectileTag>();
-            projectile.addComponent<PlayerTag>();
             projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed);
-            auto& projectileSprite = projectile.addComponent<Sprite>(stats.sprite);
+
+            auto& projectileSprite = projectile.addComponent<Sprite>(newProjectileSprite);
             auto& projectileCollider = projectile.addComponent<Collider>("Player");
             projectileCollider.rect.w = projectileSprite.dst.w;
             projectileCollider.rect.h = projectileSprite.dst.h;
             projectile.addComponent<ProjectileDamage>(stats.damage);
-            projectile.addComponent<DestroyOutOfViewTag>();
 
+            projectile.addComponent<PlayerTag>();
+            projectile.addComponent<ProjectileTag>();
+            projectile.addComponent<DestroyOutOfViewTag>();
             world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanBuster"));
         }
     );

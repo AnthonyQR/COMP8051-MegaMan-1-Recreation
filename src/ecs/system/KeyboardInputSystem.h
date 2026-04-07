@@ -171,14 +171,12 @@ public:
                 // Ladder Climbing
                 if (keyboardInputs.isHoldingUp && !keyboardInputs.isHoldingDown && ladderClimbing.canClimb) {
                     auto& ladderCollider = ladderClimbing.ladderEntity->getComponent<Collider>().rect;
-                    if (ladderCollider.y < collider.rect.y) {
-                        ladderClimbing.isClimbing = true;
-                        v.direction.y = 1;
-                        v.direction.x = 0;
-                        v.ySpeed = -ladderClimbing.climbSpeed;
-                        gravity.gravityEnabled = false;
-                        transform.position.x = ladderCollider.x - collider.xOffset + 8.0f;
-                    }
+                    ladderClimbing.isClimbing = true;
+                    v.direction.y = 1;
+                    v.direction.x = 0;
+                    v.ySpeed = -ladderClimbing.climbSpeed;
+                    gravity.gravityEnabled = false;
+                    transform.position.x = ladderCollider.x - collider.xOffset + 8.0f;
                 }
 
                 else if (keyboardInputs.isHoldingDown && !keyboardInputs.isHoldingUp && ladderClimbing.canClimb) {

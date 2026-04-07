@@ -207,7 +207,6 @@ void OnPlayerCollisionEvent::ladderCollision(Entity *player, Entity *other, cons
             float ladderColliderTopOffset = 3.0f;
             float positionOffset = .1f;
 
-            // if (ladderCollider.y > playerCollider.y) {
             if ((ladderCollider.y > playerCollider.y && ladderClimbing.isClimbing) ||
                 (ladderCollider.y > playerCollider.y &&
                 (playerCollider.y + (playerCollider.h / 2) - positionOffset < ladderCollider.y + ladderColliderTopOffset) &&
@@ -221,7 +220,6 @@ void OnPlayerCollisionEvent::ladderCollision(Entity *player, Entity *other, cons
                 ladderClimbing.isClimbing = false;
                 gravity.gravityEnabled = false;
                 v.ySpeed = 0;
-                std::cout << "Grounded" << std::endl;
             }
 
             if (ladderClimbing.isClimbing) {

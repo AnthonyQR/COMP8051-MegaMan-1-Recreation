@@ -165,7 +165,6 @@ struct KeyboardInputs {
 struct ProjectileStats {
     float projectileSpeed{};
     int damage{};
-    Sprite sprite{};
     Vector2D direction{};
     Vector2D spawnPoint{};
     std::function<void(ProjectileStats)> spawnCallback{};

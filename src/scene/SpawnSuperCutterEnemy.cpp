@@ -13,25 +13,26 @@ void SpawnSuperCutterEnemy::spawn(World& world) {
         Animation anim = AssetManager::getAnimation("superCutter");
 
         SDL_Texture* projectileTex = TextureManager::load("../Assets/Animations/super_cutter_anim.png");
-
         SDL_FRect projectileSrc = anim.clips[anim.currentClip].frameIndices[0];
         SDL_FRect projectileDst {spawnPoint.x, spawnPoint.y, 48, 60};
+
+        Sprite newProjectileSprite{projectileTex, projectileSrc, projectileDst};
 
         auto& spawnerTransform = spawner.addComponent<Transform>
         (Vector2D(spawnPoint.x - (projectileDst.w / 2), spawnPoint.y), 0.0f, 1.0f);
 
 
 
-        auto& projectileStats = spawner.addComponent<ProjectileStats>(-1000.0f, 2, Sprite(projectileTex, projectileSrc, projectileDst),
+        auto& projectileStats = spawner.addComponent<ProjectileStats>(-1000.0f, 2,
         Vector2D(0, 0), Vector2D(spawnerTransform.position.x, spawnerTransform.position.y),
-        [&world, anim](ProjectileStats stats) {
+        [&world, anim, newProjectileSprite](ProjectileStats stats) {
             auto& projectile = world.createDeferredEntity();
             auto& projectileTransform = projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
             auto& projectileVelocity = projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed, stats.projectileSpeed);
             auto& projectileGravity = projectile.addComponent<Gravity>(3000.0f, 3000.0f, true);
 
             auto& projectileAnimation = projectile.addComponent<Animation>(anim);
-            auto& projectileSprite = projectile.addComponent<Sprite>(stats.sprite);
+            auto& projectileSprite = projectile.addComponent<Sprite>(newProjectileSprite);
 
             auto& projectileCollider = projectile.addComponent<Collider>("Projectile");
             projectileCollider.rect.w = projectileSprite.dst.w;

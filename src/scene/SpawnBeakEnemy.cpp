@@ -63,12 +63,13 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
         SDL_Texture* beakProjectileTex = TextureManager::load("../Assets/beak_projectile.png");
         SDL_FRect beakProjectileSrc{0, 0, 8, 8};
         SDL_FRect beakProjectileDest{0, 0, 8 * 3, 8 * 3};
+        Sprite newProjectileSprite{beakProjectileTex, beakProjectileSrc, beakProjectileDest};
 
-        beakEnemy.addComponent<ProjectileStats>(600.0f, 2, Sprite(beakProjectileTex, beakProjectileSrc, beakProjectileDest),
-        Vector2D(0, 0), Vector2D(beakTransform.position.x, beakTransform.position.y), [&world](ProjectileStats stats) {
+        beakEnemy.addComponent<ProjectileStats>(600.0f, 2, Vector2D(0, 0), Vector2D(beakTransform.position.x, beakTransform.position.y),
+            [&world, newProjectileSprite](ProjectileStats stats) {
             auto& projectile = world.createDeferredEntity();
             auto& projectileTransform = projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
-            auto& projectileSprite = projectile.addComponent<Sprite>(stats.sprite);
+            auto& projectileSprite = projectile.addComponent<Sprite>(newProjectileSprite);
             auto& projectileCollider = projectile.addComponent<Collider>("Projectile");
             projectileCollider.rect.w = projectileSprite.dst.w;
             projectileCollider.rect.h = projectileSprite.dst.h;
