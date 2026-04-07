@@ -255,9 +255,6 @@ public:
                     }
                 }
 
-
-
-
                 if (ladderClimbing.isClimbing) {
                     v.direction.x = 0;
                 }
