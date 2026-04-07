@@ -280,9 +280,6 @@ void OnPlayerCollisionEvent::enemyCollision(Entity *player, Entity *other, const
             auto& damageEntity(world.createEntity());
             damageEntity.addComponent<Damage>(projectileDamage.damage, other, player);
             world.getAudioEventQueue().push(std::make_unique<AudioEvent>("enemyDamage"));
-
-            OnDestroyEvent::onDestroy(player, world);
-            player->destroy();
             return;
         }
 

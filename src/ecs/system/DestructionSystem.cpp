@@ -34,6 +34,11 @@ void DestructionSystem::update(const std::vector<std::unique_ptr<Entity>>& entit
                 ) {
                     world.getEventManager().emit(DestroyedEvent{e.get()});
                     e -> destroy();
+                    if (e->hasComponent<Children>()) {
+                        for (auto& child : e->getComponent<Children>().children) {
+                            child->destroy();
+                        }
+                    }
                 }
             }
         }

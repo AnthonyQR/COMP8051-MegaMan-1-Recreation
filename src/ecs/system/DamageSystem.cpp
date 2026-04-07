@@ -6,6 +6,7 @@
 
 #include "Component.h"
 #include "Game.h"
+#include "ERS/OnDestroyEvent.h"
 
 void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, World& world) {
     for (auto& entity: entities) {
@@ -20,6 +21,11 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
             if (!damage.damagedEntity->hasComponent<Health>()) {
                 entity->destroy();
                 continue;
+            }
+
+            if (damage.damageDealerEntity->hasComponent<PlayerTag>() && damage.damageDealerEntity->hasComponent<ProjectileTag>()) {
+                OnDestroyEvent::onDestroy(damage.damageDealerEntity, world);
+                damage.damageDealerEntity->destroy();
             }
 
             if (damage.damagedEntity->hasComponent<Invulnerability>() && !damage.invulIgnore) {
@@ -58,7 +64,7 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                     };
                 }
             }
-            
+
             if (health.currentHealth <= 0) {
                 world.getEventManager().emit(DestroyedEvent(damage.damagedEntity));
                 if (damage.damagedEntity->hasComponent<OnDeathCallback>()) {
@@ -78,6 +84,7 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                     damage.damagedEntity->getComponent<OnHitCallback>().callback(damage.damagedEntity, damage.damageDealerEntity);
                 }
             }
+
             entity -> destroy();
         }
     }
