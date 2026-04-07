@@ -46,25 +46,6 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                 health.currentHealth = 0;
             }
 
-            if (damage.damagedEntity->hasComponent<PlayerTag>()) {
-                Game::gameState.playerHealth = health.currentHealth;
-                std::cout << "Health: " << health.currentHealth << std::endl;
-                world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanDamage"));
-
-                auto& ladderClimbing = damage.damagedEntity->getComponent<LadderClimbing>();
-                ladderClimbing.isClimbing = false;
-                auto& gravity = damage.damagedEntity->getComponent<Gravity>();
-                gravity.gravityEnabled = true;
-
-                // Find the health bar & update it
-                for (auto& e : entities) {
-                    if (e->hasComponent<HealthBarUpdate>()) {
-                        e->getComponent<HealthBarUpdate>().callback(e.get());
-                        break;
-                    };
-                }
-            }
-
             if (health.currentHealth <= 0) {
                 world.getEventManager().emit(DestroyedEvent(damage.damagedEntity));
                 if (damage.damagedEntity->hasComponent<OnDeathCallback>()) {
