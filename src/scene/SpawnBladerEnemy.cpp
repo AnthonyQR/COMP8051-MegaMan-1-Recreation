@@ -93,7 +93,7 @@ void SpawnBladerEnemy::spawn(World &world) {
                         - bladerTransform.position.x - bladerAttack.firstPhaseDistanceFromPlayer)
                     / std::pow(bladerAttack.firstAttackDuration, 2)) * bladerVelocity.direction.x;
 
-                    bladerAttack.maxXDistance =
+                    bladerAttack.secondPhaseXDistance =
                         (bladerDetectionCollider.rect.w) * bladerVelocity.direction.x;
                 }
                 else {
@@ -102,7 +102,7 @@ void SpawnBladerEnemy::spawn(World &world) {
                     + bladerAttack.firstPhaseDistanceFromPlayer - bladerTransform.position.x + bladerCollider.rect.w)
                     / std::pow(bladerAttack.firstAttackDuration, 2)) * bladerVelocity.direction.x;
 
-                    bladerAttack.maxXDistance =
+                    bladerAttack.secondPhaseXDistance =
                         (bladerDetectionCollider.rect.w) * bladerVelocity.direction.x;
                     }
 

@@ -37,7 +37,7 @@ public:
                         velocity.ySpeed = (bladerAttack.initialYPosition - transform.position.y) / bladerAttack.timer;
 
                         bladerAttack.xAcceleration = 0;
-                        velocity.xSpeed = (bladerAttack.maxXDistance / bladerAttack.timer) * velocity.direction.x;
+                        velocity.xSpeed = (bladerAttack.secondPhaseXDistance / bladerAttack.timer) * velocity.direction.x;
                     }
                     else if (bladerAttack.secondPhase) {
                         bladerAttack.secondPhase = false;

@@ -95,4 +95,13 @@ void SpawnPlayer::spawn(World& world) {
 
     std::vector newChildren = {&playerHurtbox, &playerGroundCheck};
     player.addComponent<Children>(newChildren);
+
+    player.addComponent<OnDeathCallback>([&world](Entity* player) {
+        Game::gameState.lives--;
+        std::cout << "Lives: " << Game::gameState.lives << std::endl;
+        auto& transition (world.createEntity());
+        transition.addComponent<SceneTransitionDelay>(2.25f, "cutman");
+        world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanDefeat"));
+        Game::checkSceneState();
+    });
 }

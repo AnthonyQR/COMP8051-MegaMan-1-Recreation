@@ -55,14 +55,6 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                     damage.damagedEntity->getComponent<OnDeathCallback>().callback(damage.damagedEntity);
                 }
 
-                if (damage.damagedEntity->hasComponent<PlayerTag>()) {
-                    Game::gameState.lives--;
-                    std::cout << "Lives: " << Game::gameState.lives << std::endl;
-                    auto& transition (world.createEntity());
-                    transition.addComponent<SceneTransitionDelay>(2.25f, "cutman");
-                    world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanDefeat"));
-                    Game::checkSceneState();
-                }
                 if (damage.damagedEntity->hasComponent<Children>()) {
                     for (auto& child : damage.damagedEntity->getComponent<Children>().children) {
                         child->destroy();

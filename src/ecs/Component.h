@@ -247,7 +247,7 @@ struct BladerAttack {
     float totalAttackDuration{};
     float firstAttackDuration{};
     float firstPhaseDistanceFromPlayer{};
-    float maxXDistance{};
+    float secondPhaseXDistance{};
     float xAcceleration{};
     float yAcceleration{};
     float timer{};
