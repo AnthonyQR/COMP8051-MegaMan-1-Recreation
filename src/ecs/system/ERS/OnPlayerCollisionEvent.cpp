@@ -276,19 +276,9 @@ void OnPlayerCollisionEvent::enemyCollision(Entity *player, Entity *other, const
         if (player->hasComponent<ProjectileTag>() &&
             player->hasComponent<ProjectileDamage>() &&
             other->hasComponent<Health>()) {
-            if (other->hasComponent<Invulnerability>()) {
-                auto& invulnerability = other->getComponent<Invulnerability>();
-                if (invulnerability.isInvulnerable) {
-                    world.getAudioEventQueue().push(std::make_unique<AudioEvent>("dink"));
-                    OnDestroyEvent::onDestroy(player, world);
-                    player->destroy();
-                    return;
-                }
-            }
-
             auto& projectileDamage = player->getComponent<ProjectileDamage>();
             auto& damageEntity(world.createEntity());
-            damageEntity.addComponent<Damage>(projectileDamage.damage, other, true);
+            damageEntity.addComponent<Damage>(projectileDamage.damage, other, player);
             world.getAudioEventQueue().push(std::make_unique<AudioEvent>("enemyDamage"));
 
             OnDestroyEvent::onDestroy(player, world);
@@ -300,33 +290,10 @@ void OnPlayerCollisionEvent::enemyCollision(Entity *player, Entity *other, const
             other->hasComponent<ContactDamage>()) {
             player = player->getComponent<FollowEntity>().followedEntity;
             if (player == nullptr) return;
-            auto& invulnerability = player->getComponent<Invulnerability>();
-            if (invulnerability.isInvulnerable) return;
-
-            auto& invulTimer = player->getComponent<InvulnerabilityTimer>();
 
             auto& contactDamage = other->getComponent<ContactDamage>();
             auto& damageEntity(world.createEntity());
-            damageEntity.addComponent<Damage>(contactDamage.damage, player);
-            world.getAudioEventQueue().push(std::make_unique<AudioEvent>("enemyShoot"));
-
-            auto& hitKnockback = player->getComponent<HitKnockback>();
-            auto& velocity = other->getComponent<Velocity>();
-            auto& playerCollider = player->getComponent<Collider>().rect;
-            auto& enemyCollider = other->getComponent<Collider>().rect;
-            hitKnockback.isHitKnockback = true;
-
-            float leftPenetrationDepth = playerCollider.x - (enemyCollider.x + enemyCollider.w);
-            float rightPenetrationDepth = (playerCollider.x + playerCollider.w) - enemyCollider.x;
-            if (std::abs(leftPenetrationDepth) < std::abs(rightPenetrationDepth)) {
-                hitKnockback.isRightHit = false;
-            }
-            else {
-                hitKnockback.isRightHit = true;
-            }
-            hitKnockback.timer = hitKnockback.minKnockbackTime;
-            invulTimer.timer = invulTimer.invulnerabilityTime;
-            invulnerability.isInvulnerable = true;
+            damageEntity.addComponent<Damage>(contactDamage.damage, player, other);
         }
 }
 
@@ -353,27 +320,10 @@ void OnPlayerCollisionEvent::projectileCollision(Entity *player, Entity *other, 
 
         player = player->getComponent<FollowEntity>().followedEntity;
         if (player == nullptr) return;
-        auto& invulnerability = player->getComponent<Invulnerability>();
-        auto& invulTimer = player->getComponent<InvulnerabilityTimer>();
-        if (invulnerability.isInvulnerable) return;
 
         auto& projectileDamage = other->getComponent<ProjectileDamage>();
         auto& damageEntity(world.createEntity());
-        damageEntity.addComponent<Damage>(projectileDamage.damage, player, true);
-
-        auto& hitKnockback = player->getComponent<HitKnockback>();
-        auto& velocity = other->getComponent<Velocity>();
-        hitKnockback.isHitKnockback = true;
-        if (velocity.direction.x < 0) {
-            hitKnockback.isRightHit = true;
-        }
-        else {
-            hitKnockback.isRightHit = false;
-        }
-        hitKnockback.timer = hitKnockback.minKnockbackTime;
-        invulTimer.timer = invulTimer.invulnerabilityTime;
-        invulnerability.isInvulnerable = true;
-        return;
+        damageEntity.addComponent<Damage>(projectileDamage.damage, player, other);
         }
 }
 
@@ -385,7 +335,7 @@ void OnPlayerCollisionEvent::deathCollision(Entity *player, Entity *other, const
     if (player->hasComponent<Health>()) {
         auto& health = player->getComponent<Health>();
         auto& damageEntity(world.createEntity());
-        damageEntity.addComponent<Damage>(health.maxHealth, player, true);
+        damageEntity.addComponent<Damage>(health.maxHealth, player, other, true);
     }
 }
 

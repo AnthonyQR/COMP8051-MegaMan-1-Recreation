@@ -214,6 +214,7 @@ struct ProjectileDamage {
 struct Damage {
     int damage{};
     Entity* damagedEntity{};
+    Entity* damageDealerEntity{};
     bool invulIgnore{};
 };
 
@@ -222,7 +223,7 @@ struct HealthBarUpdate {
 };
 
 struct OnHitCallback {
-    std::function<void()> callback{};
+    std::function<void(Entity*, Entity*)> callback{};
 };
 
 struct OnDeathCallback {

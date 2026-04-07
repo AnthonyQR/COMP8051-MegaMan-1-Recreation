@@ -104,4 +104,39 @@ void SpawnPlayer::spawn(World& world) {
         world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanDefeat"));
         Game::checkSceneState();
     });
+
+    player.addComponent<OnHitCallback>([](Entity* player, Entity* other) {
+        auto& invulnerability = player->getComponent<Invulnerability>();
+        auto& invulTimer = player->getComponent<InvulnerabilityTimer>();
+
+        auto& hitKnockback = player->getComponent<HitKnockback>();
+        auto& velocity = other->getComponent<Velocity>();
+        auto& playerCollider = player->getComponent<Collider>().rect;
+        auto& enemyCollider = other->getComponent<Collider>().rect;
+        hitKnockback.isHitKnockback = true;
+
+        if (other->hasComponent<ContactDamage>()) {
+            float leftPenetrationDepth = playerCollider.x - (enemyCollider.x + enemyCollider.w);
+            float rightPenetrationDepth = (playerCollider.x + playerCollider.w) - enemyCollider.x;
+            if (std::abs(leftPenetrationDepth) < std::abs(rightPenetrationDepth)) {
+                hitKnockback.isRightHit = false;
+            }
+            else {
+                hitKnockback.isRightHit = true;
+            }
+        }
+
+        else if (other->hasComponent<ProjectileDamage>()) {
+            if (velocity.direction.x < 0) {
+                hitKnockback.isRightHit = true;
+            }
+            else {
+                hitKnockback.isRightHit = false;
+            }
+        }
+
+        hitKnockback.timer = hitKnockback.minKnockbackTime;
+        invulTimer.timer = invulTimer.invulnerabilityTime;
+        invulnerability.isInvulnerable = true;
+    });
 }

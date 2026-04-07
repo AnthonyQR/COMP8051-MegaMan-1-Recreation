@@ -22,6 +22,17 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                 continue;
             }
 
+            if (damage.damagedEntity->hasComponent<Invulnerability>() && !damage.invulIgnore) {
+                auto& invulnerability = damage.damagedEntity->getComponent<Invulnerability>();
+                if (invulnerability.isInvulnerable) {
+                    if (!damage.damagedEntity->hasComponent<PlayerTag>()) {
+                        world.getAudioEventQueue().push(std::make_unique<AudioEvent>("dink"));
+                    }
+                    entity -> destroy();
+                    continue;
+                }
+            }
+
             auto& health = damage.damagedEntity->getComponent<Health>();
             health.currentHealth -= damage.damage;
 
@@ -47,8 +58,7 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                     };
                 }
             }
-
-
+            
             if (health.currentHealth <= 0) {
                 world.getEventManager().emit(DestroyedEvent(damage.damagedEntity));
                 if (damage.damagedEntity->hasComponent<OnDeathCallback>()) {
@@ -62,6 +72,11 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                 }
                 auto& damagedEntity = damage.damagedEntity;
                 damagedEntity->destroy();
+            }
+            else {
+                if (damage.damagedEntity->hasComponent<OnHitCallback>()) {
+                    damage.damagedEntity->getComponent<OnHitCallback>().callback(damage.damagedEntity, damage.damageDealerEntity);
+                }
             }
             entity -> destroy();
         }
