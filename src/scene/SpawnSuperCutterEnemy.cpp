@@ -50,7 +50,7 @@ void SpawnSuperCutterEnemy::spawn(World& world) {
         auto& autoFiring = spawner.addComponent<AutoFiring>(0.0f, std::vector<FiringPattern>
         {
             {Vector2D(0, 1.0f), 0.0f},
-        }, true, 0.0f, false);
+        }, false, 0.0f);
 
         auto& superCutterDetection = spawner.addComponent<Collider>("EnemyDetect");
         superCutterDetection.rect.w = 48 * 8.5f;
@@ -79,7 +79,6 @@ void SpawnSuperCutterEnemy::spawn(World& world) {
         spawner.addComponent<OnPlayerDetectLeaveCallback>([](Entity* spawner, Entity* player) {
             auto& isFiring = spawner->getComponent<IsFiring>();
             auto& autoFiring = spawner->getComponent<AutoFiring>();
-            std::cout << isFiring.firing << std::endl;
             isFiring.firing = false;
             autoFiring.loop = false;
         });

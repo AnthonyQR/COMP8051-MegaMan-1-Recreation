@@ -99,7 +99,7 @@ void SpawnPlayer::spawn(World& world) {
     player.addComponent<OnDeathCallback>([&world](Entity* player) {
         auto& health = player->getComponent<Health>();
         Game::gameState.playerHealth = health.currentHealth;
-        
+
         // Find the health bar & update it
         for (auto& e : world.getEntities()) {
             if (e->hasComponent<HealthBarUpdate>()) {
@@ -124,10 +124,11 @@ void SpawnPlayer::spawn(World& world) {
         auto& invulTimer = player->getComponent<InvulnerabilityTimer>();
 
         auto& hitKnockback = player->getComponent<HitKnockback>();
+        hitKnockback.isHitKnockback = true;
         auto& velocity = other->getComponent<Velocity>();
+
         auto& playerCollider = player->getComponent<Collider>().rect;
         auto& enemyCollider = other->getComponent<Collider>().rect;
-        hitKnockback.isHitKnockback = true;
 
         if (other->hasComponent<ContactDamage>()) {
             float leftPenetrationDepth = playerCollider.x - (enemyCollider.x + enemyCollider.w);
@@ -157,12 +158,6 @@ void SpawnPlayer::spawn(World& world) {
         auto& health = player->getComponent<Health>();
         Game::gameState.playerHealth = health.currentHealth;
         std::cout << "Health: " << health.currentHealth << std::endl;
-        world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanDamage"));
-
-        auto& ladderClimbing = player->getComponent<LadderClimbing>();
-        ladderClimbing.isClimbing = false;
-        auto& gravity = player->getComponent<Gravity>();
-        gravity.gravityEnabled = true;
 
         // Find the health bar & update it
         for (auto& e : world.getEntities()) {
@@ -171,5 +166,11 @@ void SpawnPlayer::spawn(World& world) {
                 break;
             };
         }
+        world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanDamage"));
+
+        auto& ladderClimbing = player->getComponent<LadderClimbing>();
+        ladderClimbing.isClimbing = false;
+        auto& gravity = player->getComponent<Gravity>();
+        gravity.gravityEnabled = true;
     });
 }

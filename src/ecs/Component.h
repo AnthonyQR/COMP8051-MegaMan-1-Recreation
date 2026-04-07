@@ -197,9 +197,8 @@ struct FiringPattern {
 struct AutoFiring {
     float firingDelay{};
     std::vector<FiringPattern> patterns{};
-    bool oneShot{};
-    float timer{};
     bool loop = true;
+    float timer{};
     int nextPattern{};
 };
 

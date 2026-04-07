@@ -22,16 +22,13 @@ public:
                 if (isFiring.firing) {
                     autoFiring.timer -= dt;
                     if (autoFiring.timer <= 0) {
-                        if (autoFiring.oneShot && (autoFiring.nextPattern >= autoFiring.patterns.size())) {
+                        if (autoFiring.nextPattern >= autoFiring.patterns.size()) {
                             continue;
                         }
                         projectileStats.direction = autoFiring.patterns.at(autoFiring.nextPattern).direction;
                         projectileStats.spawnCallback(projectileStats);
 
                         autoFiring.nextPattern++;
-                        if (!autoFiring.oneShot) {
-                            autoFiring.nextPattern %= autoFiring.patterns.size();
-                        }
                         if (autoFiring.nextPattern < autoFiring.patterns.size()) {
                             autoFiring.timer = autoFiring.patterns.at(autoFiring.nextPattern).interval;
                         }
