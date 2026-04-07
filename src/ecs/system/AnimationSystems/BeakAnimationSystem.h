@@ -16,7 +16,8 @@ public:
         NextAnimationClip newClip;
         newClip.name = checkCurrentAction(beak);
         newClip.name += checkFacingDirection(beak);
-        newClip.animationSpeed = 0.16f;
+        newClip.animationSpeed = 0.08f;
+        newClip.stayOnLastFrame = true;
         return newClip;
     }
 

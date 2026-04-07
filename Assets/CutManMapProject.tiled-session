@@ -3,8 +3,9 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "CutManMap.tmx",
     "expandedProjectPaths": [
+        "."
     ],
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
@@ -12,11 +13,11 @@
             "expandedObjectLayers": [
                 2
             ],
-            "scale": 1.5,
-            "selectedLayer": 0,
+            "scale": 0.75,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 237.66666666666666,
-                "y": 209.66666666666663
+                "x": 268.66666666666663,
+                "y": 2007.3333333333333
             }
         },
         "CutManTileset.tsx": {
@@ -35,9 +36,11 @@
     "last.imagePath": "C:/Users/antho/OneDrive/Desktop/GameArchitecture/COMP8051_MegaMan_1_Recreation/Assets",
     "map.lastUsedFormat": "tmx",
     "openFiles": [
+        "CutManMap.tmx"
     ],
     "project": "CutManMapProject.tiled-project",
     "recentFiles": [
+        "CutManMap.tmx",
         "CutManTileset.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",

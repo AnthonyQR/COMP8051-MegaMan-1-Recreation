@@ -3,7 +3,6 @@
         <frame x="0" y="0" w="16" h="16" />
     </closed_right>
     <opening_right>
-        <frame x="0" y="0" w="16" h="16" />
         <frame x="16" y="0" w="16" h="16" />
         <frame x="32" y="0" w="16" h="16" />
         <frame x="48" y="0" w="16" h="16" />
@@ -15,7 +14,6 @@
         <frame x="48" y="0" w="16" h="16" />
         <frame x="32" y="0" w="16" h="16" />
         <frame x="16" y="0" w="16" h="16" />
-        <frame x="0" y="0" w="16" h="16" />
     </closing_right>
 
 
@@ -23,7 +21,6 @@
         <frame x="0" y="16" w="16" h="16" />
     </closed_left>
     <opening_left>
-        <frame x="0" y="16" w="16" h="16" />
         <frame x="16" y="16" w="16" h="16" />
         <frame x="32" y="16" w="16" h="16" />
         <frame x="48" y="16" w="16" h="16" />
@@ -35,6 +32,5 @@
         <frame x="48" y="16" w="16" h="16" />
         <frame x="32" y="16" w="16" h="16" />
         <frame x="16" y="16" w="16" h="16" />
-        <frame x="0" y="16" w="16" h="16" />
     </closing_left>
 </animations>
