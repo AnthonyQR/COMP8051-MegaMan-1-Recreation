@@ -67,7 +67,7 @@ void SpawnPlayer::spawn(World& world) {
     Sprite newProjectileSprite {playerProjectileTex, playerProjectileSrc, playerProjectileDest};
 
     player.addComponent<ProjectileStats>(800.0f, 1, Vector2D(0, 0), Vector2D(0, 0),
-        [&world, newProjectileSprite](ProjectileStats stats) {
+        [&world, newProjectileSprite](ProjectileStats stats, Entity player) {
             auto& projectile = world.createDeferredEntity();
             projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
             projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed);

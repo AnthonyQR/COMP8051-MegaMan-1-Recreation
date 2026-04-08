@@ -25,7 +25,7 @@ void SpawnSuperCutterEnemy::spawn(World& world) {
 
         auto& projectileStats = spawner.addComponent<ProjectileStats>(-1000.0f, 2,
         Vector2D(0, 0), Vector2D(spawnerTransform.position.x, spawnerTransform.position.y),
-        [&world, anim, newProjectileSprite](ProjectileStats stats) {
+        [&world, anim, newProjectileSprite](ProjectileStats stats, Entity spawner) {
             auto& projectile = world.createDeferredEntity();
             auto& projectileTransform = projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
             auto& projectileVelocity = projectile.addComponent<Velocity>(stats.direction, stats.projectileSpeed, stats.projectileSpeed);
@@ -50,7 +50,7 @@ void SpawnSuperCutterEnemy::spawn(World& world) {
         auto& autoFiring = spawner.addComponent<AutoFiring>(0.0f, std::vector<FiringPattern>
         {
             {Vector2D(0, 1.0f), 0.0f},
-        }, false, 0.0f);
+        }, false, false, 0.0f);
 
         auto& superCutterDetection = spawner.addComponent<Collider>("EnemyDetect");
         superCutterDetection.rect.w = 48 * 8.5f;

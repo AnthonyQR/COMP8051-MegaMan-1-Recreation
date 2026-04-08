@@ -13,6 +13,7 @@
 #include "PlayerAnimationSystem.h"
 #include "BeakAnimationSystem.h"
 #include "BladerAnimationSystem.h"
+#include "FlyingShellAnimationSystem.h"
 #include "OctopusBatteryAnimationSystem.h"
 #include "SuperCutterAnimationSystem.h"
 #include "TitleScreenAnimationSystem.h"
@@ -43,6 +44,9 @@ public:
                 }
                 else if (e->hasComponent<SuperCutterTag>()) {
                     newClip = SuperCutterAnimationSystem::getAnimationClip(e);
+                }
+                else if (e->hasComponent<FlyingShellEnemyTag>()) {
+                    newClip = FlyingShellAnimationSystem::getAnimationClip(e);
                 }
                 else if (e->hasComponent<TitleScreenTag>()) {
                     newClip = TitleScreenAnimationSystem::getAnimationClip(e);

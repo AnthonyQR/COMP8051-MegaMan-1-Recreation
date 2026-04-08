@@ -66,7 +66,7 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
         Sprite newProjectileSprite{beakProjectileTex, beakProjectileSrc, beakProjectileDest};
 
         beakEnemy.addComponent<ProjectileStats>(600.0f, 2, Vector2D(0, 0), Vector2D(beakTransform.position.x, beakTransform.position.y),
-            [&world, newProjectileSprite](ProjectileStats stats) {
+            [&world, newProjectileSprite](ProjectileStats stats, Entity beak) {
             auto& projectile = world.createDeferredEntity();
             auto& projectileTransform = projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
             auto& projectileSprite = projectile.addComponent<Sprite>(newProjectileSprite);
@@ -90,7 +90,7 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
                 {Vector2D(-1, -0.2f).normalize(), 0.5f},
                 {Vector2D(-1, 0.2f).normalize(), 0.5f},
                 {Vector2D(-1, 1.0f).normalize(), 0.5f}
-            }, true, initialFiringDelay);
+            }, true, false, initialFiringDelay);
         }
         else {
             beakEnemy.addComponent<AutoFiring>(1.5f, std::vector<FiringPattern>
@@ -99,7 +99,7 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
                 {Vector2D(1, -0.2f).normalize(), 0.5f},
                 {Vector2D(1, 0.2f).normalize(), 0.5f},
                 {Vector2D(1, 1.0f).normalize(), 0.5f}
-            }, true, initialFiringDelay);
+            }, true, false, initialFiringDelay);
         }
 
         beakEnemy.addComponent<Health>(1);

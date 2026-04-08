@@ -54,6 +54,7 @@ add_executable(Tutorial1 src/main.cpp
         src/scene/SpawnSuperCutterEnemy.cpp
         src/ecs/system/DebugTeleportSystem.cpp
         src/ecs/system/UpdateSceneStateSystem.cpp
+        src/scene/SpawnFlyingShellEnemy.cpp
 )
 
 target_link_libraries(Tutorial1

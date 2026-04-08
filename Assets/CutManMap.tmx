@@ -379,10 +379,10 @@
   </object>
  </objectgroup>
  <objectgroup id="14" name="Flying Shell Spawn Layer">
-  <object id="256" x="2016" y="384">
+  <object id="256" x="2024" y="376">
    <point/>
   </object>
-  <object id="257" x="2016" y="624">
+  <object id="257" x="2024" y="616">
    <point/>
   </object>
   <object id="287" x="2144" y="784">

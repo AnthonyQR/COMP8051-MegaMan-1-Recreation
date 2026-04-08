@@ -37,6 +37,7 @@
 #include "SceneTransitionDelaySystem.h"
 #include "SpawnOnVisibleSystem.h"
 #include "SpawnTimerSystem.h"
+#include "StopMovementWhileFiringSystem.h"
 #include "UIRenderSystem.h"
 #include "UpdateSceneStateSystem.h"
 #include "event/AudioEventQueue.h"
@@ -79,6 +80,7 @@ class World {
     OctopusBatterySystem octopusBatterySystem;
     DebugTeleportSystem debugTeleportSystem;
     UpdateSceneStateSystem updateSceneStateSystem;
+    StopMovementWhileFiringSystem stopMovementWhileFiringSystem;
 
 public:
     World() = default;
@@ -98,6 +100,7 @@ public:
                 moveTowardsPlayerSystem.update(entities);
                 bladerAttackSystem.update(entities, dt);
                 octopusBatterySystem.update(entities, dt);
+                stopMovementWhileFiringSystem.update(entities);
                 movementSystem.update(entities, dt);
                 followEntitySystem.update(entities);
                 collisionSystem.update(*this);

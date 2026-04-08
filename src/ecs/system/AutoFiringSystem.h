@@ -25,12 +25,22 @@ public:
                         if (autoFiring.nextPattern >= autoFiring.patterns.size()) {
                             continue;
                         }
-                        projectileStats.direction = autoFiring.patterns.at(autoFiring.nextPattern).direction;
-                        projectileStats.spawnCallback(projectileStats);
+                        if (autoFiring.burst) {
+                            while (autoFiring.nextPattern < autoFiring.patterns.size()) {
+                                projectileStats.direction = autoFiring.patterns.at(autoFiring.nextPattern).direction;
+                                projectileStats.spawnCallback(projectileStats, *entity.get());
 
-                        autoFiring.nextPattern++;
-                        if (autoFiring.nextPattern < autoFiring.patterns.size()) {
-                            autoFiring.timer = autoFiring.patterns.at(autoFiring.nextPattern).interval;
+                                autoFiring.nextPattern++;
+                            }
+                        }
+                        else {
+                            projectileStats.direction = autoFiring.patterns.at(autoFiring.nextPattern).direction;
+                            projectileStats.spawnCallback(projectileStats, *entity.get());
+
+                            autoFiring.nextPattern++;
+                            if (autoFiring.nextPattern < autoFiring.patterns.size()) {
+                                autoFiring.timer = autoFiring.patterns.at(autoFiring.nextPattern).interval;
+                            }
                         }
                     }
                 }

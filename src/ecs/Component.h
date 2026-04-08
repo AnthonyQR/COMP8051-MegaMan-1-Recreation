@@ -172,7 +172,7 @@ struct ProjectileStats {
     int damage{};
     Vector2D direction{};
     Vector2D spawnPoint{};
-    std::function<void(ProjectileStats)> spawnCallback{};
+    std::function<void(ProjectileStats, Entity)> spawnCallback{};
 };
 
 struct ProjectileLimit {
@@ -203,6 +203,7 @@ struct AutoFiring {
     float firingDelay{};
     std::vector<FiringPattern> patterns{};
     bool loop = true;
+    bool burst = false;
     float timer{};
     int nextPattern{};
 };
@@ -299,6 +300,10 @@ struct HitKnockback {
     float timer{};
 };
 
+struct StopMovementWhileFiring {
+    Vector2D direction{};
+};
+
 struct TitleScreenTag{};
 struct PlayerTag{};
 struct PlayerGroundCheck{};
@@ -311,6 +316,7 @@ struct BeakEnemyTag{};
 struct BladerEnemyTag{};
 struct OctopusBatteryTag{};
 struct SuperCutterTag{};
+struct FlyingShellEnemyTag{};
 struct EnemyDeathTag{};
 
 struct InvulnerableWhileNotFiring{};
