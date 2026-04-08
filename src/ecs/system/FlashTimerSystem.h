@@ -10,26 +10,25 @@
 #include "Component.h"
 #include "Entity.h"
 
-class FlashWhileInvulnerableSystem {
+class FlashTimerSystem {
 public:
     void update(const std::vector<std::unique_ptr<Entity>>& entities, float dt) {
         for (auto& entity : entities) {
-            if (entity->hasComponent<FlashWhileInvulnerable>() &&
-                entity->hasComponent<Sprite>() &&
-                entity->hasComponent<Invulnerability>()) {
-                auto& flash = entity->getComponent<FlashWhileInvulnerable>();
+            if (entity->hasComponent<FlashTimer>() &&
+                entity->hasComponent<Sprite>()) {
+                auto& flash = entity->getComponent<FlashTimer>();
                 auto& sprite = entity->getComponent<Sprite>();
-                auto& invulnerability = entity->getComponent<Invulnerability>();
 
-                if (invulnerability.isInvulnerable) {
-                    flash.timer -= dt;
-                    if (flash.timer <= 0) {
+                if (flash.durationTimer > 0) {
+                    flash.durationTimer -= dt;
+                    flash.intervalTimer -= dt;
+                    if (flash.intervalTimer <= 0) {
                         sprite.isVisible = !sprite.isVisible;
-                        flash.timer = flash.flashInterval;
+                        flash.intervalTimer = flash.flashInterval;
                     }
                 }
                 else {
-                    sprite.isVisible = true;
+                    sprite.isVisible = sprite.normallyVisible;
                 }
             }
         }

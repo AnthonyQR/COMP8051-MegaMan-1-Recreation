@@ -24,7 +24,7 @@
 #include "DebugTeleportSystem.h"
 #include "DestructionSystem.h"
 #include "system/ERS/EventResponseSystem.h"
-#include "FlashWhileInvulnerableSystem.h"
+#include "FlashTimerSystem.h"
 #include "FollowEntitySystem.h"
 #include "GravitySystem.h"
 #include "HitKnockbackSystem.h"
@@ -65,7 +65,7 @@ class World {
     InvulnerableWhileNotFiringSystem invulnerableWhileNotFiringSystem;
     HitKnockbackSystem hitKnockbackSystem;
     InvulnerabilityTimerSystem invulnerabilityTimerSystem;
-    FlashWhileInvulnerableSystem flashWhileInvulnerableSystem;
+    FlashTimerSystem flashTimerSystem;
     SpawnOnVisibleSystem spawnOnVisibleSystem;
     AudioEventQueue audioEventQueue;
     CoyoteTimeSystem coyoteTimeSystem;
@@ -103,7 +103,7 @@ public:
             autoFiringSystem.update(entities, dt);
             invulnerableWhileNotFiringSystem.update(entities);
             invulnerabilityTimerSystem.update(entities, dt);
-            flashWhileInvulnerableSystem.update(entities, dt);
+            flashTimerSystem.update(entities, dt);
             damageSystem.update(entities, *this);
             sceneTransitionDelaySystem.update(entities, dt);
             destructionSystem.update(entities, *this);

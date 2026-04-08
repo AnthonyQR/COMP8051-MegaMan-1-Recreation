@@ -31,7 +31,8 @@ public:
                 e->hasComponent<ProjectileLimit>() &&
                 e->hasComponent<IsFiring>() &&
                 e->hasComponent<HasFired>() &&
-                e->hasComponent<HitKnockback>()
+                e->hasComponent<HitKnockback>() &&
+                e->hasComponent<Sprite>()
                 )
             {
                 auto& v = e->getComponent<Velocity>();
@@ -49,6 +50,7 @@ public:
                 auto& isFiring = e->getComponent<IsFiring>();
                 auto& hasFired = e->getComponent<HasFired>();
                 auto& hitKnockback = e->getComponent<HitKnockback>();
+                auto& sprite = e->getComponent<Sprite>();
 
                 if (event.type == SDL_EVENT_KEY_DOWN) {
                     switch (event.key.key) {
@@ -177,7 +179,8 @@ public:
                         v.direction.x = 0;
                         v.ySpeed = -ladderClimbing.climbSpeed;
                         gravity.gravityEnabled = false;
-                        transform.position.x = ladderCollider.x - collider.xOffset + 8.0f;
+
+                        transform.position.x = ladderCollider.x - (sprite.dst.w / 4);
                     }
                 }
 
@@ -188,7 +191,7 @@ public:
                     v.direction.x = 0;
                     v.ySpeed = ladderClimbing.climbSpeed;
                     gravity.gravityEnabled = false;
-                    transform.position.x = ladderCollider.x - collider.xOffset + 8.0f;
+                    transform.position.x = ladderCollider.x - (sprite.dst.w / 4);
                     if (ladderCollider.y > collider.rect.y) {
                         transform.position.y = ladderCollider.y - collider.yOffset;
                     }

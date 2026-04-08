@@ -77,6 +77,7 @@ struct Sprite {
     SDL_FRect dst{};
     RenderLayer renderLayer = RenderLayer::World;
     bool isVisible = true;
+    bool normallyVisible = true;
 };
 
 struct Collider {
@@ -279,9 +280,11 @@ struct InvulnerabilityTimer {
     float timer{};
 };
 
-struct FlashWhileInvulnerable {
+struct FlashTimer {
     float flashInterval{};
-    float timer{};
+    float flashDuration{};
+    float intervalTimer{};
+    float durationTimer{};
 };
 
 struct HitKnockback {
@@ -296,6 +299,7 @@ struct TitleScreenTag{};
 struct PlayerTag{};
 struct PlayerGroundCheck{};
 struct PlayerHurtbox{};
+struct PlayerHitFlash{};
 struct ProjectileTag{};
 struct BeakEnemyTag{};
 struct BladerEnemyTag{};

@@ -8,6 +8,15 @@
 #include "manager/AssetManager.h"
 
 void SpawnPlayer::spawn(World& world) {
+    auto& playerHitFlash(world.createEntity());
+    SDL_Texture* hitFlashTex = TextureManager::load("../Assets/megaman_hit_flash.png");
+    // SDL_FRect playerSrc {0, 0, 32, 44};
+    SDL_FRect hitFlashSrc = {0, 0, 32, 32};
+    SDL_FRect hitFlashDst {0, 0, 64, 64};
+    playerHitFlash.addComponent<Sprite>(hitFlashTex, hitFlashSrc, hitFlashDst, RenderLayer::World, false, false);
+    playerHitFlash.addComponent<FlashTimer>(0.05f, 0.6f);
+    playerHitFlash.addComponent<PlayerHitFlash>();
+
     auto& player(world.createEntity());
 
     Vector2D spawnPosition = Vector2D(50, 6300);
@@ -75,7 +84,7 @@ void SpawnPlayer::spawn(World& world) {
     player.addComponent<Invulnerability>(false);
     player.addComponent<InvulnerabilityTimer>(2.0f);
     player.addComponent<HitKnockback>(80.0f, 0.6f);
-    player.addComponent<FlashWhileInvulnerable>(0.05f);
+    player.addComponent<FlashTimer>(0.05f, 2.0f);
 
     auto& playerHurtbox(world.createEntity());
     auto& playerHurtboxCollider = playerHurtbox.addComponent<Collider>("Player");
@@ -93,7 +102,10 @@ void SpawnPlayer::spawn(World& world) {
     playerGroundCheck.addComponent<Transform>(playerTransform);
     playerGroundCheck.addComponent<FollowEntity>(&player, playerCollider.xOffset, playerCollider.rect.h + 24.0f);
 
-    std::vector newChildren = {&playerHurtbox, &playerGroundCheck};
+    playerHitFlash.addComponent<Transform>(playerTransform);
+    playerHitFlash.addComponent<FollowEntity>(&player, 16.0f, 32.0f);
+
+    std::vector newChildren = {&playerHurtbox, &playerGroundCheck, &playerHitFlash};
     player.addComponent<Children>(newChildren);
 
     player.addComponent<OnDeathCallback>([&world](Entity* player) {
@@ -120,9 +132,6 @@ void SpawnPlayer::spawn(World& world) {
     });
 
     player.addComponent<OnHitCallback>([&world](Entity* player, Entity* other) {
-        auto& invulnerability = player->getComponent<Invulnerability>();
-        auto& invulTimer = player->getComponent<InvulnerabilityTimer>();
-
         auto& hitKnockback = player->getComponent<HitKnockback>();
         hitKnockback.isHitKnockback = true;
         auto& velocity = other->getComponent<Velocity>();
@@ -149,11 +158,25 @@ void SpawnPlayer::spawn(World& world) {
                 hitKnockback.isRightHit = false;
             }
         }
-
         hitKnockback.timer = hitKnockback.minKnockbackTime;
+
+        auto& invulnerability = player->getComponent<Invulnerability>();
+        auto& invulTimer = player->getComponent<InvulnerabilityTimer>();
+        auto& flashTimer = player->getComponent<FlashTimer>();
+
         invulTimer.timer = invulTimer.invulnerabilityTime;
         invulnerability.isInvulnerable = true;
+        flashTimer.durationTimer = flashTimer.flashDuration;
+        flashTimer.intervalTimer = flashTimer.flashInterval;
 
+        for (auto& entity : world.getEntities()) {
+            if (entity->hasComponent<PlayerHitFlash>()) {
+                auto& hitFlash = entity->getComponent<FlashTimer>();
+                hitFlash.durationTimer = hitFlash.flashDuration;
+                hitFlash.intervalTimer = hitFlash.flashInterval;
+                break;
+            }
+        }
 
         auto& health = player->getComponent<Health>();
         Game::gameState.playerHealth = health.currentHealth;
