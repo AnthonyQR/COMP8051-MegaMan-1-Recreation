@@ -133,6 +133,7 @@ struct SceneState {
     int lives{};
     int currentCheckpoint{};
     bool isEnding{};
+    bool isPaused{};
 };
 
 struct Health {
@@ -274,6 +275,10 @@ struct SceneTransitionDelay {
 
 struct GameStarting {
     bool isStarting{};
+};
+
+struct GamePaused {
+    bool hasPaused{};
 };
 
 struct Invulnerability {

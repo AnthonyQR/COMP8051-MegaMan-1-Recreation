@@ -429,13 +429,7 @@
   <object id="297" x="2768" y="896">
    <point/>
   </object>
-  <object id="298" x="2928" y="848">
-   <point/>
-  </object>
   <object id="302" x="2752" y="848">
-   <point/>
-  </object>
-  <object id="303" x="2928" y="864">
    <point/>
   </object>
   <object id="304" x="2992" y="896">
@@ -535,9 +529,6 @@
    <point/>
   </object>
   <object id="193" x="816" y="1712">
-   <point/>
-  </object>
-  <object id="291" x="1808" y="864">
    <point/>
   </object>
  </objectgroup>

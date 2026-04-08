@@ -20,6 +20,7 @@ struct GameState {
     int lives;
     int currentCheckpoint;
     bool isEnding;
+    bool isPaused;
 };
 
 class Game {

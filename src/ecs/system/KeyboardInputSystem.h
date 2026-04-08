@@ -208,10 +208,12 @@ public:
                 }
 
                 if (keyboardInputs.isHoldingLeft && !keyboardInputs.isHoldingRight) {
+                    if (v.direction.x == 1) v.xSpeed = 0;
                     v.direction.x = -1;
                     isFacingRight.facingRight = false;
                 }
                 else if (keyboardInputs.isHoldingRight && !keyboardInputs.isHoldingLeft) {
+                    if (v.direction.x == -1) v.xSpeed = 0;
                     v.direction.x = 1;
                     isFacingRight.facingRight = true;
                 }

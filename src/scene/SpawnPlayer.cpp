@@ -31,7 +31,7 @@ void SpawnPlayer::spawn(World& world) {
     }
     auto& playerTransform = player.addComponent<Transform>(spawnPosition, 0.0f, 1.0f);
     player.addComponent<Velocity>(Vector2D(0.0f,1.0f), 0.0f, 0.0f);
-    player.addComponent<PlayerHorizontalMovement>(250.0f, 1500.0f, 1250.0f, 8.0f, 0.125f, false);
+    player.addComponent<PlayerHorizontalMovement>(250.0f, 1500.0f, 1250.0f, 8.0f, 0.075f, false);
     player.addComponent<Gravity>(2400.0f, 2400.0f, true);
     player.addComponent<Jump>(860.0f, 9600.0f);
     player.addComponent<CoyoteTime>(false, 0.05f);
@@ -87,6 +87,7 @@ void SpawnPlayer::spawn(World& world) {
     player.addComponent<ProjectileLimit>(3, 0);
     player.addComponent<IsFiring>(false, 0.2f);
     player.addComponent<HasFired>(false);
+
     player.addComponent<Invulnerability>(false);
     player.addComponent<InvulnerabilityTimer>(2.0f);
     player.addComponent<HitKnockback>(80.0f, 0.6f);
@@ -126,15 +127,12 @@ void SpawnPlayer::spawn(World& world) {
                 break;
             };
         }
-
         Game::gameState.lives--;
         std::cout << "Lives: " << Game::gameState.lives << std::endl;
         auto& transition (world.createEntity());
         transition.addComponent<SceneTransitionDelay>(2.25f, "cutman");
         world.getAudioEventQueue().push(std::make_unique<AudioEvent>("megamanDefeat"));
         Game::checkSceneState();
-
-
     });
 
     player.addComponent<OnHitCallback>([&world, hitParticlesAnim, hitParticlesSprite](Entity* player, Entity* other) {
@@ -175,7 +173,7 @@ void SpawnPlayer::spawn(World& world) {
         flashTimer.durationTimer = flashTimer.flashDuration;
         flashTimer.intervalTimer = flashTimer.flashInterval;
 
-        for (auto& entity : world.getEntities()) {
+        for (auto& entity : player->getComponent<Children>().children) {
             if (entity->hasComponent<PlayerHitFlash>()) {
                 auto& hitFlash = entity->getComponent<FlashTimer>();
                 hitFlash.durationTimer = hitFlash.flashDuration;

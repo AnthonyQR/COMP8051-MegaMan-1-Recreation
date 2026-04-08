@@ -73,6 +73,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
     // Load audio
     audioManager.loadAudio("gameStart", "../Assets/Audio/GameStart.mp3", 10);
+    audioManager.loadAudio("pause", "../Assets/Audio/Pause.mp3", 20);
 
     audioManager.loadAudio("cutmanStage", "../Assets/Audio/CutManStageLoop.mp3", 5);
     audioManager.loadAudio("victoryMusic", "../Assets/Audio/VictoryMusic.mp3", 20);
@@ -114,6 +115,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     gameState.lives = 3;
     gameState.currentCheckpoint = 0;
     gameState.isEnding = false;
+    gameState.isPaused = false;
 
     // Start Main Menu
     sceneManager.changeSceneDeferred("mainMenu");

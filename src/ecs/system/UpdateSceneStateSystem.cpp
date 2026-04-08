@@ -14,6 +14,7 @@ void UpdateSceneStateSystem::update(const std::unique_ptr<Entity> &entity, Scene
     sceneState.lives = Game::gameState.lives;
     sceneState.currentCheckpoint = Game::gameState.currentCheckpoint;
     sceneState.isEnding = Game::gameState.isEnding;
+    sceneState.isPaused = Game::gameState.isPaused;
 
     currentState = sceneState;
 }

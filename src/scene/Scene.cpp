@@ -178,4 +178,7 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
     auto &state(world.CreateSceneStateEntity());
     state.addComponent<SceneState>(Game::gameState.playerHealth, Game::gameState.playerMaxHealth,
         Game::gameState.lives, Game::gameState.currentCheckpoint, Game::gameState.isEnding);
+
+    auto& pause(world.createEntity());
+    pause.addComponent<GamePaused>(false);
 }

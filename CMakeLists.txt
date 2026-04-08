@@ -55,6 +55,8 @@ add_executable(Tutorial1 src/main.cpp
         src/ecs/system/DebugTeleportSystem.cpp
         src/ecs/system/UpdateSceneStateSystem.cpp
         src/scene/SpawnFlyingShellEnemy.cpp
+        src/ecs/system/PauseSystem.cpp
+        src/ecs/system/PauseSystem.h
 )
 
 target_link_libraries(Tutorial1

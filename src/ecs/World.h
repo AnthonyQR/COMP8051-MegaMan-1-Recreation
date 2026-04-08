@@ -34,6 +34,7 @@
 #include "MainMenuSystem.h"
 #include "MoveTowardsPlayerSystem.h"
 #include "OctopusBatterySystem.h"
+#include "PauseSystem.h"
 #include "SceneTransitionDelaySystem.h"
 #include "SpawnOnVisibleSystem.h"
 #include "SpawnTimerSystem.h"
@@ -81,6 +82,7 @@ class World {
     DebugTeleportSystem debugTeleportSystem;
     UpdateSceneStateSystem updateSceneStateSystem;
     StopMovementWhileFiringSystem stopMovementWhileFiringSystem;
+    PauseSystem pauseSystem;
 
 public:
     World() = default;
@@ -91,7 +93,7 @@ public:
             animationSystem.update(entities, dt);
         }
         else {
-            if (!currentSceneState.isEnding) {
+            if (!currentSceneState.isEnding && !currentSceneState.isPaused) {
                 debugTeleportSystem.update(entities, event, *this);
                 keyboardInputSystem.update(entities, event, dt);
                 coyoteTimeSystem.update(entities, dt);
@@ -115,6 +117,10 @@ public:
                 flashTimerSystem.update(entities, dt);
                 damageSystem.update(entities, *this);
                 destructionSystem.update(entities, *this);
+            }
+
+            if (!currentSceneState.isEnding) {
+                pauseSystem.update(entities, event, *this);
             }
             sceneTransitionDelaySystem.update(entities, dt);
             updateSceneStateSystem.update(sceneStateEntity, currentSceneState);
