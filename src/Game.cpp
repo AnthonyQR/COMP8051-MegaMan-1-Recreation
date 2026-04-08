@@ -82,9 +82,9 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     audioManager.loadAudio("megamanDefeat", "../Assets/Audio/MegamanDefeat.mp3", 10);
     audioManager.loadAudio("megamanLand", "../Assets/Audio/MegamanLand.mp3", 1);
 
-    audioManager.loadAudio("enemyShoot", "../Assets/Audio/EnemyShoot.mp3", 8);
-    audioManager.loadAudio("enemyDamage", "../Assets/Audio/EnemyDamage.mp3", 9);
-    audioManager.loadAudio("dink", "../Assets/Audio/Dink.mp3", 7);
+    audioManager.loadAudio("enemyShoot", "../Assets/Audio/EnemyShoot.mp3", 7);
+    audioManager.loadAudio("enemyDamage", "../Assets/Audio/EnemyDamage.mp3", 8);
+    audioManager.loadAudio("dink", "../Assets/Audio/Dink.mp3", 9);
 
     // Load assets
     AssetManager::loadAnimation("titleScreen", "../Assets/Animations/megaman_title_screen_anim.xml");
@@ -154,7 +154,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
         if (gameState.isEnding) {
             audioManager.stopMusic();
-            audioManager.changeSfxVolume(0.2f);
+            audioManager.changeSfxVolume(0.15f);
         }
     };
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="287">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="312">
  <tileset firstgid="1" source="CutManTileset.tsx"/>
  <layer id="1" name="Terrain Layer" width="220" height="144">
   <data encoding="csv">
@@ -331,6 +331,18 @@
   <object id="272" x="1104" y="1104">
    <point/>
   </object>
+  <object id="293" x="2144" y="864">
+   <point/>
+  </object>
+  <object id="294" x="2176" y="840">
+   <point/>
+  </object>
+  <object id="309" x="2720" y="928">
+   <point/>
+  </object>
+  <object id="310" x="2960" y="832">
+   <point/>
+  </object>
  </objectgroup>
  <objectgroup id="4" name="Ladder Layer" visible="0">
   <object id="153" x="80" y="2143" width="16" height="97"/>
@@ -373,8 +385,11 @@
   <object id="257" x="2016" y="624">
    <point/>
   </object>
+  <object id="287" x="2144" y="784">
+   <point/>
+  </object>
  </objectgroup>
- <objectgroup id="11" name="Octopus Battery Horizontal Spawn Layer" visible="0">
+ <objectgroup id="11" name="Octopus Battery Horizontal Spawn Layer">
   <object id="240" x="1440" y="1152">
    <point/>
   </object>
@@ -405,8 +420,35 @@
   <object id="253" x="1296" y="320">
    <point/>
   </object>
+  <object id="289" x="2096" y="928">
+   <point/>
+  </object>
+  <object id="295" x="2608" y="896">
+   <point/>
+  </object>
+  <object id="297" x="2768" y="896">
+   <point/>
+  </object>
+  <object id="298" x="2928" y="848">
+   <point/>
+  </object>
+  <object id="302" x="2752" y="848">
+   <point/>
+  </object>
+  <object id="303" x="2928" y="864">
+   <point/>
+  </object>
+  <object id="304" x="2992" y="896">
+   <point/>
+  </object>
+  <object id="306" x="2992" y="880">
+   <point/>
+  </object>
+  <object id="311" x="2096" y="912">
+   <point/>
+  </object>
  </objectgroup>
- <objectgroup id="12" name="Octopus Battery Vertical Spawn Layer" visible="0">
+ <objectgroup id="12" name="Octopus Battery Vertical Spawn Layer">
   <object id="238" x="1328" y="1184">
    <point/>
   </object>
@@ -423,6 +465,12 @@
    <point/>
   </object>
   <object id="250" x="1456" y="288">
+   <point/>
+  </object>
+  <object id="300" x="2416" y="848">
+   <point/>
+  </object>
+  <object id="301" x="2848" y="848">
    <point/>
   </object>
  </objectgroup>
@@ -442,7 +490,7 @@
   <object id="216" x="2296" y="760" width="752" height="224"/>
   <object id="217" x="3056" y="760" width="272" height="224"/>
  </objectgroup>
- <objectgroup id="6" name="Beak Right Spawn Layer" visible="0">
+ <objectgroup id="6" name="Beak Right Spawn Layer">
   <object id="182" x="816" y="2112">
    <point/>
   </object>
@@ -464,6 +512,9 @@
   <object id="260" x="1088" y="1152">
    <point/>
   </object>
+  <object id="292" x="2224" y="832">
+   <point/>
+  </object>
  </objectgroup>
  <objectgroup id="9" name="Beak Right Early Spawn Layer" visible="0">
   <object id="218" x="896" y="1840">
@@ -479,11 +530,14 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="7" name="Beak Left Spawn Layer" visible="0">
+ <objectgroup id="7" name="Beak Left Spawn Layer">
   <object id="192" x="864" y="1488">
    <point/>
   </object>
   <object id="193" x="816" y="1712">
+   <point/>
+  </object>
+  <object id="291" x="1808" y="864">
    <point/>
   </object>
  </objectgroup>
