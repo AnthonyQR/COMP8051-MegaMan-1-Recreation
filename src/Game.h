@@ -19,6 +19,7 @@ struct GameState {
     int playerMaxHealth;
     int lives;
     int currentCheckpoint;
+    bool isEnding;
 };
 
 class Game {

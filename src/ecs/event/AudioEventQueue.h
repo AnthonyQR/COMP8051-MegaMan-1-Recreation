@@ -12,7 +12,7 @@
 
 class AudioEvent {
 public:
-    explicit AudioEvent(const std::string &name) : name(name) {}
+    explicit AudioEvent(const std::string &name) : name(name) {};
 
     void execute() const {
         AudioManager::playSfx(name);

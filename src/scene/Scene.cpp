@@ -173,6 +173,7 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
     SpawnSuperCutterEnemy::spawn(world);
 
     // Add Scene State
-    auto &state(world.createEntity());
-    state.addComponent<SceneState>();
+    auto &state(world.CreateSceneStateEntity());
+    state.addComponent<SceneState>(Game::gameState.playerHealth, Game::gameState.playerMaxHealth,
+        Game::gameState.lives, Game::gameState.currentCheckpoint, Game::gameState.isEnding);
 }

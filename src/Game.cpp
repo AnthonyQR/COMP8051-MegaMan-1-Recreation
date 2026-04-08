@@ -75,6 +75,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     audioManager.loadAudio("gameStart", "../Assets/Audio/GameStart.mp3", 10);
 
     audioManager.loadAudio("cutmanStage", "../Assets/Audio/CutManStageLoop.mp3", 5);
+    audioManager.loadAudio("victoryMusic", "../Assets/Audio/VictoryMusic.mp3", 20);
 
     audioManager.loadAudio("megamanBuster", "../Assets/Audio/MegaBuster.mp3", 6);
     audioManager.loadAudio("megamanDamage", "../Assets/Audio/MegamanDamage.mp3", 10);
@@ -97,9 +98,12 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     AssetManager::loadAnimation("superCutter", "../Assets/Animations/super_cutter_anim.xml");
     AssetManager::loadAnimation("enemyDeath", "../Assets/Animations/enemy_death_anim.xml");
 
+    AssetManager::loadAnimation("victoryItem", "../Assets/Animations/victory_item_anim.xml");
+
     // Load scenes
     sceneManager.loadScene(SceneType::Menu, "mainMenu", nullptr, width, height);
     sceneManager.loadScene(SceneType::Gameplay, "cutman", "../Assets/CutManMap.tmx", width, height);
+    sceneManager.loadScene(SceneType::Gameplay, "victory", "../Assets/CutManMap.tmx", width, height);
     //sceneManager.loadScene(SceneType::Gameplay, "level1", "../Assets/Map.tmx", width, height);
     //sceneManager.loadScene(SceneType::Gameplay, "level2", "../Assets/map2.tmx", width, height);
 
@@ -108,6 +112,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     gameState.playerMaxHealth = 28;
     gameState.lives = 3;
     gameState.currentCheckpoint = 0;
+    gameState.isEnding = false;
 
     // Start Main Menu
     sceneManager.changeSceneDeferred("mainMenu");
@@ -132,6 +137,12 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
             return;
         }
 
+        if (sceneName == "victory") {
+            std::cout << "You Win!" << std::endl;
+            isRunning = false;
+            return;
+        }
+
         sceneManager.changeSceneDeferred(sceneName);
     };
 
@@ -139,6 +150,11 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
         if (gameState.playerHealth <= 0) {
             gameState.playerHealth = gameState.playerMaxHealth;
             audioManager.stopMusic();
+        }
+
+        if (gameState.isEnding) {
+            audioManager.stopMusic();
+            audioManager.changeSfxVolume(0.2f);
         }
     };
 }

@@ -53,6 +53,7 @@ add_executable(Tutorial1 src/main.cpp
         src/scene/SpawnOctopusBatteryEnemy.cpp
         src/scene/SpawnSuperCutterEnemy.cpp
         src/ecs/system/DebugTeleportSystem.cpp
+        src/ecs/system/UpdateSceneStateSystem.cpp
 )
 
 target_link_libraries(Tutorial1

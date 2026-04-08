@@ -128,7 +128,11 @@ struct SpawnOnVisible {
 
 // Our game state, might have multiple scenes
 struct SceneState {
-    int lives = 3;
+    int playerHealth{};
+    int playerMaxHealth{};
+    int lives{};
+    int currentCheckpoint{};
+    bool isEnding{};
 };
 
 struct Health {

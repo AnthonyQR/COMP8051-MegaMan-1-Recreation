@@ -30,6 +30,7 @@ public:
     void stopMusic() const;
 
     static void playSfx(const std::string& name);
+    static void changeSfxVolume (const float volume);
 
     static void onSfxFinish(void *userdata, MIX_Track *track);
 };

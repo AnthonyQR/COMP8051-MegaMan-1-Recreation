@@ -391,8 +391,12 @@ void OnPlayerCollisionEvent::itemCollision(Entity *player, Entity *other, const 
     if (player->hasComponent<PlayerGroundCheck>()) return;
     if (player->hasComponent<PlayerHurtbox>()) return;
 
-    Game::gameState.isEnding = true;
-    Game::checkSceneState();
     world.getAudioEventQueue().push(std::make_unique<AudioEvent>("victoryMusic"));
     other->destroy();
+
+    Game::gameState.isEnding = true;
+    Game::checkSceneState();
+
+    auto& transition(world.createEntity());
+    transition.addComponent<SceneTransitionDelay>(6.5f, "victory");
 }

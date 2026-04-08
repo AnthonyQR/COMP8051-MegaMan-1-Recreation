@@ -69,11 +69,14 @@ void AudioManager::playSfx(const std::string &name) {
         std::cout << "MIX_SetTrackAudio() failed" << std::endl;
         return;
     }
-
     MIX_PlayTrack(sfxTrack, 0); // 0 means play once
     MIX_SetTrackStoppedCallback(sfxTrack, onSfxFinish, nullptr); // Execute function when sfx stops playing
     currentSfx = name;
     std::cout << "Playing sfx: " << name << std::endl;
+}
+
+void AudioManager::changeSfxVolume(const float volume) {
+    MIX_SetTrackGain(sfxTrack, volume);
 }
 
 void AudioManager::onSfxFinish(void *userdata, MIX_Track *track) {

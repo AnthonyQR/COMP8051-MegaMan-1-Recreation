@@ -38,6 +38,7 @@
 #include "SpawnOnVisibleSystem.h"
 #include "SpawnTimerSystem.h"
 #include "UIRenderSystem.h"
+#include "UpdateSceneStateSystem.h"
 #include "event/AudioEventQueue.h"
 #include "scene/SceneType.h"
 
@@ -45,6 +46,9 @@ class World {
     Map map;
     std::vector<std::unique_ptr<Entity>> entities;
     std::vector<std::unique_ptr<Entity>> deferredEntities;
+    std::unique_ptr<Entity> sceneStateEntity;
+    SceneState currentSceneState;
+
     MovementSystem movementSystem;
     RenderSystem renderSystem;
     KeyboardInputSystem keyboardInputSystem;
@@ -74,6 +78,7 @@ class World {
     BladerAttackSystem bladerAttackSystem;
     OctopusBatterySystem octopusBatterySystem;
     DebugTeleportSystem debugTeleportSystem;
+    UpdateSceneStateSystem updateSceneStateSystem;
 
 public:
     World() = default;
@@ -84,32 +89,34 @@ public:
             animationSystem.update(entities, dt);
         }
         else {
-            debugTeleportSystem.update(entities, event, *this);
-            keyboardInputSystem.update(entities, event, dt);
-            coyoteTimeSystem.update(entities, dt);
-            gravitySystem.update(entities, dt);
-            hitKnockbackSystem.update(entities, dt);
-            moveTowardsPlayerSystem.update(entities);
-            bladerAttackSystem.update(entities, dt);
-            octopusBatterySystem.update(entities, dt);
-            movementSystem.update(entities, dt);
-            followEntitySystem.update(entities);
-            collisionSystem.update(*this);
-            animationSystem.update(entities, dt);
-            cameraSystem.update(entities);
-            spawnTimerSystem.update(entities, dt);
-            spawnOnVisibleSystem.update(entities);
-            isFiringTimerSystem.update(entities, dt);
-            autoFiringSystem.update(entities, dt);
-            invulnerableWhileNotFiringSystem.update(entities);
-            invulnerabilityTimerSystem.update(entities, dt);
-            flashTimerSystem.update(entities, dt);
-            damageSystem.update(entities, *this);
+            if (!currentSceneState.isEnding) {
+                debugTeleportSystem.update(entities, event, *this);
+                keyboardInputSystem.update(entities, event, dt);
+                coyoteTimeSystem.update(entities, dt);
+                gravitySystem.update(entities, dt);
+                hitKnockbackSystem.update(entities, dt);
+                moveTowardsPlayerSystem.update(entities);
+                bladerAttackSystem.update(entities, dt);
+                octopusBatterySystem.update(entities, dt);
+                movementSystem.update(entities, dt);
+                followEntitySystem.update(entities);
+                collisionSystem.update(*this);
+                animationSystem.update(entities, dt);
+                cameraSystem.update(entities);
+                spawnTimerSystem.update(entities, dt);
+                spawnOnVisibleSystem.update(entities);
+                isFiringTimerSystem.update(entities, dt);
+                autoFiringSystem.update(entities, dt);
+                invulnerableWhileNotFiringSystem.update(entities);
+                invulnerabilityTimerSystem.update(entities, dt);
+                flashTimerSystem.update(entities, dt);
+                damageSystem.update(entities, *this);
+                destructionSystem.update(entities, *this);
+            }
             sceneTransitionDelaySystem.update(entities, dt);
-            destructionSystem.update(entities, *this);
+            updateSceneStateSystem.update(sceneStateEntity, currentSceneState);
         }
         audioEventQueue.process(); // Process all the audio events
-
         synchronizeEntities();
         cleanup();
     }
@@ -163,6 +170,11 @@ public:
             // Clearing the creation buffer
             deferredEntities.clear();
         };
+    }
+
+    Entity& CreateSceneStateEntity() {
+        sceneStateEntity = std::make_unique<Entity>();
+        return *sceneStateEntity;
     }
 
     EventManager& getEventManager() {return eventManager;}
