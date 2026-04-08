@@ -1,0 +1,7 @@
+<animations>
+    <play>
+        <frame x="0" y="0" w="32" h="12"/>
+        <frame x="0" y="12" w="32" h="12"/>
+        <frame x="0" y="24" w="32" h="12"/>
+    </play>
+</animations>

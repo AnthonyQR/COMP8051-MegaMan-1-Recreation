@@ -52,6 +52,11 @@ public:
                     newClip.animationSpeed = 0.05f;
                     newClip.destroyOnFinish = true;
                 }
+                else if (e->hasComponent<PlayerHitParticles>()) {
+                    newClip.name = "play";
+                    newClip.animationSpeed = 0.2f;
+                    newClip.destroyOnFinish = true;
+                }
                 else {
                     continue;
                 }

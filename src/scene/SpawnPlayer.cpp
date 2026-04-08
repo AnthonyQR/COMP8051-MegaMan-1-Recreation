@@ -8,14 +8,20 @@
 #include "manager/AssetManager.h"
 
 void SpawnPlayer::spawn(World& world) {
+
     auto& playerHitFlash(world.createEntity());
     SDL_Texture* hitFlashTex = TextureManager::load("../Assets/megaman_hit_flash.png");
-    // SDL_FRect playerSrc {0, 0, 32, 44};
     SDL_FRect hitFlashSrc = {0, 0, 32, 32};
     SDL_FRect hitFlashDst {0, 0, 64, 64};
     playerHitFlash.addComponent<Sprite>(hitFlashTex, hitFlashSrc, hitFlashDst, RenderLayer::World, false, false);
     playerHitFlash.addComponent<FlashTimer>(0.05f, 0.6f);
     playerHitFlash.addComponent<PlayerHitFlash>();
+
+    Animation hitParticlesAnim = AssetManager::getAnimation("playerHitParticles");
+    SDL_Texture* hitParticlesTex = TextureManager::load("../Assets/Animations/megaman_hit_particles_anim.png");
+    SDL_FRect hitParticlesSrc = hitParticlesAnim.clips[hitParticlesAnim.currentClip].frameIndices[0];
+    SDL_FRect hitParticlesDst {0, 0, 96, 36};
+    Sprite hitParticlesSprite {hitParticlesTex, hitParticlesSrc, hitParticlesDst};
 
     auto& player(world.createEntity());
 
@@ -131,7 +137,7 @@ void SpawnPlayer::spawn(World& world) {
 
     });
 
-    player.addComponent<OnHitCallback>([&world](Entity* player, Entity* other) {
+    player.addComponent<OnHitCallback>([&world, hitParticlesAnim, hitParticlesSprite](Entity* player, Entity* other) {
         auto& hitKnockback = player->getComponent<HitKnockback>();
         hitKnockback.isHitKnockback = true;
         auto& velocity = other->getComponent<Velocity>();
@@ -177,6 +183,12 @@ void SpawnPlayer::spawn(World& world) {
                 break;
             }
         }
+
+        auto& hitParticles(world.createDeferredEntity());
+        hitParticles.addComponent<Transform>(player->getComponent<Transform>());
+        hitParticles.addComponent<Animation>(hitParticlesAnim);
+        hitParticles.addComponent<Sprite>(hitParticlesSprite);
+        hitParticles.addComponent<PlayerHitParticles>();
 
         auto& health = player->getComponent<Health>();
         Game::gameState.playerHealth = health.currentHealth;

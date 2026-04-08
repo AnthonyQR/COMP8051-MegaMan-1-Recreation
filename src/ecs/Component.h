@@ -300,6 +300,7 @@ struct PlayerTag{};
 struct PlayerGroundCheck{};
 struct PlayerHurtbox{};
 struct PlayerHitFlash{};
+struct PlayerHitParticles{};
 struct ProjectileTag{};
 struct BeakEnemyTag{};
 struct BladerEnemyTag{};
