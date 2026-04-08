@@ -98,26 +98,33 @@ public:
             if (!currentSceneState.isEnding && !currentSceneState.isPaused) {
                 debugTeleportSystem.update(entities, event, *this);
                 keyboardInputSystem.update(entities, event, dt);
+
                 coyoteTimeSystem.update(entities, dt);
                 gravitySystem.update(entities, dt);
                 hitKnockbackSystem.update(entities, dt);
                 moveTowardsPlayerSystem.update(entities);
+
                 bladerAttackSystem.update(entities, dt);
                 octopusBatterySystem.update(entities, dt);
                 stopMovementWhileFiringSystem.update(entities);
+
                 movementSystem.update(entities, dt);
                 followEntitySystem.update(entities);
+
                 collisionSystem.update(*this);
                 animationSystem.update(entities, dt);
                 cameraSystem.update(entities);
+
                 spawnTimerSystem.update(entities, dt);
                 spawnOnVisibleSystem.update(entities);
                 spawnWhileVisibleTimerSystem.update(entities, dt);
                 isFiringTimerSystem.update(entities, dt);
                 autoFiringSystem.update(entities, dt);
+
                 invulnerableWhileNotFiringSystem.update(entities);
                 invulnerabilityTimerSystem.update(entities, dt);
                 flashTimerSystem.update(entities, dt);
+
                 damageSystem.update(entities, *this);
                 destructionSystem.update(entities, *this);
             }

@@ -92,7 +92,6 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     AssetManager::loadAnimation("player", "../Assets/Animations/megaman_anim.xml");
     AssetManager::loadAnimation("playerHitParticles", "../Assets/Animations/megaman_hit_particles_anim.xml");
 
-    AssetManager::loadAnimation("enemy", "../Assets/Animations/bird_animations.xml");
     AssetManager::loadAnimation("beak", "../Assets/Animations/beak_anim.xml");
     AssetManager::loadAnimation("blader", "../Assets/Animations/blader_anim.xml");
     AssetManager::loadAnimation("octopus", "../Assets/Animations/octopus_battery_anim.xml");
