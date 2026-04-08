@@ -301,15 +301,19 @@ struct PlayerGroundCheck{};
 struct PlayerHurtbox{};
 struct PlayerHitFlash{};
 struct PlayerHitParticles{};
+
 struct ProjectileTag{};
 struct BeakEnemyTag{};
 struct BladerEnemyTag{};
 struct OctopusBatteryTag{};
 struct SuperCutterTag{};
 struct EnemyDeathTag{};
+
 struct InvulnerableWhileNotFiring{};
 struct SpawnedEnemyTag{};
 struct DestroyOutOfViewTag{};
+
+struct VictoryItemTag{};
 
 
 #endif //TUTORIAL1_COMPONENT_H

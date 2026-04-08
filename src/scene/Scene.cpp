@@ -65,6 +65,27 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
         */
     }
 
+    for (auto&item : world.getMap().itemSpawnPoints) {
+        auto& entity(world.createEntity());
+        entity.addComponent<Transform>(Vector2D(item.x, item.y), 0.0f, 1.0f);
+
+        Animation anim = AssetManager::getAnimation("victoryItem");
+        entity.addComponent<Animation>(anim);
+
+        SDL_Texture* itemTex = TextureManager::load("../Assets/Animations/victory_item_anim.png");
+        SDL_FRect itemSrc = anim.clips[anim.currentClip].frameIndices[0];
+        SDL_FRect itemDst {0, 0, 48, 48};
+        entity.addComponent<Sprite>(itemTex, itemSrc, itemDst);
+
+        auto& collider = entity.addComponent<Collider>("Item");
+        collider.rect.x = item.x;
+        collider.rect.y = item.y;
+        collider.rect.w = itemDst.w;
+        collider.rect.h = itemDst.h;
+
+        entity.addComponent<VictoryItemTag>();
+    }
+
     // Spawn Ladders
     for (auto &ladder : world.getMap().ladders) {
         auto& e = world.createEntity();

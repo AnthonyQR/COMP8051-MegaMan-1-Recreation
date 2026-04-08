@@ -41,6 +41,10 @@ void OnPlayerCollisionEvent::onCollision(Entity *player, Entity *other,
     else if (std::string(otherTag) == "Checkpoint") {
         checkpointCollision(player, other, e, otherTag, world);
     }
+
+    else if (std::string(otherTag) == "Item") {
+        itemCollision(player, other, e, otherTag, world);
+    }
 }
 
 void OnPlayerCollisionEvent::wallCollision(Entity *player, Entity *other, const CollisionEvent &e, const char *otherTag,
@@ -378,4 +382,17 @@ void OnPlayerCollisionEvent::checkpointCollision(Entity *player, Entity *other, 
             return;
         }
     }
+}
+
+void OnPlayerCollisionEvent::itemCollision(Entity *player, Entity *other, const CollisionEvent &e, const char *otherTag,
+    World &world) {
+    if (e.state != CollisionState::Enter) return;
+    if (player->hasComponent<ProjectileTag>()) return;
+    if (player->hasComponent<PlayerGroundCheck>()) return;
+    if (player->hasComponent<PlayerHurtbox>()) return;
+
+    Game::gameState.isEnding = true;
+    Game::checkSceneState();
+    world.getAudioEventQueue().push(std::make_unique<AudioEvent>("victoryMusic"));
+    other->destroy();
 }

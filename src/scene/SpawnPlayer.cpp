@@ -140,6 +140,7 @@ void SpawnPlayer::spawn(World& world) {
     player.addComponent<OnHitCallback>([&world, hitParticlesAnim, hitParticlesSprite](Entity* player, Entity* other) {
         auto& hitKnockback = player->getComponent<HitKnockback>();
         hitKnockback.isHitKnockback = true;
+        hitKnockback.timer = hitKnockback.minKnockbackTime;
         auto& velocity = other->getComponent<Velocity>();
 
         auto& playerCollider = player->getComponent<Collider>().rect;
@@ -164,7 +165,6 @@ void SpawnPlayer::spawn(World& world) {
                 hitKnockback.isRightHit = false;
             }
         }
-        hitKnockback.timer = hitKnockback.minKnockbackTime;
 
         auto& invulnerability = player->getComponent<Invulnerability>();
         auto& invulTimer = player->getComponent<InvulnerabilityTimer>();

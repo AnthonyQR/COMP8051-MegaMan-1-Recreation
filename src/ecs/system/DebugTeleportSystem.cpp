@@ -81,6 +81,24 @@ void DebugTeleportSystem::update(const std::vector<std::unique_ptr<Entity>> &ent
                             transform.position.x -= xOffset;
                         }
                         break;
+                    case SDLK_MINUS:
+                        if (10 < spawnPoints.size()) {
+                            transform.position = spawnPoints.at(10);
+                            transform.position.x -= xOffset;
+                        }
+                        break;
+                    case SDLK_EQUALS:
+                        if (11 < spawnPoints.size()) {
+                            transform.position = spawnPoints.at(11);
+                            transform.position.x -= xOffset;
+                        }
+                        break;
+                    case SDLK_BACKSPACE:
+                        if (12 < spawnPoints.size()) {
+                            transform.position = spawnPoints.at(12);
+                            transform.position.x -= xOffset;
+                        }
+                        break;
                 }
             }
         }

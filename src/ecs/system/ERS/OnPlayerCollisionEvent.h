@@ -27,6 +27,8 @@ public:
         const CollisionEvent& e, const char* otherTag, World& world);
     static void checkpointCollision(Entity *player, Entity *other,
         const CollisionEvent& e, const char* otherTag, World& world);
+    static void itemCollision(Entity *player, Entity *other,
+        const CollisionEvent& e, const char* otherTag, World& world);
 };
 
 #endif //TUTORIAL1_ONPLAYERCOLLISIONEVENT_H

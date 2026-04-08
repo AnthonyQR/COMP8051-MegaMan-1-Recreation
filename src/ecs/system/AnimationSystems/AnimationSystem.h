@@ -57,6 +57,10 @@ public:
                     newClip.animationSpeed = 0.2f;
                     newClip.destroyOnFinish = true;
                 }
+                else if (e->hasComponent<VictoryItemTag>()) {
+                    newClip.name = "play";
+                    newClip.animationSpeed = 0.2f;
+                }
                 else {
                     continue;
                 }
