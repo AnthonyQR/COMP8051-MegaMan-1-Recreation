@@ -38,6 +38,7 @@
 #include "SceneTransitionDelaySystem.h"
 #include "SpawnOnVisibleSystem.h"
 #include "SpawnTimerSystem.h"
+#include "SpawnWhileVisibleTimerSystem.h"
 #include "StopMovementWhileFiringSystem.h"
 #include "UIRenderSystem.h"
 #include "UpdateSceneStateSystem.h"
@@ -83,6 +84,7 @@ class World {
     UpdateSceneStateSystem updateSceneStateSystem;
     StopMovementWhileFiringSystem stopMovementWhileFiringSystem;
     PauseSystem pauseSystem;
+    SpawnWhileVisibleSystem spawnWhileVisibleSystem;
 
 public:
     World() = default;
@@ -110,6 +112,7 @@ public:
                 cameraSystem.update(entities);
                 spawnTimerSystem.update(entities, dt);
                 spawnOnVisibleSystem.update(entities);
+                spawnWhileVisibleSystem.update(entities, dt);
                 isFiringTimerSystem.update(entities, dt);
                 autoFiringSystem.update(entities, dt);
                 invulnerableWhileNotFiringSystem.update(entities);

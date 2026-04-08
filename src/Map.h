@@ -42,6 +42,7 @@ public:
     std::vector<Vector2D> octopusBatteryHorizontalSpawnPoints;
     std::vector<Vector2D> superCutterSpawnPoints;
     std::vector<Vector2D> flyingShellSpawnPoints;
+    std::vector<Vector2D> flyingShellTimedSpawnPoints;
 
     std::vector<Vector2D> itemSpawnPoints;
 };

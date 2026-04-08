@@ -36,6 +36,16 @@ void OnDestroyEvent::onDestroy(const DestroyedEvent &e, World &world) {
                     return;
                 }
             }
+            if (entity->hasComponent<SpawnWhileVisibleTimer>()) {
+                auto& spawnWhileVisible = entity->getComponent<SpawnWhileVisibleTimer>();
+                if (spawnWhileVisible.spawnedEntity == destroyedEntity) {
+                    spawnWhileVisible.spawnedEntity = nullptr;
+                    if (spawnWhileVisible.timer >= spawnWhileVisible.shortDelay) {
+                        spawnWhileVisible.timer = spawnWhileVisible.shortDelay;
+                    }
+                    return;
+                }
+            }
         }
     };
 }

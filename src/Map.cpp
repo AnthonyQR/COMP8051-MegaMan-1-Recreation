@@ -54,6 +54,7 @@ void Map::load(const char* path, SDL_Texture *ts) {
     parseData(layer, "Octopus Battery Horizontal Spawn Layer", octopusBatteryHorizontalSpawnPoints);
     parseData(layer, "Super Cutter Spawn Layer", superCutterSpawnPoints);
     parseData(layer, "Flying Shell Spawn Layer", flyingShellSpawnPoints);
+    parseData(layer, "Flying Shell Timed Spawn Layer", flyingShellTimedSpawnPoints);
 
     parseData(layer, "Item Spawn Points Layer", itemSpawnPoints);
 }

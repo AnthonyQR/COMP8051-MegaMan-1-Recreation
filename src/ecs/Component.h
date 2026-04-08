@@ -126,6 +126,14 @@ struct SpawnOnVisible {
     Entity* spawnedEntity = nullptr;
 };
 
+struct SpawnWhileVisibleTimer {
+    float shortDelay{};
+    float longDelay{};
+    std::function<Entity*(Transform)> spawnCallback{};
+    Entity* spawnedEntity = nullptr;
+    float timer{};
+};
+
 // Our game state, might have multiple scenes
 struct SceneState {
     int playerHealth{};

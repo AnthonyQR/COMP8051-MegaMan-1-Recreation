@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="19" nextobjectid="312">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="20" nextobjectid="314">
  <tileset firstgid="1" source="CutManTileset.tsx"/>
  <layer id="1" name="Terrain Layer" width="220" height="144">
   <data encoding="csv">
@@ -379,12 +379,6 @@
   </object>
  </objectgroup>
  <objectgroup id="14" name="Flying Shell Spawn Layer">
-  <object id="256" x="2024" y="376">
-   <point/>
-  </object>
-  <object id="257" x="2024" y="616">
-   <point/>
-  </object>
   <object id="287" x="2144" y="784">
    <point/>
   </object>
@@ -529,6 +523,14 @@
    <point/>
   </object>
   <object id="193" x="816" y="1712">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="19" name="Flying Shell Timed Spawn Layer">
+  <object id="312" x="2024" y="616">
+   <point/>
+  </object>
+  <object id="313" x="2024" y="376">
    <point/>
   </object>
  </objectgroup>
