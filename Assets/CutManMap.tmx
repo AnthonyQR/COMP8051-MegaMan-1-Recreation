@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="20" nextobjectid="314">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="20" nextobjectid="315">
  <tileset firstgid="1" source="CutManTileset.tsx"/>
  <layer id="1" name="Terrain Layer" width="220" height="144">
   <data encoding="csv">
@@ -344,7 +344,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="4" name="Ladder Layer" visible="0">
+ <objectgroup id="4" name="Ladder Layer">
   <object id="153" x="80" y="2143" width="16" height="97"/>
   <object id="154" x="160" y="2143" width="16" height="33"/>
   <object id="155" x="336" y="2143" width="16" height="97"/>
@@ -380,6 +380,9 @@
  </objectgroup>
  <objectgroup id="14" name="Flying Shell Spawn Layer">
   <object id="287" x="2144" y="784">
+   <point/>
+  </object>
+  <object id="314" x="2000" y="816">
    <point/>
   </object>
  </objectgroup>
@@ -462,7 +465,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="5" name="Camera Bounds Layer" visible="0">
+ <objectgroup id="5" name="Camera Bounds Layer">
   <object id="179" x="0" y="2056" width="1024" height="224"/>
   <object id="180" x="752" y="1800" width="272" height="224"/>
   <object id="204" x="752" y="1544" width="272" height="224"/>
@@ -504,7 +507,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="9" name="Beak Right Early Spawn Layer" visible="0">
+ <objectgroup id="9" name="Beak Right Early Spawn Layer">
   <object id="218" x="896" y="1840">
    <point/>
   </object>

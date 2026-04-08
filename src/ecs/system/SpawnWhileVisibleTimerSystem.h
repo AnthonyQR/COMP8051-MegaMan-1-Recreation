@@ -10,7 +10,7 @@
 #include "Component.h"
 #include "Entity.h"
 
-class SpawnWhileVisibleSystem {
+class SpawnWhileVisibleTimerSystem {
 public:
     void update(std::vector<std::unique_ptr<Entity>>& entities, float dt) {
         Entity* cameraEntity = nullptr;

@@ -24,7 +24,7 @@ void SpawnFlyingShellEnemy::spawn(World &world) {
         auto& spawnerTransform = shellSpawner.addComponent<Transform>
         (Vector2D(shellEnemySpawnPoint.x, shellEnemySpawnPoint.y), 0.0f, 1.0f);
 
-        shellSpawner.addComponent<SpawnWhileVisibleTimer>(1.0f, 4.0f, [&world](Transform spawnerTransform) {
+        shellSpawner.addComponent<SpawnWhileVisibleTimer>(1.0f, 5.0f, [&world](Transform spawnerTransform) {
             auto shellEnemy = finishSpawn(world, spawnerTransform);
             return shellEnemy;
         });
