@@ -14,3 +14,4 @@ Controls:
 - Arrow Keys: Movement
 - Z: Jump
 - X: Shoot
+- Enter: Start / Pause
