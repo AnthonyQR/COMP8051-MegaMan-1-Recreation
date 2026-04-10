@@ -9,3 +9,8 @@ The engine utilizes a pure Entity Component System (ECS) where:
 50+ components and 30+ systems were created for this game.
 
 A deeper explanation of the engine's design & systems are included in the repository.
+
+Controls:
+- Arrow Keys: Movement
+- Z: Jump
+- X: Shoot
