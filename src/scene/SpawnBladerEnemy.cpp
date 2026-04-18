@@ -26,7 +26,7 @@ void SpawnBladerEnemy::spawn(World &world) {
             Animation anim = AssetManager::getAnimation("blader");
             bladerEnemy.addComponent<Animation>(anim);
 
-            SDL_Texture* bladerTex = TextureManager::load("../Assets/Animations/blader_anim.png");
+            SDL_Texture* bladerTex = TextureManager::load("Assets/Animations/blader_anim.png");
 
             SDL_FRect bladerSrc = anim.clips[anim.currentClip].frameIndices[0];
             SDL_FRect bladerDst {bladerTransform.position.x, bladerTransform.position.y, 48, 60};
@@ -121,7 +121,7 @@ void SpawnBladerEnemy::spawn(World &world) {
 
                 auto& deathAnim = bladerDeath.addComponent<Animation>(newDeathAnim);
 
-                SDL_Texture* enemyDeathTex = TextureManager::load("../Assets/Animations/enemy_death_anim.png");
+                SDL_Texture* enemyDeathTex = TextureManager::load("Assets/Animations/enemy_death_anim.png");
                 SDL_FRect deathSrc = deathAnim.clips[deathAnim.currentClip].frameIndices[0];
                 SDL_FRect deathDst {deathTransform.position.x, deathTransform.position.y, 48, 48};
 

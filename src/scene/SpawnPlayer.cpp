@@ -10,7 +10,7 @@
 void SpawnPlayer::spawn(World& world) {
 
     auto& playerHitFlash(world.createEntity());
-    SDL_Texture* hitFlashTex = TextureManager::load("../Assets/megaman_hit_flash.png");
+    SDL_Texture* hitFlashTex = TextureManager::load("Assets/megaman_hit_flash.png");
     SDL_FRect hitFlashSrc = {0, 0, 32, 32};
     SDL_FRect hitFlashDst {0, 0, 64, 64};
     playerHitFlash.addComponent<Sprite>(hitFlashTex, hitFlashSrc, hitFlashDst, RenderLayer::World, false, false);
@@ -18,7 +18,7 @@ void SpawnPlayer::spawn(World& world) {
     playerHitFlash.addComponent<PlayerHitFlash>();
 
     Animation hitParticlesAnim = AssetManager::getAnimation("playerHitParticles");
-    SDL_Texture* hitParticlesTex = TextureManager::load("../Assets/Animations/megaman_hit_particles_anim.png");
+    SDL_Texture* hitParticlesTex = TextureManager::load("Assets/Animations/megaman_hit_particles_anim.png");
     SDL_FRect hitParticlesSrc = hitParticlesAnim.clips[hitParticlesAnim.currentClip].frameIndices[0];
     SDL_FRect hitParticlesDst {0, 0, 96, 36};
     Sprite hitParticlesSprite {hitParticlesTex, hitParticlesSrc, hitParticlesDst};
@@ -39,7 +39,7 @@ void SpawnPlayer::spawn(World& world) {
     Animation anim = AssetManager::getAnimation("player");
     player.addComponent<Animation>(anim);
 
-    SDL_Texture* tex = TextureManager::load("../Assets/Animations/megaman_anim.png");
+    SDL_Texture* tex = TextureManager::load("Assets/Animations/megaman_anim.png");
     // SDL_FRect playerSrc {0, 0, 32, 44};
     SDL_FRect playerSrc = anim.clips[anim.currentClip].frameIndices[0];
     SDL_FRect playerDst {playerTransform.position.x, playerTransform.position.y, 96, 96};
@@ -61,7 +61,7 @@ void SpawnPlayer::spawn(World& world) {
     player.addComponent<KeyboardInputs>();
     player.addComponent<IsFacingRight>();
 
-    SDL_Texture* playerProjectileTex = TextureManager::load("../Assets/megaman_projectile.png");
+    SDL_Texture* playerProjectileTex = TextureManager::load("Assets/megaman_projectile.png");
     SDL_FRect playerProjectileSrc{0, 0, 8, 8};
     SDL_FRect playerProjectileDest{0, 0, 8 * 3, 8 * 3};
     Sprite newProjectileSprite {playerProjectileTex, playerProjectileSrc, playerProjectileDest};

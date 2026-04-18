@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 4.1)
-project(Tutorial1)
+project(Megaman)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -26,7 +26,7 @@ if (WIN32)
     )
 endif()
 
-add_executable(Tutorial1 src/main.cpp
+add_executable(Megaman WIN32 src/main.cpp
         src/Game.cpp
         src/TextureManager.cpp
         src/Map.cpp
@@ -58,8 +58,17 @@ add_executable(Tutorial1 src/main.cpp
         src/ecs/system/PauseSystem.cpp
 )
 
-target_link_libraries(Tutorial1
+target_link_libraries(Megaman
         SDL3
         SDL3_image
         SDL3_mixer
 )
+
+if (WIN32)
+    add_custom_command(TARGET Megaman POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${PROJECT_SOURCE_DIR}/Assets
+            $<TARGET_FILE_DIR:Megaman>/Assets
+            COMMENT "Copying Assets to build output"
+    )
+endif ()

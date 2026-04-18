@@ -167,6 +167,13 @@ public:
     }
 
     void cleanup() {
+        // Cleanup collision keys
+        for (auto & entity : entities) {
+            if (!entity->isActive()) {
+                collisionSystem.cleanupDestroyedCollisions(entity.get());
+            }
+        }
+
         // Use a lambda predicate to remove all inactive entities
         std::erase_if(
             entities,

@@ -48,7 +48,7 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
         Animation anim = AssetManager::getAnimation("beak");
         beakEnemy.addComponent<Animation>(anim);
 
-        SDL_Texture* beakTex = TextureManager::load("../Assets/Animations/beak_anim.png");
+        SDL_Texture* beakTex = TextureManager::load("Assets/Animations/beak_anim.png");
 
         SDL_FRect beakSrc = anim.clips[anim.currentClip].frameIndices[0];
         SDL_FRect beakDst {beakTransform.position.x, beakTransform.position.y, 48, 48};
@@ -60,7 +60,7 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
         beakCollider.rect.w = beakDst.w / 2;
         beakCollider.rect.h = beakDst.h;
 
-        SDL_Texture* beakProjectileTex = TextureManager::load("../Assets/beak_projectile.png");
+        SDL_Texture* beakProjectileTex = TextureManager::load("Assets/beak_projectile.png");
         SDL_FRect beakProjectileSrc{0, 0, 8, 8};
         SDL_FRect beakProjectileDest{0, 0, 8 * 3, 8 * 3};
         Sprite newProjectileSprite{beakProjectileTex, beakProjectileSrc, beakProjectileDest};
@@ -120,7 +120,7 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
 
             auto& deathAnim = beakDeath.addComponent<Animation>(newDeathAnim);
 
-            SDL_Texture* beakDeathTex = TextureManager::load("../Assets/Animations/enemy_death_anim.png");
+            SDL_Texture* beakDeathTex = TextureManager::load("Assets/Animations/enemy_death_anim.png");
             SDL_FRect beakSrc = deathAnim.clips[deathAnim.currentClip].frameIndices[0];
             SDL_FRect beakDst {deathTransform.position.x, deathTransform.position.y, 48, 48};
 

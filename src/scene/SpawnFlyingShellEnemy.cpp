@@ -42,7 +42,7 @@ Entity * SpawnFlyingShellEnemy::finishSpawn(World &world, Transform spawnerTrans
     Animation anim = AssetManager::getAnimation("flyingShell");
     shellEnemy.addComponent<Animation>(anim);
 
-    SDL_Texture* shellTex = TextureManager::load("../Assets/Animations/flying_shell_anim.png");
+    SDL_Texture* shellTex = TextureManager::load("Assets/Animations/flying_shell_anim.png");
 
     SDL_FRect shellSrc = anim.clips[anim.currentClip].frameIndices[0];
     SDL_FRect shellDst {shellTransform.position.x, shellTransform.position.y, 51, 63};
@@ -53,7 +53,7 @@ Entity * SpawnFlyingShellEnemy::finishSpawn(World &world, Transform spawnerTrans
     shellCollider.rect.w = shellDst.w;
     shellCollider.rect.h = shellDst.h;
 
-    SDL_Texture* shellProjectileTex = TextureManager::load("../Assets/flying_shell_projectile.png");
+    SDL_Texture* shellProjectileTex = TextureManager::load("Assets/flying_shell_projectile.png");
     SDL_FRect shellProjectileSrc{0, 0, 8, 8};
     SDL_FRect shellProjectileDest{0, 0, 8 * 3, 8 * 3};
     Sprite newProjectileSprite{shellProjectileTex, shellProjectileSrc, shellProjectileDest};
@@ -107,7 +107,7 @@ Entity * SpawnFlyingShellEnemy::finishSpawn(World &world, Transform spawnerTrans
 
        auto& deathAnim = shellDeath.addComponent<Animation>(newDeathAnim);
 
-       SDL_Texture* shellDeathTex = TextureManager::load("../Assets/Animations/enemy_death_anim.png");
+       SDL_Texture* shellDeathTex = TextureManager::load("Assets/Animations/enemy_death_anim.png");
        SDL_FRect shellSrc = deathAnim.clips[deathAnim.currentClip].frameIndices[0];
        SDL_FRect shellDst {deathTransform.position.x, deathTransform.position.y, 48, 48};
 

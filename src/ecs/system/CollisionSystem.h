@@ -18,6 +18,7 @@ class World;
 class CollisionSystem {
 public:
     void update(World& world);
+    void cleanupDestroyedCollisions(const Entity* entity);
     std::set<CollisionKey> collisions;
 private:
     std::vector<Entity*> queryCollidables(const std::vector<std::unique_ptr<Entity>>& entities);

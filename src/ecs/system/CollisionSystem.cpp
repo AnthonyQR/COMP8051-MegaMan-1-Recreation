@@ -49,6 +49,7 @@ void CollisionSystem::update(World &world) {
             }
         }
     }
+
     for (auto& key : collisions) {
         if (!currentCollisions.contains(key)) {
             world.getEventManager().emit(CollisionEvent{key.first, key.second, CollisionState::Exit});
@@ -56,6 +57,17 @@ void CollisionSystem::update(World &world) {
     }
 
     collisions = std::move(currentCollisions); // Update with current collisions
+}
+
+void CollisionSystem::cleanupDestroyedCollisions(const Entity *entity) {
+    for (auto i = collisions.begin(); i != collisions.end();) {
+        if (i->first == entity || i->second == entity) {
+            i = collisions.erase(i);
+        }
+        else {
+            ++i;
+        }
+    }
 }
 
 std::vector <Entity*> CollisionSystem::queryCollidables(const std::vector<std::unique_ptr<Entity>>& entities) {

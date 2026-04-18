@@ -40,7 +40,7 @@ void SpawnOctopusBatteryEnemy::finishSpawn(World &world, Entity &spawner, bool i
         Animation anim = AssetManager::getAnimation("octopus");
         octopusEnemy.addComponent<Animation>(anim);
 
-        SDL_Texture* bladerTex = TextureManager::load("../Assets/Animations/octopus_battery_anim.png");
+        SDL_Texture* bladerTex = TextureManager::load("Assets/Animations/octopus_battery_anim.png");
 
         SDL_FRect bladerSrc = anim.clips[anim.currentClip].frameIndices[0];
         SDL_FRect bladerDst {octopusTransform.position.x, octopusTransform.position.y, 48, 48};
@@ -71,7 +71,7 @@ void SpawnOctopusBatteryEnemy::finishSpawn(World &world, Entity &spawner, bool i
 
             auto& deathAnim = octopusDeath.addComponent<Animation>(newDeathAnim);
 
-            SDL_Texture* deathTex = TextureManager::load("../Assets/Animations/enemy_death_anim.png");
+            SDL_Texture* deathTex = TextureManager::load("Assets/Animations/enemy_death_anim.png");
             SDL_FRect deathSrc = deathAnim.clips[deathAnim.currentClip].frameIndices[0];
             SDL_FRect deathDst {deathTransform.position.x, deathTransform.position.y, 48, 48};
 

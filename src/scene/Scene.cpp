@@ -33,7 +33,7 @@ void Scene::initMainMenu(int windowWidth, int windowHeight) {
     Animation anim = AssetManager::getAnimation("titleScreen");
     menu.addComponent<Animation>(anim);
 
-    SDL_Texture *text = TextureManager::load("../Assets/Animations/megaman_title_screen_anim.png");
+    SDL_Texture *text = TextureManager::load("Assets/Animations/megaman_title_screen_anim.png");
     SDL_FRect menuSrc{0,0,256,240};
     SDL_FRect menuDst{menuTransform.position.x,menuTransform.position.y,(float)windowWidth, (float)windowHeight};
 
@@ -45,7 +45,7 @@ void Scene::initMainMenu(int windowWidth, int windowHeight) {
 
 void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight) {
     // Load our map
-    world.getMap().load(mapPath, TextureManager::load("../Assets/CutManTileset.png"));
+    world.getMap().load(mapPath, TextureManager::load("Assets/CutManTileset.png"));
 
     // Spawn Colliders
     for (auto &collider : world.getMap().colliders) {
@@ -59,7 +59,7 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
 
         /*
         // To have a visual of the colliders
-        SDL_Texture* tex = TextureManager::load("../Assets/tileset.png");
+        SDL_Texture* tex = TextureManager::load("Assets/tileset.png");
         SDL_FRect colSrc{0,32,32,32};
         SDL_FRect colDst {c.rect.x, c.rect.y, c.rect.w, c.rect.h};
         e.addComponent<Sprite>(tex, colSrc, colDst);
@@ -73,7 +73,7 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
         Animation anim = AssetManager::getAnimation("victoryItem");
         entity.addComponent<Animation>(anim);
 
-        SDL_Texture* itemTex = TextureManager::load("../Assets/Animations/victory_item_anim.png");
+        SDL_Texture* itemTex = TextureManager::load("Assets/Animations/victory_item_anim.png");
         SDL_FRect itemSrc = anim.clips[anim.currentClip].frameIndices[0];
         SDL_FRect itemDst {0, 0, 48, 48};
         entity.addComponent<Sprite>(itemTex, itemSrc, itemDst);
@@ -140,7 +140,7 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
 
     // Spawn Health bar in specific order (background -> fill -> dividers)
     Transform healthBarTransform = Transform(Vector2D(windowWidth / 12.0f, windowHeight / 12.0f), 0.0f, 1.0f);
-    SDL_Texture* healthBarTex = TextureManager::load("../Assets/megaman_health_bar.png");
+    SDL_Texture* healthBarTex = TextureManager::load("Assets/megaman_health_bar.png");
     auto& healthBarBackground (world.createEntity());
     healthBarBackground.addComponent<Transform>(healthBarTransform);
 

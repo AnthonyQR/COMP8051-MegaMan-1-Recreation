@@ -42,10 +42,10 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
         // Mac will likely be Metal, OpenGL
         renderer = SDL_CreateRenderer(window, nullptr);
 
+
         if (renderer) {
             std::cout << "Renderer created..." << std::endl;
             SDL_SetRenderLogicalPresentation(renderer, 816, 672, SDL_LOGICAL_PRESENTATION_LETTERBOX);
-
         }
         else {
             std::cout << "Renderer could not be created..." << std::endl;
@@ -72,41 +72,41 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
         SDL_VERSIONNUM_MICRO(linked));
 
     // Load audio
-    audioManager.loadAudio("gameStart", "../Assets/Audio/GameStart.mp3", 10);
-    audioManager.loadAudio("pause", "../Assets/Audio/Pause.mp3", 20);
+    audioManager.loadAudio("gameStart", "Assets/Audio/GameStart.mp3", 10);
+    audioManager.loadAudio("pause", "Assets/Audio/Pause.mp3", 20);
 
-    audioManager.loadAudio("cutmanStage", "../Assets/Audio/CutManStageLoop.mp3", 5);
-    audioManager.loadAudio("victoryMusic", "../Assets/Audio/VictoryMusic.mp3", 20);
+    audioManager.loadAudio("cutmanStage", "Assets/Audio/CutManStageLoop.mp3", 5);
+    audioManager.loadAudio("victoryMusic", "Assets/Audio/VictoryMusic.mp3", 20);
 
-    audioManager.loadAudio("megamanBuster", "../Assets/Audio/MegaBuster.mp3", 6);
-    audioManager.loadAudio("megamanDamage", "../Assets/Audio/MegamanDamage.mp3", 10);
-    audioManager.loadAudio("megamanDefeat", "../Assets/Audio/MegamanDefeat.mp3", 10);
-    audioManager.loadAudio("megamanLand", "../Assets/Audio/MegamanLand.mp3", 1);
+    audioManager.loadAudio("megamanBuster", "Assets/Audio/MegaBuster.mp3", 6);
+    audioManager.loadAudio("megamanDamage", "Assets/Audio/MegamanDamage.mp3", 10);
+    audioManager.loadAudio("megamanDefeat", "Assets/Audio/MegamanDefeat.mp3", 10);
+    audioManager.loadAudio("megamanLand", "Assets/Audio/MegamanLand.mp3", 1);
 
-    audioManager.loadAudio("enemyShoot", "../Assets/Audio/EnemyShoot.mp3", 7);
-    audioManager.loadAudio("enemyDamage", "../Assets/Audio/EnemyDamage.mp3", 8);
-    audioManager.loadAudio("dink", "../Assets/Audio/Dink.mp3", 9);
+    audioManager.loadAudio("enemyShoot", "Assets/Audio/EnemyShoot.mp3", 7);
+    audioManager.loadAudio("enemyDamage", "Assets/Audio/EnemyDamage.mp3", 8);
+    audioManager.loadAudio("dink", "Assets/Audio/Dink.mp3", 9);
 
     // Load assets
-    AssetManager::loadAnimation("titleScreen", "../Assets/Animations/megaman_title_screen_anim.xml");
-    AssetManager::loadAnimation("player", "../Assets/Animations/megaman_anim.xml");
-    AssetManager::loadAnimation("playerHitParticles", "../Assets/Animations/megaman_hit_particles_anim.xml");
+    AssetManager::loadAnimation("titleScreen", "Assets/Animations/megaman_title_screen_anim.xml");
+    AssetManager::loadAnimation("player", "Assets/Animations/megaman_anim.xml");
+    AssetManager::loadAnimation("playerHitParticles", "Assets/Animations/megaman_hit_particles_anim.xml");
 
-    AssetManager::loadAnimation("beak", "../Assets/Animations/beak_anim.xml");
-    AssetManager::loadAnimation("blader", "../Assets/Animations/blader_anim.xml");
-    AssetManager::loadAnimation("octopus", "../Assets/Animations/octopus_battery_anim.xml");
-    AssetManager::loadAnimation("superCutter", "../Assets/Animations/super_cutter_anim.xml");
-    AssetManager::loadAnimation("flyingShell", "../Assets/Animations/flying_shell_anim.xml");
-    AssetManager::loadAnimation("enemyDeath", "../Assets/Animations/enemy_death_anim.xml");
+    AssetManager::loadAnimation("beak", "Assets/Animations/beak_anim.xml");
+    AssetManager::loadAnimation("blader", "Assets/Animations/blader_anim.xml");
+    AssetManager::loadAnimation("octopus", "Assets/Animations/octopus_battery_anim.xml");
+    AssetManager::loadAnimation("superCutter", "Assets/Animations/super_cutter_anim.xml");
+    AssetManager::loadAnimation("flyingShell", "Assets/Animations/flying_shell_anim.xml");
+    AssetManager::loadAnimation("enemyDeath", "Assets/Animations/enemy_death_anim.xml");
 
-    AssetManager::loadAnimation("victoryItem", "../Assets/Animations/victory_item_anim.xml");
+    AssetManager::loadAnimation("victoryItem", "Assets/Animations/victory_item_anim.xml");
 
     // Load scenes
     sceneManager.loadScene(SceneType::Menu, "mainMenu", nullptr, width, height);
-    sceneManager.loadScene(SceneType::Gameplay, "cutman", "../Assets/CutManMap.tmx", width, height);
-    sceneManager.loadScene(SceneType::Gameplay, "victory", "../Assets/CutManMap.tmx", width, height);
-    //sceneManager.loadScene(SceneType::Gameplay, "level1", "../Assets/Map.tmx", width, height);
-    //sceneManager.loadScene(SceneType::Gameplay, "level2", "../Assets/map2.tmx", width, height);
+    sceneManager.loadScene(SceneType::Gameplay, "cutman", "Assets/CutManMap.tmx", width, height);
+    sceneManager.loadScene(SceneType::Gameplay, "victory", "Assets/CutManMap.tmx", width, height);
+    //sceneManager.loadScene(SceneType::Gameplay, "level1", "Assets/Map.tmx", width, height);
+    //sceneManager.loadScene(SceneType::Gameplay, "level2", "Assets/map2.tmx", width, height);
 
     // Init game data / state
     gameState.playerHealth = 28;
