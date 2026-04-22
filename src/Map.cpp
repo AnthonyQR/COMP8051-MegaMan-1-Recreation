@@ -106,14 +106,14 @@ void Map::finishParse(tinyxml2::XMLElement *element, std::vector<Vector2D>& vect
 void Map::draw(const Camera &cam) {
     SDL_FRect src{}, dest{};
 
-    dest.w = dest.h = 48;
+    dest.w = dest.h = 48.5;
 
     for (int row = 0; row < height; row++) {
         for (int col = 0; col < width; col++) {
             int type = tileData[row][col];
 
-            float worldX = static_cast<float>(col) * dest.w;
-            float worldY = static_cast<float>(row) * dest.h;
+            int worldX = col * (dest.w - 0.5f);
+            int worldY = row * (dest.h - 0.5f);
 
             // Move the tiles or map relative to the camera
             // Convert from world space to screen space
