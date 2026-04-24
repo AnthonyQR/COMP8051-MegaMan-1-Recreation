@@ -13,7 +13,7 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "system/AnimationSystems/AnimationClip.h"
+#include "system/Visuals/AnimationSystems/AnimationClip.h"
 #include "Entity.h"
 
 struct Transform {

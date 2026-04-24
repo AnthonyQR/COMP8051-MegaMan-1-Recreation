@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 
+#include "AnimationClip.h"
 #include "Component.h"
 #include "Entity.h"
 

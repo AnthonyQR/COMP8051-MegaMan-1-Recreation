@@ -34,16 +34,16 @@ add_executable(Megaman WIN32 src/main.cpp
         src/utils/Vector2D.cpp
         src/utils/Vector2DTest.cpp
         src/utils/Collision.cpp
-        src/ecs/system/CollisionSystem.cpp
+        src/ecs/system/ERS/CollisionSystem.cpp
         src/vendor/tinyxml2.cpp
         src/manager/AssetManager.cpp
         src/scene/Scene.cpp
         src/ecs/system/ERS/EventResponseSystem.cpp
-        src/ecs/system/MainMenuSystem.cpp
-        src/ecs/system/DestructionSystem.cpp
+        src/ecs/system/Scene/MainMenuSystem.cpp
+        src/ecs/system/ERS/DestructionSystem.cpp
         src/ecs/system/ERS/OnDestroyEvent.cpp
         src/ecs/system/Combat/DamageSystem.cpp
-        src/ecs/system/SceneTransitionDelaySystem.cpp
+        src/ecs/system/Scene/SceneTransitionDelaySystem.cpp
         src/manager/AudioManager.cpp
         src/scene/SpawnBeakEnemy.cpp
         src/scene/SpawnPlayer.cpp
@@ -52,10 +52,10 @@ add_executable(Megaman WIN32 src/main.cpp
         src/ecs/system/ERS/OnEnemyCollisionEvent.cpp
         src/scene/SpawnOctopusBatteryEnemy.cpp
         src/scene/SpawnSuperCutterEnemy.cpp
-        src/ecs/system/DebugTeleportSystem.cpp
-        src/ecs/system/UpdateSceneStateSystem.cpp
+        src/ecs/system/Player/DebugTeleportSystem.cpp
+        src/ecs/system/Scene/UpdateSceneStateSystem.cpp
         src/scene/SpawnFlyingShellEnemy.cpp
-        src/ecs/system/PauseSystem.cpp
+        src/ecs/system/Player/PauseSystem.cpp
 )
 
 target_link_libraries(Megaman
