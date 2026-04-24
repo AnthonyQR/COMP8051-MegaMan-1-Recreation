@@ -12,6 +12,9 @@ int main() {
     const int desiredFrameTime = 1000 / FPS; // 16ms per frame
     const float FixedTimeStep = 0.016f; // # of fixed updates to perform per second
 
+    // In case the game gets especially laggy to prevent infinitely looping through fixed updates
+    const float MaxFixedTime = 0.25f;
+
     Uint64 ticks = SDL_GetTicks();
     float deltaTime = 0.0f;
     float currentFixedTime = 0.0f;
@@ -28,6 +31,10 @@ int main() {
         deltaTime = (currentTicks - ticks) / 1000.0f;
         ticks = currentTicks;
         currentFixedTime += deltaTime;
+
+        if (currentFixedTime > MaxFixedTime) {
+            currentFixedTime = MaxFixedTime;
+        }
 
         game->handleEvents();
         game->update(deltaTime);
