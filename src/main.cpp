@@ -17,12 +17,7 @@ int main() {
 
     game = new Game();
     // game->init("Tutorial Engine", 800, 600, false);
-    //game->init("Megaman 1", 816, 672, false);
     game->init("Megaman 1", 816, 672, false);
-
-
-    // Vector2DTest *vector2DTest = new Vector2DTest();
-    // vector2DTest -> Test();
 
 
     // Game loop

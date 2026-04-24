@@ -59,6 +59,7 @@ void Map::load(const char* path, SDL_Texture *ts) {
     parseData(layer, "Item Spawn Points Layer", itemSpawnPoints);
 }
 
+// Find correct object group first
 template<typename T>
 void Map::parseData(tinyxml2::XMLElement *firstElement, std::string layerName, std::vector<T>& genericVector) {
     auto* objectGroup = firstElement->NextSiblingElement("objectgroup"); // Set to the first object group
@@ -76,17 +77,19 @@ void Map::parseData(tinyxml2::XMLElement *firstElement, std::string layerName, s
             }
         }
     }
+
     // Parse data if the correct object group was found
     if (objectGroup->Attribute("name") == layerName) {
         // Create a for loop with initialization, condition and an increment
         for (auto* obj = objectGroup->FirstChildElement("object"); // Initialization
             obj != nullptr; // Condition
             obj = obj->NextSiblingElement("object")) { // Increment
-            finishParse(obj, genericVector);
+            finishParse(obj, genericVector); // Use correct parse function depending on the vector type
         }
     }
 }
 
+// Collider objects parsing
 void Map::finishParse(tinyxml2::XMLElement *element, std::vector<Collider>& colliderList) {
     Collider c;
     c.rect.x = element->FloatAttribute("x") * 3;
@@ -96,6 +99,7 @@ void Map::finishParse(tinyxml2::XMLElement *element, std::vector<Collider>& coll
     colliderList.push_back(c);
 }
 
+// Point objects parsing
 void Map::finishParse(tinyxml2::XMLElement *element, std::vector<Vector2D>& vector2DList) {
     Vector2D pos;
     pos.x = element->FloatAttribute("x") * 3;
@@ -106,12 +110,15 @@ void Map::finishParse(tinyxml2::XMLElement *element, std::vector<Vector2D>& vect
 void Map::draw(const Camera &cam) {
     SDL_FRect src{}, dest{};
 
+    // (16 X 16 tile size) * 3 + additional padding to prevent visual glitches
     dest.w = dest.h = 48.5;
 
     for (int row = 0; row < height; row++) {
         for (int col = 0; col < width; col++) {
             int type = tileData[row][col];
 
+            // Put tile in correct position on the world map
+            // Remove additional 0.5f padding for this calculation
             int worldX = col * (dest.w - 0.5f);
             int worldY = row * (dest.h - 0.5f);
 

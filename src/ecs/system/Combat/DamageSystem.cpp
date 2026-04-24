@@ -6,7 +6,7 @@
 
 #include "Component.h"
 #include "Game.h"
-#include "ERS/OnDestroyEvent.h"
+#include "../ERS/OnDestroyEvent.h"
 
 void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, World& world) {
     for (auto& entity: entities) {

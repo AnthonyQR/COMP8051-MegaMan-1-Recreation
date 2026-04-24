@@ -42,7 +42,7 @@ add_executable(Megaman WIN32 src/main.cpp
         src/ecs/system/MainMenuSystem.cpp
         src/ecs/system/DestructionSystem.cpp
         src/ecs/system/ERS/OnDestroyEvent.cpp
-        src/ecs/system/DamageSystem.cpp
+        src/ecs/system/Combat/DamageSystem.cpp
         src/ecs/system/SceneTransitionDelaySystem.cpp
         src/manager/AudioManager.cpp
         src/scene/SpawnBeakEnemy.cpp
