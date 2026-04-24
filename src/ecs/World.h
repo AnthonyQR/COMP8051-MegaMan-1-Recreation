@@ -99,21 +99,7 @@ public:
                 debugTeleportSystem.update(entities, event, *this);
                 keyboardInputSystem.update(entities, event, dt);
 
-                coyoteTimeSystem.update(entities, dt);
-                gravitySystem.update(entities, dt);
-                hitKnockbackSystem.update(entities, dt);
-                moveTowardsPlayerSystem.update(entities);
-
-                bladerAttackSystem.update(entities, dt);
-                octopusBatterySystem.update(entities, dt);
-                stopMovementWhileFiringSystem.update(entities);
-
-                movementSystem.update(entities, dt);
-                followEntitySystem.update(entities);
-
-                collisionSystem.update(*this);
                 animationSystem.update(entities, dt);
-                cameraSystem.update(entities);
 
                 spawnTimerSystem.update(entities, dt);
                 spawnOnVisibleSystem.update(entities);
@@ -138,6 +124,30 @@ public:
         audioEventQueue.process(); // Process all the audio events
         synchronizeEntities();
         cleanup();
+    }
+
+    void fixedUpdate (float dt, const SDL_Event& event, SceneType sceneType) {
+        if (sceneType == SceneType::Menu) {
+            // Currently Do Nothing
+        }
+        else {
+            if (!currentSceneState.isEnding && !currentSceneState.isPaused) {
+                coyoteTimeSystem.update(entities, dt);
+                gravitySystem.update(entities, dt);
+                hitKnockbackSystem.update(entities, dt);
+                moveTowardsPlayerSystem.update(entities);
+
+                bladerAttackSystem.update(entities, dt);
+                octopusBatterySystem.update(entities, dt);
+                stopMovementWhileFiringSystem.update(entities);
+
+                movementSystem.update(entities, dt);
+                followEntitySystem.update(entities);
+
+                collisionSystem.update(*this);
+                cameraSystem.update(entities);
+            }
+        }
     }
     void render() {
 

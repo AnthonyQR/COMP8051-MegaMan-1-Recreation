@@ -34,6 +34,7 @@ class Game {
     // Game loop functions (handle events, update, render)
     void handleEvents(); // Checks for input and system events
     void update(float deltaTime); // Handles the game logic and changes to game state
+    void fixedUpdate(float deltaTime); // Performs consistent game logic updates independent of frame rate
     void render(); // Handles the drawing of the current game state to the screen
 
     // Used to free resources

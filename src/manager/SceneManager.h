@@ -60,6 +60,10 @@ public:
         }
     }
 
+    void fixedUpdate(const float dt, const SDL_Event &e) {
+        if (currentScene) currentScene -> fixedUpdate(dt, e);
+    }
+
     void render() const {
         if (currentScene) currentScene -> render();
     }

@@ -181,6 +181,11 @@ void Game::update(float deltaTime) {
     sceneManager.update(deltaTime, event);
 }
 
+void Game::fixedUpdate(float deltaTime) {
+    frameCount++;
+    sceneManager.fixedUpdate(deltaTime, event);
+}
+
 void Game::render() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 

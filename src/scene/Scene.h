@@ -20,6 +20,10 @@ public:
         world.update(dt, e, type);
     }
 
+    void fixedUpdate(const float dt, const SDL_Event &e) {
+        world.fixedUpdate(dt, e, type);
+    }
+
     void render() {
         world.render();
     }
