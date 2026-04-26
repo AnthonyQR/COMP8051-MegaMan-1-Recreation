@@ -51,12 +51,7 @@ void DamageSystem::update(const std::vector<std::unique_ptr<Entity>>& entities, 
                 if (damage.damagedEntity->hasComponent<OnDeathCallback>()) {
                     damage.damagedEntity->getComponent<OnDeathCallback>().callback(damage.damagedEntity);
                 }
-
-                if (damage.damagedEntity->hasComponent<Children>()) {
-                    for (auto& child : damage.damagedEntity->getComponent<Children>().children) {
-                        child->destroy();
-                    }
-                }
+                
                 auto& damagedEntity = damage.damagedEntity;
                 damagedEntity->destroy();
             }

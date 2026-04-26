@@ -184,6 +184,14 @@ public:
             }
         }
 
+        for (auto & entity : entities) {
+            if (!entity->isActive() && entity->hasComponent<Children>()) {
+                for (auto& child : entity->getComponent<Children>().children) {
+                    child->destroy();
+                }
+            }
+        }
+
         // Use a lambda predicate to remove all inactive entities
         std::erase_if(
             entities,
