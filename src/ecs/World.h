@@ -181,13 +181,12 @@ public:
         for (auto & entity : entities) {
             if (!entity->isActive()) {
                 collisionSystem.cleanupDestroyedCollisions(entity.get());
-            }
-        }
 
-        for (auto & entity : entities) {
-            if (!entity->isActive() && entity->hasComponent<Children>()) {
-                for (auto& child : entity->getComponent<Children>().children) {
-                    child->destroy();
+                // Cleanup children if any exist
+                if (entity->hasComponent<Children>()) {
+                    for (auto& child : entity->getComponent<Children>().children) {
+                        child->destroy();
+                    }
                 }
             }
         }
