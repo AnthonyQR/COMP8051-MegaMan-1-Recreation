@@ -14,7 +14,7 @@ void DebugTeleportSystem::update(const std::vector<std::unique_ptr<Entity>> &ent
         if (e->hasComponent<PlayerTag>() &&
             !e->hasComponent<PlayerGroundCheck>() &&
             !e->hasComponent<ProjectileTag>() &&
-            !e->hasComponent<PlayerHurtbox>()) {
+            !e->hasComponent<Hurtbox>()) {
             auto& transform = e->getComponent<Transform>();
             auto& xOffset = e->getComponent<Collider>().xOffset;
             auto& spawnPoints = world.getMap().debugSpawnPoints;

@@ -97,6 +97,15 @@ Entity * SpawnFlyingShellEnemy::finishSpawn(World &world, Transform spawnerTrans
     shellEnemy.addComponent<SpawnedEnemyTag>();
     shellEnemy.addComponent<DestroyOutOfViewTag>();
 
+    auto& shellHurtbox(world.createEntity());
+    auto& shellHurtboxCollider = shellHurtbox.addComponent<Collider>("Enemy");
+    shellHurtboxCollider.rect.w = shellCollider.rect.w;
+    shellHurtboxCollider.rect.h = shellCollider.rect.h;
+    shellHurtbox.addComponent<Hurtbox>();
+    shellHurtbox.addComponent<Transform>(shellTransform);
+    shellHurtbox.addComponent<Parent>(&shellEnemy);
+    shellHurtbox.addComponent<FollowParent>();
+
     Animation newDeathAnim = AssetManager::getAnimation("enemyDeath");
 
     shellEnemy.addComponent<OnDeathCallback>([&world, newDeathAnim](Entity* shell) {
@@ -114,5 +123,9 @@ Entity * SpawnFlyingShellEnemy::finishSpawn(World &world, Transform spawnerTrans
        shellDeath.addComponent<Sprite>(shellDeathTex, shellSrc, shellDst);
        shellDeath.addComponent<EnemyDeathTag>();
     });
+
+    std::vector newChildren = {&shellHurtbox};
+    shellEnemy.addComponent<Children>(newChildren);
+
     return &shellEnemy;
 }

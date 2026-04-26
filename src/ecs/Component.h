@@ -322,12 +322,14 @@ struct StopMovementWhileFiring {
 
 struct TitleScreenTag{};
 struct PlayerTag{};
+struct MainPlayer{};
 struct PlayerGroundCheck{};
-struct PlayerHurtbox{};
 struct PlayerHitFlash{};
 struct PlayerHitParticles{};
 
 struct ProjectileTag{};
+struct Hurtbox{};
+
 struct BeakEnemyTag{};
 struct BladerEnemyTag{};
 struct OctopusBatteryTag{};

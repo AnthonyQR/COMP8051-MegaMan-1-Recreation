@@ -53,6 +53,7 @@ void SpawnPlayer::spawn(World& world) {
     playerCollider.yOffset = 24;
 
     player.addComponent<PlayerTag>();
+    player.addComponent<MainPlayer>();
     player.addComponent<Health>(Game::gameState.playerHealth);
 
     player.addComponent<IsGrounded>(false);
@@ -97,7 +98,7 @@ void SpawnPlayer::spawn(World& world) {
     auto& playerHurtboxCollider = playerHurtbox.addComponent<Collider>("Player");
     playerHurtboxCollider.rect.w = 26;
     playerHurtboxCollider.rect.h = 30;
-    playerHurtbox.addComponent<PlayerHurtbox>();
+    playerHurtbox.addComponent<Hurtbox>();
     playerHurtbox.addComponent<Transform>(playerTransform);
     playerHurtbox.addComponent<Parent>(&player);
     playerHurtbox.addComponent<FollowParent>((96.0f - 26.0f) / 2, (96.0f - 30.0f) / 2);

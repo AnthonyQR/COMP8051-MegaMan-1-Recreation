@@ -110,6 +110,15 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
         beakEnemy.addComponent<SpawnedEnemyTag>();
         beakEnemy.addComponent<DestroyOutOfViewTag>();
 
+        auto& beakHurtbox(world.createEntity());
+        auto& beakHurtboxCollider = beakHurtbox.addComponent<Collider>("Enemy");
+        beakHurtboxCollider.rect.w = beakCollider.rect.w;
+        beakHurtboxCollider.rect.h = beakCollider.rect.h;
+        beakHurtbox.addComponent<Hurtbox>();
+        beakHurtbox.addComponent<Transform>(beakTransform);
+        beakHurtbox.addComponent<Parent>(&beakEnemy);
+        beakHurtbox.addComponent<FollowParent>();
+
         Animation newDeathAnim = AssetManager::getAnimation("enemyDeath");
 
         beakEnemy.addComponent<OnDeathCallback>([&world, newDeathAnim](Entity* beak) {
@@ -127,6 +136,10 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
             beakDeath.addComponent<Sprite>(beakDeathTex, beakSrc, beakDst);
             beakDeath.addComponent<EnemyDeathTag>();
         });
+
+        std::vector newChildren = {&beakHurtbox};
+        beakEnemy.addComponent<Children>(newChildren);
+
         return &beakEnemy;
     });
 }

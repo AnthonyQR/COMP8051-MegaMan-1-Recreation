@@ -61,6 +61,15 @@ void SpawnOctopusBatteryEnemy::finishSpawn(World &world, Entity &spawner, bool i
         octopusEnemy.addComponent<SpawnedEnemyTag>();
         octopusEnemy.addComponent<DestroyOutOfViewTag>();
 
+        auto& octopusHurtbox(world.createEntity());
+        auto& octopusHurtboxCollider = octopusHurtbox.addComponent<Collider>("Enemy");
+        octopusHurtboxCollider.rect.w = octopusCollider.rect.w;
+        octopusHurtboxCollider.rect.h = octopusCollider.rect.h;
+        octopusHurtbox.addComponent<Hurtbox>();
+        octopusHurtbox.addComponent<Transform>(octopusTransform);
+        octopusHurtbox.addComponent<Parent>(&octopusEnemy);
+        octopusHurtbox.addComponent<FollowParent>();
+
         Animation newDeathAnim = AssetManager::getAnimation("enemyDeath");
 
         octopusEnemy.addComponent<OnDeathCallback>([&world, newDeathAnim] (Entity* octopus) {
@@ -78,6 +87,9 @@ void SpawnOctopusBatteryEnemy::finishSpawn(World &world, Entity &spawner, bool i
             octopusDeath.addComponent<Sprite>(deathTex, deathSrc, deathDst);
             octopusDeath.addComponent<EnemyDeathTag>();
         });
+
+        std::vector newChildren = {&octopusHurtbox};
+        octopusEnemy.addComponent<Children>(newChildren);
 
         octopusEnemy.addComponent<OctopusBatteryTag>();
 

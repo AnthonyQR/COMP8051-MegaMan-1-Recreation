@@ -50,7 +50,7 @@ void OnPlayerCollisionEvent::onCollision(Entity *player, Entity *other,
 void OnPlayerCollisionEvent::wallCollision(Entity *player, Entity *other, const CollisionEvent &e, const char *otherTag,
     World &world) {
     if (player->hasComponent<ProjectileTag>()) return;
-    if (player->hasComponent<PlayerHurtbox>()) return;
+    if (player->hasComponent<Hurtbox>()) return;
         if (e.state == CollisionState::Stay) {
             if (player->hasComponent<PlayerGroundCheck>() &&
                 player->hasComponent<Parent>()) {
@@ -184,7 +184,7 @@ void OnPlayerCollisionEvent::wallCollision(Entity *player, Entity *other, const 
 
 void OnPlayerCollisionEvent::ladderCollision(Entity *player, Entity *other, const CollisionEvent &e,
     const char *otherTag, World &world) {
-    if (player->hasComponent<PlayerHurtbox>()) return;
+    if (player->hasComponent<Hurtbox>()) return;
     if (e.state == CollisionState::Enter) return;
     if (player->hasComponent<ProjectileTag>()) return;
 
@@ -261,7 +261,7 @@ void OnPlayerCollisionEvent::cameraBoundsCollision(Entity *player, Entity *other
     const char *otherTag, World &world) {
     if (e.state !=CollisionState::Enter) return;
     if (player->hasComponent<ProjectileTag>()) return;
-    if (player->hasComponent<PlayerHurtbox>()) return;
+    if (player->hasComponent<Hurtbox>()) return;
     auto& cameraBounds = other->getComponent<Collider>();
 
     // Find the camera
@@ -284,7 +284,12 @@ void OnPlayerCollisionEvent::enemyCollision(Entity *player, Entity *other, const
 
         if (player->hasComponent<ProjectileTag>() &&
             player->hasComponent<ProjectileDamage>() &&
-            other->hasComponent<Health>()) {
+            other->hasComponent<Hurtbox>() &&
+            other->hasComponent<Parent>()) {
+
+            other = other->getComponent<Parent>().parent;
+            if (!other->hasComponent<Health>()) return;
+
             auto& projectileDamage = player->getComponent<ProjectileDamage>();
             auto& damageEntity(world.createEntity());
             damageEntity.addComponent<Damage>(projectileDamage.damage, other, player);
@@ -292,7 +297,7 @@ void OnPlayerCollisionEvent::enemyCollision(Entity *player, Entity *other, const
             return;
         }
 
-        if (player->hasComponent<PlayerHurtbox>() &&
+        if (player->hasComponent<Hurtbox>() &&
             player->hasComponent<Parent>() &&
             other->hasComponent<ContactDamage>()) {
             player = player->getComponent<Parent>().parent;
@@ -321,7 +326,7 @@ void OnPlayerCollisionEvent::projectileCollision(Entity *player, Entity *other, 
     */
 
 
-    if (player->hasComponent<PlayerHurtbox>() &&
+    if (player->hasComponent<Hurtbox>() &&
         player->hasComponent<Parent>() &&
         other->hasComponent<Velocity>() &&
         other->hasComponent<ProjectileDamage>()) {
@@ -351,7 +356,7 @@ void OnPlayerCollisionEvent::enemyDetectCollision(Entity *player, Entity *other,
     const char *otherTag, World &world) {
     if (player->hasComponent<ProjectileTag>()) return;
     if (player->hasComponent<PlayerGroundCheck>()) return;
-    if (player->hasComponent<PlayerHurtbox>()) return;
+    if (player->hasComponent<Hurtbox>()) return;
 
     if (e.state == CollisionState::Enter) {
         if (!other->hasComponent<OnPlayerDetectEnterCallback>()) return;
@@ -374,7 +379,7 @@ void OnPlayerCollisionEvent::checkpointCollision(Entity *player, Entity *other, 
     if (e.state != CollisionState::Enter) return;
     if (player->hasComponent<ProjectileTag>()) return;
     if (player->hasComponent<PlayerGroundCheck>()) return;
-    if (player->hasComponent<PlayerHurtbox>()) return;
+    if (player->hasComponent<Hurtbox>()) return;
 
     auto& spawnPoints = world.getMap().checkPointSpawnPoints;
     auto& checkPointCollider = other->getComponent<Collider>().rect;
@@ -396,7 +401,7 @@ void OnPlayerCollisionEvent::itemCollision(Entity *player, Entity *other, const 
     if (e.state != CollisionState::Enter) return;
     if (player->hasComponent<ProjectileTag>()) return;
     if (player->hasComponent<PlayerGroundCheck>()) return;
-    if (player->hasComponent<PlayerHurtbox>()) return;
+    if (player->hasComponent<Hurtbox>()) return;
 
     world.getAudioEventQueue().push(std::make_unique<AudioEvent>("victoryMusic"));
     other->destroy();

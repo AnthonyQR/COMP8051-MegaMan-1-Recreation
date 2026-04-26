@@ -16,8 +16,7 @@ public:
         Entity* player = nullptr;
         for (auto& entity : entities) {
             if (entity->hasComponent<PlayerTag>() &&
-                !entity->hasComponent<PlayerGroundCheck>() &&
-                !entity->hasComponent<ProjectileTag>()) {
+                entity->hasComponent<MainPlayer>()) {
                 player = entity.get();
             }
         }

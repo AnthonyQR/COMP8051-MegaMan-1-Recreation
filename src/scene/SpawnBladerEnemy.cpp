@@ -112,8 +112,16 @@ void SpawnBladerEnemy::spawn(World &world) {
                 std::cout << "Blader detected player" << std::endl;
             });
 
-            Animation newDeathAnim = AssetManager::getAnimation("enemyDeath");
+            auto& bladerHurtbox(world.createEntity());
+            auto& bladerHurtboxCollider = bladerHurtbox.addComponent<Collider>("Enemy");
+            bladerHurtboxCollider.rect.w = bladerCollider.rect.w;
+            bladerHurtboxCollider.rect.h = bladerCollider.rect.h;
+            bladerHurtbox.addComponent<Hurtbox>();
+            bladerHurtbox.addComponent<Transform>(bladerTransform);
+            bladerHurtbox.addComponent<Parent>(&bladerEnemy);
+            bladerHurtbox.addComponent<FollowParent>();
 
+            Animation newDeathAnim = AssetManager::getAnimation("enemyDeath");
             bladerEnemy.addComponent<OnDeathCallback>([&world, newDeathAnim, bladerPlayerDetection] (Entity* blader) {
                 auto& bladerDeath (world.createDeferredEntity());
                 auto& bladerTransform = blader->getComponent<Transform>();
@@ -130,7 +138,7 @@ void SpawnBladerEnemy::spawn(World &world) {
                 bladerDeath.addComponent<EnemyDeathTag>();
             });
 
-            std::vector newChildren = {&bladerPlayerDetection};
+            std::vector newChildren = {&bladerHurtbox, &bladerPlayerDetection};
             bladerEnemy.addComponent<Children>(newChildren);
 
             bladerEnemy.addComponent<BladerEnemyTag>();
