@@ -149,10 +149,13 @@ struct Health {
     int maxHealth = currentHealth;
 };
 
-struct FollowEntity {
-    Entity* followedEntity{};
+struct FollowParent {
     float xOffset{};
     float yOffset{};
+};
+
+struct Parent {
+    Entity* parent{};
 };
 
 struct Children {

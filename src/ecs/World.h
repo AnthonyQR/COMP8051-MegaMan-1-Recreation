@@ -25,7 +25,7 @@
 #include "system/ERS/DestructionSystem.h"
 #include "system/ERS/EventResponseSystem.h"
 #include "system/Visuals/FlashTimerSystem.h"
-#include "system/Movement/FollowEntitySystem.h"
+#include "system/Movement/FollowParentSystem.h"
 #include "system/Movement/GravitySystem.h"
 #include "system/Combat/HitKnockbackSystem.h"
 #include "system/Combat/InvulnerabilityTimerSystem.h"
@@ -61,7 +61,7 @@ class World {
     CameraSystem cameraSystem;
     EventManager eventManager;
     SpawnTimerSystem spawnTimerSystem;
-    FollowEntitySystem followEntitySystem;
+    FollowParentSystem followParentSystem;
     IsFiringTimerSystem isFiringTimerSystem;
     AutoFiringSystem autoFiringSystem;
     DamageSystem damageSystem;
@@ -142,7 +142,7 @@ public:
                 stopMovementWhileFiringSystem.update(entities);
 
                 movementSystem.update(entities, dt);
-                followEntitySystem.update(entities);
+                followParentSystem.update(entities);
 
                 collisionSystem.update(*this);
                 cameraSystem.update(entities);

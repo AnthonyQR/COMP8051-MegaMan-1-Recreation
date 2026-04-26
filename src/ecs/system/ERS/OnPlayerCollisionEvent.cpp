@@ -52,8 +52,9 @@ void OnPlayerCollisionEvent::wallCollision(Entity *player, Entity *other, const 
     if (player->hasComponent<ProjectileTag>()) return;
     if (player->hasComponent<PlayerHurtbox>()) return;
         if (e.state == CollisionState::Stay) {
-            if (player->hasComponent<PlayerGroundCheck>()) {
-                player = player->getComponent<FollowEntity>().followedEntity;
+            if (player->hasComponent<PlayerGroundCheck>() &&
+                player->hasComponent<Parent>()) {
+                player = player->getComponent<Parent>().parent;
                 auto& ladderClimbing = player->getComponent<LadderClimbing>();
                 auto& v = player->getComponent<Velocity>();
 
@@ -172,8 +173,9 @@ void OnPlayerCollisionEvent::wallCollision(Entity *player, Entity *other, const 
         }
 
         if (e.state == CollisionState::Exit) {
-            if (player->hasComponent<PlayerGroundCheck>()) {
-                auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity->getComponent<CoyoteTime>();
+            if (player->hasComponent<PlayerGroundCheck>() &&
+                player->hasComponent<Parent>()) {
+                auto& coyoteTime = player->getComponent<Parent>().parent->getComponent<CoyoteTime>();
                 coyoteTime.timer = coyoteTime.duration;
                 coyoteTime.isCoyoteTime = true;
             }
@@ -187,9 +189,11 @@ void OnPlayerCollisionEvent::ladderCollision(Entity *player, Entity *other, cons
     if (player->hasComponent<ProjectileTag>()) return;
 
         if (e.state == CollisionState::Stay) {
-            if (player->hasComponent<PlayerGroundCheck>()) {
-                if (player->getComponent<FollowEntity>().followedEntity->getComponent<Transform>().position.y < other->getComponent<Collider>().rect.y) {
-                    auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity->getComponent<CoyoteTime>();
+            if (player->hasComponent<PlayerGroundCheck>() &&
+                player->hasComponent<Parent>()) {
+                player = player->getComponent<Parent>().parent;
+                if (player->getComponent<Transform>().position.y < other->getComponent<Collider>().rect.y) {
+                    auto& coyoteTime = player->getComponent<CoyoteTime>();
                     coyoteTime.timer = coyoteTime.duration;
                     coyoteTime.isCoyoteTime = false;
                 }
@@ -235,8 +239,9 @@ void OnPlayerCollisionEvent::ladderCollision(Entity *player, Entity *other, cons
         }
 
         if (e.state == CollisionState::Exit) {
-            if (player->hasComponent<PlayerGroundCheck>()) {
-                auto& coyoteTime = player->getComponent<FollowEntity>().followedEntity->getComponent<CoyoteTime>();
+            if (player->hasComponent<PlayerGroundCheck>() &&
+                player->hasComponent<Parent>()) {
+                auto& coyoteTime = player->getComponent<Parent>().parent->getComponent<CoyoteTime>();
                 coyoteTime.timer = coyoteTime.duration;
                 coyoteTime.isCoyoteTime = true;
                 return;
@@ -288,8 +293,9 @@ void OnPlayerCollisionEvent::enemyCollision(Entity *player, Entity *other, const
         }
 
         if (player->hasComponent<PlayerHurtbox>() &&
+            player->hasComponent<Parent>() &&
             other->hasComponent<ContactDamage>()) {
-            player = player->getComponent<FollowEntity>().followedEntity;
+            player = player->getComponent<Parent>().parent;
             if (player == nullptr) return;
 
             auto& contactDamage = other->getComponent<ContactDamage>();
@@ -316,10 +322,11 @@ void OnPlayerCollisionEvent::projectileCollision(Entity *player, Entity *other, 
 
 
     if (player->hasComponent<PlayerHurtbox>() &&
+        player->hasComponent<Parent>() &&
         other->hasComponent<Velocity>() &&
         other->hasComponent<ProjectileDamage>()) {
 
-        player = player->getComponent<FollowEntity>().followedEntity;
+        player = player->getComponent<Parent>().parent;
         if (player == nullptr) return;
 
         auto& projectileDamage = other->getComponent<ProjectileDamage>();

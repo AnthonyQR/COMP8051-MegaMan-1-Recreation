@@ -99,7 +99,8 @@ void SpawnPlayer::spawn(World& world) {
     playerHurtboxCollider.rect.h = 30;
     playerHurtbox.addComponent<PlayerHurtbox>();
     playerHurtbox.addComponent<Transform>(playerTransform);
-    playerHurtbox.addComponent<FollowEntity>(&player, (96.0f - 26.0f) / 2, (96.0f - 30.0f) / 2);
+    playerHurtbox.addComponent<Parent>(&player);
+    playerHurtbox.addComponent<FollowParent>((96.0f - 26.0f) / 2, (96.0f - 30.0f) / 2);
 
     auto& playerGroundCheck (world.createEntity());
     auto& playerGroundCheckCollider = playerGroundCheck.addComponent<Collider>("Player");
@@ -107,10 +108,12 @@ void SpawnPlayer::spawn(World& world) {
     playerGroundCheckCollider.rect.h = 16.0f;
     playerGroundCheck.addComponent<PlayerGroundCheck>();
     playerGroundCheck.addComponent<Transform>(playerTransform);
-    playerGroundCheck.addComponent<FollowEntity>(&player, playerCollider.xOffset, playerCollider.rect.h + 24.0f);
+    playerGroundCheck.addComponent<Parent>(&player);
+    playerGroundCheck.addComponent<FollowParent>(playerCollider.xOffset, playerCollider.rect.h + 24.0f);
 
     playerHitFlash.addComponent<Transform>(playerTransform);
-    playerHitFlash.addComponent<FollowEntity>(&player, 16.0f, 32.0f);
+    playerHitFlash.addComponent<Parent>(&player);
+    playerHitFlash.addComponent<FollowParent>(16.0f, 32.0f);
 
     std::vector newChildren = {&playerHurtbox, &playerGroundCheck, &playerHitFlash};
     player.addComponent<Children>(newChildren);

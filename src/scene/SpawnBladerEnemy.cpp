@@ -51,13 +51,14 @@ void SpawnBladerEnemy::spawn(World &world) {
             bladerDetectionCollider.rect.w = bladerDst.w * 5;
             bladerDetectionCollider.rect.h = 2000.0f;
 
-            bladerPlayerDetection.addComponent<FollowEntity>
-            (&bladerEnemy, (-bladerDetectionCollider.rect.w / 2) + (bladerCollider.rect.w / 2),
+            bladerPlayerDetection.addComponent<Parent>(&bladerEnemy);
+            bladerPlayerDetection.addComponent<FollowParent>
+            ((-bladerDetectionCollider.rect.w / 2) + (bladerCollider.rect.w / 2),
                 -bladerDetectionCollider.rect.h / 2);
 
 
             bladerPlayerDetection.addComponent<OnPlayerDetectStayCallback>([](Entity* bladerPlayerDetection, Entity* player) {
-                auto& bladerEnemy = bladerPlayerDetection->getComponent<FollowEntity>().followedEntity;
+                auto& bladerEnemy = bladerPlayerDetection->getComponent<Parent>().parent;
                 auto& bladerAttack = bladerEnemy->getComponent<BladerAttack>();
                 if (bladerAttack.isAttacking) return;
 
