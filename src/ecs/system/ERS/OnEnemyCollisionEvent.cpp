@@ -7,6 +7,7 @@
 void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
     const CollisionEvent &e, const char *otherTag, World &world) {
 
+    if (e.state == CollisionState::Exit) return;
     if (std::string(otherTag) == "Wall") {
         if (!enemy->hasComponent<WallCollidable>()) return;
         if (!enemy->getComponent<WallCollidable>().isCollidable) return;
@@ -53,7 +54,7 @@ void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
             if (std::abs(topPenetrationDepth) < std::abs(leftPenetrationDepth) &&
                 std::abs(topPenetrationDepth) < std::abs(rightPenetrationDepth) &&
                 std::abs(topPenetrationDepth) < std::abs(bottomPenetrationDepth) &&
-                velocity.direction.y < 0) {
+                (velocity.direction.y * velocity.ySpeed) < 0) {
                 velocity.ySpeed = 0;
                 transform.position.y = (wallCollider.y + wallCollider.h + positionOffset - yOffset);
                 return;
@@ -63,10 +64,23 @@ void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
             if (std::abs(bottomPenetrationDepth) < std::abs(leftPenetrationDepth) &&
                 std::abs(bottomPenetrationDepth) < std::abs(rightPenetrationDepth) &&
                 std::abs(bottomPenetrationDepth) < std::abs(topPenetrationDepth) &&
-                velocity.direction.y > 0) {
+                (velocity.direction.y * velocity.ySpeed) > 0) {
                 velocity.ySpeed = 0;
                 transform.position.y = wallCollider.y - enemyCollider.h - positionOffset - yOffset;
                 enemyCollider.y = transform.position.y + yOffset;
+                if (enemy->hasComponent<IsGrounded>()) {
+                    enemy->getComponent<IsGrounded>().grounded = true;
+                }
+                if (enemy->hasComponent<AutoJump>()) {
+                    auto& autoJump = enemy->getComponent<AutoJump>();
+                    if (!autoJump.prepareJump) {
+                        autoJump.prepareJump = true;
+                        autoJump.jumpDelayTimer = autoJump.jumpDelay;
+                    }
+                }
+                if (enemy->hasComponent<StopMovementOnGroundCollision>()) {
+                    velocity.xSpeed = 0;
+                }
                 return;
             }
     }

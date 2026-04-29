@@ -5,6 +5,7 @@
 
 #include "SpawnFlyingShellEnemy.h"
 
+#include "SpawnEnemyDeathAnimation.h"
 #include "Vector2D.h"
 #include "World.h"
 #include "manager/AssetManager.h"
@@ -107,22 +108,8 @@ Entity * SpawnFlyingShellEnemy::finishSpawn(World &world, Transform spawnerTrans
     shellHurtbox.addComponent<Parent>(&shellEnemy);
     shellHurtbox.addComponent<FollowParent>();
 
-    Animation newDeathAnim = AssetManager::getAnimation("enemyDeath");
-
-    shellEnemy.addComponent<OnDeathCallback>([&world, newDeathAnim](Entity* shell) {
-       auto& shellDeath (world.createDeferredEntity());
-       auto& shellTransform = shell->getComponent<Transform>();
-       auto& deathTransform = shellDeath.addComponent<Transform>
-       (Vector2D(shellTransform.position.x, shellTransform.position.y), 0.0f, 1.0f);
-
-       auto& deathAnim = shellDeath.addComponent<Animation>(newDeathAnim);
-
-       SDL_Texture* shellDeathTex = TextureManager::load("Assets/Animations/enemy_death_anim.png");
-       SDL_FRect shellSrc = deathAnim.clips[deathAnim.currentClip].frameIndices[0];
-       SDL_FRect shellDst {deathTransform.position.x, deathTransform.position.y, 48, 48};
-
-       shellDeath.addComponent<Sprite>(shellDeathTex, shellSrc, shellDst);
-       shellDeath.addComponent<EnemyDeathTag>();
+    shellEnemy.addComponent<OnDeathCallback>([&world](Entity* shell) {
+        SpawnEnemyDeathAnimation::spawn(world, *shell);
     });
 
     std::vector newChildren = {&shellHurtbox};

@@ -98,6 +98,8 @@ struct WallCollidable {
     bool isCollidable{};
 };
 
+struct StopMovementOnGroundCollision{};
+
 struct LadderClimbing {
     float climbSpeed{};
     bool canClimb = false;
@@ -350,6 +352,7 @@ struct BladerEnemyTag{};
 struct OctopusBatteryTag{};
 struct SuperCutterTag{};
 struct FlyingShellEnemyTag{};
+struct FleaEnemyTag{};
 struct EnemyDeathTag{};
 
 struct InvulnerableWhileNotFiring{};

@@ -16,7 +16,8 @@ public:
         for (auto& entity : entities) {
             if (entity->hasComponent<AutoJump>() &&
                 entity->hasComponent<Jump>() &&
-                entity->hasComponent<Velocity>()) {
+                entity->hasComponent<Velocity>() &&
+                entity->hasComponent<Gravity>()) {
 
                 auto& autoJump = entity->getComponent<AutoJump>();
                 auto& jump = entity->getComponent<Jump>();
@@ -26,11 +27,14 @@ public:
 
                 autoJump.jumpDelayTimer -= dt;
                 if (autoJump.jumpDelayTimer < 0) {
+                    autoJump.prepareJump = false;
+                    jump.startJumping = true;
+
                     // Pick a random jump pattern from the list
                     Vector2D jumpSpeed = autoJump.jumpPatterns[rand() % autoJump.jumpPatterns.size()];
+                    jump.jumpSpeed = jumpSpeed.y;
                     velocity.xSpeed = jumpSpeed.x;
-                    velocity.ySpeed = -jumpSpeed.y;
-                    velocity.direction.y = 1;
+                    velocity.direction.x = 1;
 
                     if (entity->hasComponent<TrackPlayer>()) {
                         auto& trackPlayer = entity->getComponent<TrackPlayer>();

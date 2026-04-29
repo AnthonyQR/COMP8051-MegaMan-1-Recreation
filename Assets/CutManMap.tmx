@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="20" nextobjectid="315">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="21" nextobjectid="319">
  <tileset firstgid="1" source="CutManTileset.tsx"/>
  <layer id="1" name="Terrain Layer" width="220" height="144">
   <data encoding="csv">
@@ -300,6 +300,11 @@
   <object id="149" x="2064" y="720" width="224" height="32"/>
   <object id="264" x="1808" y="144" width="160" height="16"/>
  </objectgroup>
+ <objectgroup id="20" name="Flea Enemy Spawn Layer">
+  <object id="317" x="112" y="2192">
+   <point/>
+  </object>
+ </objectgroup>
  <objectgroup id="10" name="Blader Enemy Spawn Layer">
   <object id="222" x="288" y="2120">
    <point/>
@@ -466,7 +471,7 @@
   </object>
  </objectgroup>
  <objectgroup id="5" name="Camera Bounds Layer">
-  <object id="179" x="0" y="2056" width="1024" height="224"/>
+  <object id="179" x="0" y="2056" width="1024" height="224" visible="0"/>
   <object id="180" x="752" y="1800" width="272" height="224"/>
   <object id="204" x="752" y="1544" width="272" height="224"/>
   <object id="205" x="752" y="1288" width="272" height="224"/>
@@ -543,7 +548,7 @@
   <object id="202" x="1904" y="704" width="128" height="16"/>
   <object id="203" x="-224" y="2336" width="4144" height="304"/>
  </objectgroup>
- <objectgroup id="15" name="Checkpoint Collision Layer">
+ <objectgroup id="15" name="Checkpoint Collision Layer" visible="0">
   <object id="268" x="0" y="2048" width="224" height="256"/>
   <object id="269" x="1264" y="768" width="288" height="256"/>
  </objectgroup>

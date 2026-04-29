@@ -6,6 +6,7 @@
 
 #include <cmath>
 
+#include "SpawnEnemyDeathAnimation.h"
 #include "manager/AssetManager.h"
 
 void SpawnBladerEnemy::spawn(World &world) {
@@ -122,21 +123,8 @@ void SpawnBladerEnemy::spawn(World &world) {
             bladerHurtbox.addComponent<Parent>(&bladerEnemy);
             bladerHurtbox.addComponent<FollowParent>();
 
-            Animation newDeathAnim = AssetManager::getAnimation("enemyDeath");
-            bladerEnemy.addComponent<OnDeathCallback>([&world, newDeathAnim, bladerPlayerDetection] (Entity* blader) {
-                auto& bladerDeath (world.createDeferredEntity());
-                auto& bladerTransform = blader->getComponent<Transform>();
-                auto& deathTransform = bladerDeath.addComponent<Transform>
-                (Vector2D(bladerTransform.position.x, bladerTransform.position.y), 0.0f, 1.0f);
-
-                auto& deathAnim = bladerDeath.addComponent<Animation>(newDeathAnim);
-
-                SDL_Texture* enemyDeathTex = TextureManager::load("Assets/Animations/enemy_death_anim.png");
-                SDL_FRect deathSrc = deathAnim.clips[deathAnim.currentClip].frameIndices[0];
-                SDL_FRect deathDst {deathTransform.position.x, deathTransform.position.y, 48, 48};
-
-                bladerDeath.addComponent<Sprite>(enemyDeathTex, deathSrc, deathDst);
-                bladerDeath.addComponent<EnemyDeathTag>();
+            bladerEnemy.addComponent<OnDeathCallback>([&world] (Entity* blader) {
+                SpawnEnemyDeathAnimation::spawn(world, *blader);
             });
 
             std::vector newChildren = {&bladerHurtbox, &bladerPlayerDetection};

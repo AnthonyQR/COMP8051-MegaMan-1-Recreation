@@ -207,6 +207,7 @@ public:
                 if (entity->hasComponent<Children>()) {
                     for (auto& child : entity->getComponent<Children>().children) {
                         child->destroy();
+                        collisionSystem.cleanupDestroyedCollisions(child);
                     }
                 }
             }

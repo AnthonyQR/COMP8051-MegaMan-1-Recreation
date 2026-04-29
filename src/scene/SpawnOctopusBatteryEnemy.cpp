@@ -4,6 +4,7 @@
 
 #include "SpawnOctopusBatteryEnemy.h"
 
+#include "SpawnEnemyDeathAnimation.h"
 #include "manager/AssetManager.h"
 
 void SpawnOctopusBatteryEnemy::spawn(World& world) {
@@ -70,22 +71,8 @@ void SpawnOctopusBatteryEnemy::finishSpawn(World &world, Entity &spawner, bool i
         octopusHurtbox.addComponent<Parent>(&octopusEnemy);
         octopusHurtbox.addComponent<FollowParent>();
 
-        Animation newDeathAnim = AssetManager::getAnimation("enemyDeath");
-
-        octopusEnemy.addComponent<OnDeathCallback>([&world, newDeathAnim] (Entity* octopus) {
-            auto& octopusDeath (world.createDeferredEntity());
-            auto& octopusTransform = octopus->getComponent<Transform>();
-            auto& deathTransform = octopusDeath.addComponent<Transform>
-            (Vector2D(octopusTransform.position.x, octopusTransform.position.y), 0.0f, 1.0f);
-
-            auto& deathAnim = octopusDeath.addComponent<Animation>(newDeathAnim);
-
-            SDL_Texture* deathTex = TextureManager::load("Assets/Animations/enemy_death_anim.png");
-            SDL_FRect deathSrc = deathAnim.clips[deathAnim.currentClip].frameIndices[0];
-            SDL_FRect deathDst {deathTransform.position.x, deathTransform.position.y, 48, 48};
-
-            octopusDeath.addComponent<Sprite>(deathTex, deathSrc, deathDst);
-            octopusDeath.addComponent<EnemyDeathTag>();
+        octopusEnemy.addComponent<OnDeathCallback>([&world] (Entity* octopus) {
+            SpawnEnemyDeathAnimation::spawn(world, *octopus);
         });
 
         std::vector newChildren = {&octopusHurtbox};

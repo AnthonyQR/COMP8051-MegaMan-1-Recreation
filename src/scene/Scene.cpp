@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "SpawnBeakEnemy.h"
 #include "SpawnBladerEnemy.h"
+#include "SpawnFleaEnemy.h"
 #include "SpawnFlyingShellEnemy.h"
 #include "SpawnOctopusBatteryEnemy.h"
 #include "SpawnPlayer.h"
@@ -173,6 +174,7 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
     SpawnOctopusBatteryEnemy::spawn(world);
     SpawnSuperCutterEnemy::spawn(world);
     SpawnFlyingShellEnemy::spawn(world);
+    SpawnFleaEnemy::spawn(world);
 
     // Add Scene State
     auto &state(world.CreateSceneStateEntity());
