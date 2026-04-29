@@ -56,6 +56,9 @@ public:
                     switch (event.key.key) {
                         // Jump
                         case SDLK_Z:
+                            if (!keyboardInputs.isHoldingJump) {
+                                keyboardInputs.isPressingJump = true;
+                            }
                             keyboardInputs.isHoldingJump = true;
                             break;
 
@@ -88,6 +91,7 @@ public:
                     switch (event.key.key) {
                         // Jump
                         case SDLK_Z:
+                            keyboardInputs.isPressingJump = false;
                             keyboardInputs.isHoldingJump = false;
                             break;
 
@@ -115,29 +119,15 @@ public:
                 if (hitKnockback.isHitKnockback) return;
 
                 // Jump
-                if (keyboardInputs.isHoldingJump) {
-                    if (!jump.hasJumped) {
-                        jump.hasJumped = true;
-                        if (ladderClimbing.isClimbing) {
-                            ladderClimbing.isClimbing = false;
-                            gravity.gravityEnabled = true;
-                            v.ySpeed = 0;
-                            v.direction.y = 1;
-                        }
-                        if (isGrounded.grounded) {
-                            isGrounded.grounded = false;
-                            jump.fastFalling = false;
-                            gravity.gravityEnabled = true;
-                            v.ySpeed = -jump.jumpSpeed;
-                            v.direction.y = 1;
-                        }
-                    }
+                if (keyboardInputs.isPressingJump) {
+                    keyboardInputs.isPressingJump = false;
+                    jump.startJumping = true;
                 }
-                else {
+
+                else if (!keyboardInputs.isHoldingJump){
                     if (v.ySpeed <= 0) {
                         jump.fastFalling = true;
                     }
-                    jump.hasJumped = false;
                 }
 
                 if (keyboardInputs.isHoldingAttack) {

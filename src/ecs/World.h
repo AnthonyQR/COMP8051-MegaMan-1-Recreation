@@ -43,6 +43,9 @@
 #include "system/Visuals/UIRenderSystem.h"
 #include "system/Scene/UpdateSceneStateSystem.h"
 #include "event/AudioEventQueue.h"
+#include "Movement/AutoJumpSystem.h"
+#include "Movement/JumpSystem.h"
+#include "Movement/TrackPlayer.h"
 #include "scene/SceneType.h"
 
 class World {
@@ -51,40 +54,56 @@ class World {
     std::vector<std::unique_ptr<Entity>> deferredEntities;
     std::unique_ptr<Entity> sceneStateEntity;
     SceneState currentSceneState;
+    EventManager eventManager;
+    AudioEventQueue audioEventQueue;
 
+    // Movement
     MovementSystem movementSystem;
-    RenderSystem renderSystem;
-    KeyboardInputSystem keyboardInputSystem;
+    JumpSystem jumpSystem;
+    AutoJumpSystem autoJumpSystem;
     GravitySystem gravitySystem;
-    CollisionSystem collisionSystem;
+    TrackPlayerSystem trackPlayerSystem;
+    MoveTowardsPlayerSystem moveTowardsPlayerSystem;
+    StopMovementWhileFiringSystem stopMovementWhileFiringSystem;
+    FollowParentSystem followParentSystem;
+
+    // Player
+    KeyboardInputSystem keyboardInputSystem;
+    CoyoteTimeSystem coyoteTimeSystem;
+    PauseSystem pauseSystem;
+    DebugTeleportSystem debugTeleportSystem;
+
+    // Visuals
+    RenderSystem renderSystem;
     AnimationSystem animationSystem;
     CameraSystem cameraSystem;
-    EventManager eventManager;
-    SpawnTimerSystem spawnTimerSystem;
-    FollowParentSystem followParentSystem;
-    IsFiringTimerSystem isFiringTimerSystem;
-    AutoFiringSystem autoFiringSystem;
-    DamageSystem damageSystem;
-    DestructionSystem destructionSystem;
-    EventResponseSystem eventResponseSystem{*this};
+    FlashTimerSystem flashTimerSystem;
+    UIRenderSystem uiRenderSystem;
+
+    // Scene
     MainMenuSystem mainMenuSystem;
     SceneTransitionDelaySystem sceneTransitionDelaySystem;
+    UpdateSceneStateSystem updateSceneStateSystem;
+
+    // ERS
+    CollisionSystem collisionSystem;
+    DestructionSystem destructionSystem;
+    EventResponseSystem eventResponseSystem{*this};
+
+    // Enemy
+    SpawnTimerSystem spawnTimerSystem;
+    SpawnOnVisibleSystem spawnOnVisibleSystem;
+    SpawnWhileVisibleTimerSystem spawnWhileVisibleTimerSystem;
+    BladerAttackSystem bladerAttackSystem;
+    OctopusBatterySystem octopusBatterySystem;
+
+    // Combat
+    DamageSystem damageSystem;
+    IsFiringTimerSystem isFiringTimerSystem;
+    AutoFiringSystem autoFiringSystem;
     InvulnerableWhileNotFiringSystem invulnerableWhileNotFiringSystem;
     HitKnockbackSystem hitKnockbackSystem;
     InvulnerabilityTimerSystem invulnerabilityTimerSystem;
-    FlashTimerSystem flashTimerSystem;
-    SpawnOnVisibleSystem spawnOnVisibleSystem;
-    AudioEventQueue audioEventQueue;
-    CoyoteTimeSystem coyoteTimeSystem;
-    UIRenderSystem uiRenderSystem;
-    MoveTowardsPlayerSystem moveTowardsPlayerSystem;
-    BladerAttackSystem bladerAttackSystem;
-    OctopusBatterySystem octopusBatterySystem;
-    DebugTeleportSystem debugTeleportSystem;
-    UpdateSceneStateSystem updateSceneStateSystem;
-    StopMovementWhileFiringSystem stopMovementWhileFiringSystem;
-    PauseSystem pauseSystem;
-    SpawnWhileVisibleTimerSystem spawnWhileVisibleTimerSystem;
 
 public:
     World() = default;
@@ -97,9 +116,8 @@ public:
         else {
             if (!currentSceneState.isEnding && !currentSceneState.isPaused) {
                 debugTeleportSystem.update(entities, event, *this);
-                keyboardInputSystem.update(entities, event, dt);
-
                 animationSystem.update(entities, dt);
+                keyboardInputSystem.update(entities, event, dt);
 
                 spawnTimerSystem.update(entities, dt);
                 spawnOnVisibleSystem.update(entities);
@@ -133,8 +151,11 @@ public:
         else {
             if (!currentSceneState.isEnding && !currentSceneState.isPaused) {
                 coyoteTimeSystem.update(entities, dt);
+                autoJumpSystem.update(entities, dt);
+                jumpSystem.update(entities, dt);
                 gravitySystem.update(entities, dt);
                 hitKnockbackSystem.update(entities, dt);
+                trackPlayerSystem.update(entities);
                 moveTowardsPlayerSystem.update(entities);
 
                 bladerAttackSystem.update(entities, dt);

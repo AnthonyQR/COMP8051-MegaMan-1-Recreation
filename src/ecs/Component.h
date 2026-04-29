@@ -56,8 +56,15 @@ struct IsFacingRight {
 struct Jump {
     float jumpSpeed{};
     float fastFallSpeed{};
-    bool hasJumped = false;
+    bool startJumping = false;
     bool fastFalling = false;
+};
+
+struct AutoJump {
+    float jumpDelay{};
+    std::vector<Vector2D> jumpPatterns{};
+    bool prepareJump = false;
+    float jumpDelayTimer{};
 };
 
 struct CoyoteTime {
@@ -162,6 +169,11 @@ struct Children {
     std::vector<Entity*> children{};
 };
 
+struct TrackPlayer {
+    bool isPlayerToTheRight{};
+    bool isPlayerBelow{};
+};
+
 struct MoveTowardsPlayer {
     bool isMovingTowards{};
     bool moveX{};
@@ -177,6 +189,9 @@ struct KeyboardInputs {
     bool isHoldingDown = false;
     bool isHoldingJump = false;
     bool isHoldingAttack = false;
+
+    bool isPressingJump = false;
+    bool isPressingAttack = false;
 };
 
 struct ProjectileStats {

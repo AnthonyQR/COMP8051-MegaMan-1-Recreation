@@ -1,0 +1,12 @@
+<animations>
+    <jump>
+        <frame x="0" y="0" w="14" h="24" />
+        <frame x="14" y="0" w="14" h="24" />
+        <frame x="28" y="0" w="14" h="24" />
+    </jump>
+    <land>
+        <frame x="28" y="0" w="14" h="24" />
+        <frame x="14" y="0" w="14" h="24" />
+        <frame x="0" y="0" w="14" h="24" />
+    </land>
+</animations>

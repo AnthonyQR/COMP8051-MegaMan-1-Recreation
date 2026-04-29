@@ -1,0 +1,50 @@
+//
+// Created by antho on 2026-04-27.
+//
+
+#ifndef MEGAMAN_AUTOJUMPSYSTEM_H
+#define MEGAMAN_AUTOJUMPSYSTEM_H
+#include <memory>
+#include <vector>
+
+#include "Component.h"
+#include "Entity.h"
+
+class AutoJumpSystem {
+public:
+    void update(const std::vector<std::unique_ptr<Entity>>& entities, float dt) {
+        for (auto& entity : entities) {
+            if (entity->hasComponent<AutoJump>() &&
+                entity->hasComponent<Jump>() &&
+                entity->hasComponent<Velocity>()) {
+
+                auto& autoJump = entity->getComponent<AutoJump>();
+                auto& jump = entity->getComponent<Jump>();
+                auto& velocity = entity->getComponent<Velocity>();
+
+                if (!autoJump.prepareJump) continue;
+
+                autoJump.jumpDelayTimer -= dt;
+                if (autoJump.jumpDelayTimer < 0) {
+                    // Pick a random jump pattern from the list
+                    Vector2D jumpSpeed = autoJump.jumpPatterns[rand() % autoJump.jumpPatterns.size()];
+                    velocity.xSpeed = jumpSpeed.x;
+                    velocity.ySpeed = -jumpSpeed.y;
+                    velocity.direction.y = 1;
+
+                    if (entity->hasComponent<TrackPlayer>()) {
+                        auto& trackPlayer = entity->getComponent<TrackPlayer>();
+                        if (trackPlayer.isPlayerToTheRight) {
+                            velocity.xSpeed = jumpSpeed.x;
+                        }
+                        else {
+                            velocity.xSpeed = -jumpSpeed.x;
+                        }
+                    }
+                }
+            }
+        }
+    }
+};
+
+#endif //MEGAMAN_AUTOJUMPSYSTEM_H

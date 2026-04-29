@@ -13,42 +13,32 @@
 class MoveTowardsPlayerSystem {
 public:
     void update(std::vector<std::unique_ptr<Entity>>& entities) {
-        Entity* player = nullptr;
-        for (auto& entity : entities) {
-            if (entity->hasComponent<PlayerTag>() &&
-                entity->hasComponent<MainPlayer>()) {
-                player = entity.get();
-            }
-        }
-        if (player == nullptr) return;
-        auto& playerTransform = player->getComponent<Transform>();
-
         for (auto& entity : entities) {
             if (entity->hasComponent<MoveTowardsPlayer>() &&
-                entity->hasComponent<Velocity>() &&
-                entity->hasComponent<Transform>()) {
+                entity->hasComponent<TrackPlayer>() &&
+                entity->hasComponent<Velocity>()) {
                 auto& moveTowardsPlayer = entity->getComponent<MoveTowardsPlayer>();
+                auto& trackPlayer = entity->getComponent<TrackPlayer>();
                 auto& velocity = entity->getComponent<Velocity>();
-                auto& transform = entity->getComponent<Transform>();
 
                 if (!moveTowardsPlayer.isMovingTowards) continue;
 
                 if (moveTowardsPlayer.moveX) {
-                    if (playerTransform.position.x < transform.position.x) {
-                        velocity.direction.x = -1;
+                    if (trackPlayer.isPlayerToTheRight) {
+                        velocity.direction.x = 1;
                     }
                     else {
-                        velocity.direction.x = 1;
+                        velocity.direction.x = -1;
                     }
                     velocity.xSpeed = moveTowardsPlayer.xSpeed;
                 }
 
                 if (moveTowardsPlayer.moveY) {
-                    if (playerTransform.position.y < transform.position.y) {
-                        velocity.direction.y = -1;
+                    if (trackPlayer.isPlayerBelow) {
+                        velocity.direction.y = 1;
                     }
                     else {
-                        velocity.direction.y = 1;
+                        velocity.direction.y = -1;
                     }
                     velocity.ySpeed = moveTowardsPlayer.ySpeed;
                 }
