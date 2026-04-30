@@ -12,9 +12,9 @@
 
 class FleaAnimationSystem {
 public:
-    static NextAnimationClip getAnimationClip(const std::unique_ptr<Entity>& blader) {
+    static NextAnimationClip getAnimationClip(const std::unique_ptr<Entity>& flea) {
         NextAnimationClip newClip;
-        auto& isGrounded = blader->getComponent<IsGrounded>();
+        auto& isGrounded = flea->getComponent<IsGrounded>();
         if (isGrounded.grounded) {
             newClip.name = "land";
         }

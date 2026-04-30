@@ -44,6 +44,7 @@ public:
     std::vector<Vector2D> flyingShellSpawnPoints;
     std::vector<Vector2D> flyingShellTimedSpawnPoints;
     std::vector<Vector2D> fleaSpawnPoints;
+    std::vector<Vector2D> bigEyeSpawnPoints;
 
     std::vector<Vector2D> itemSpawnPoints;
 };

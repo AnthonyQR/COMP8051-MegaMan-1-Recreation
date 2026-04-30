@@ -99,6 +99,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     AssetManager::loadAnimation("flyingShell", "Assets/Animations/flying_shell_anim.xml");
     AssetManager::loadAnimation("enemyDeath", "Assets/Animations/enemy_death_anim.xml");
     AssetManager::loadAnimation("flea", "Assets/Animations/flea_anim.xml");
+    AssetManager::loadAnimation("bigEye", "Assets/Animations/big_eye_anim.xml");
 
     AssetManager::loadAnimation("victoryItem", "Assets/Animations/victory_item_anim.xml");
 

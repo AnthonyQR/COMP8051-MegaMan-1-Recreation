@@ -1,0 +1,14 @@
+<animations>
+    <jump_left>
+        <frame x="0" y="0" w="32" h="48" />
+    </jump_left>
+    <jump_right>
+        <frame x="0" y="48" w="32" h="48" />
+    </jump_right>
+    <land_left>
+        <frame x="32" y="0" w="32" h="48" />
+    </land_left>
+    <land_right>
+        <frame x="32" y="48" w="32" h="48" />
+    </land_right>
+</animations>

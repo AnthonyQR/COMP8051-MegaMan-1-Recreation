@@ -58,6 +58,7 @@ add_executable(Megaman WIN32 src/main.cpp
         src/ecs/system/Player/PauseSystem.cpp
         src/scene/SpawnFleaEnemy.cpp
         src/scene/SpawnEnemyDeathAnimation.cpp
+        src/scene/SpawnBigEyeEnemy.cpp
 )
 
 target_link_libraries(Megaman

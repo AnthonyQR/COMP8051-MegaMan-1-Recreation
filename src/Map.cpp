@@ -56,6 +56,7 @@ void Map::load(const char* path, SDL_Texture *ts) {
     parseData(layer, "Flying Shell Spawn Layer", flyingShellSpawnPoints);
     parseData(layer, "Flying Shell Timed Spawn Layer", flyingShellTimedSpawnPoints);
     parseData(layer, "Flea Enemy Spawn Layer", fleaSpawnPoints);
+    parseData(layer, "Big Eye Spawn Layer", bigEyeSpawnPoints);
 
     parseData(layer, "Item Spawn Points Layer", itemSpawnPoints);
 }

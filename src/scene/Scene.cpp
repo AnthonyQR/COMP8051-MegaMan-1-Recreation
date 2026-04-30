@@ -6,6 +6,7 @@
 #include "../manager/AssetManager.h"
 #include "Game.h"
 #include "SpawnBeakEnemy.h"
+#include "SpawnBigEyeEnemy.h"
 #include "SpawnBladerEnemy.h"
 #include "SpawnFleaEnemy.h"
 #include "SpawnFlyingShellEnemy.h"
@@ -176,6 +177,7 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
     SpawnSuperCutterEnemy::spawn(world);
     SpawnFlyingShellEnemy::spawn(world);
     SpawnFleaEnemy::spawn(world);
+    SpawnBigEyeEnemy::spawn(world);
 
     // Add Scene State
     auto &state(world.CreateSceneStateEntity());

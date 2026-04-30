@@ -51,12 +51,22 @@ void SpawnFleaEnemy::spawn(World &world) {
             {
                 Vector2D(190.0f, 750.0f),
                 Vector2D(480.0f, 700.0f)
-            }, true, 0.0f
+            }, true, 0.15f
             );
 
             fleaEnemy.addComponent<OnBottomCollisionCallback>([](Entity* flea) {
                 auto& velocity = flea->getComponent<Velocity>();
                 velocity.xSpeed = 0;
+
+                for (auto& child : flea->getComponent<Children>().children) {
+                    if (child->hasComponent<Hurtbox>()) {
+                        auto& collider = child->getComponent<Collider>();
+                        auto& fleaDst = flea->getComponent<Sprite>().dst;
+
+                        collider.rect.h = fleaDst.h - (14 * 3);
+                        collider.yOffset = (14 * 3);
+                    }
+                }
 
                 auto& collider = flea->getComponent<Collider>();
                 auto& fleaDst = flea->getComponent<Sprite>().dst;
@@ -66,11 +76,15 @@ void SpawnFleaEnemy::spawn(World &world) {
             });
 
             fleaEnemy.addComponent<OnJumpCallback>([](Entity* flea) {
-                auto& collider = flea->getComponent<Collider>();
-                auto& fleaDst = flea->getComponent<Sprite>().dst;
+                for (auto& child : flea->getComponent<Children>().children) {
+                    if (child->hasComponent<Hurtbox>()) {
+                        auto& collider = child->getComponent<Collider>();
+                        auto& fleaDst = flea->getComponent<Sprite>().dst;
 
-                collider.rect.h = fleaDst.h;
-                collider.yOffset = 0;
+                        collider.rect.h = fleaDst.h;
+                        collider.yOffset = 0;
+                    }
+                }
             });
 
             fleaEnemy.addComponent<SpawnedEnemyTag>();
