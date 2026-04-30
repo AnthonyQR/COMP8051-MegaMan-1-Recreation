@@ -85,6 +85,15 @@ void SpawnFleaEnemy::spawn(World &world) {
                         collider.yOffset = 0;
                     }
                 }
+
+                auto& velocity = flea->getComponent<Velocity>();
+                auto& trackPlayer = flea->getComponent<TrackPlayer>();
+                        if (trackPlayer.isPlayerToTheRight) {
+                            velocity.xSpeed = std::abs(velocity.xSpeed);
+                        }
+                        else {
+                            velocity.xSpeed = -std::abs(velocity.xSpeed);
+                        }
             });
 
             fleaEnemy.addComponent<SpawnedEnemyTag>();

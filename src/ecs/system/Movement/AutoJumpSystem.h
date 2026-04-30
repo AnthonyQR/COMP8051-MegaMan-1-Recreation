@@ -35,16 +35,6 @@ public:
                     jump.jumpSpeed = jumpSpeed.y;
                     velocity.xSpeed = jumpSpeed.x;
                     velocity.direction.x = 1;
-
-                    if (entity->hasComponent<TrackPlayer>()) {
-                        auto& trackPlayer = entity->getComponent<TrackPlayer>();
-                        if (trackPlayer.isPlayerToTheRight) {
-                            velocity.xSpeed = jumpSpeed.x;
-                        }
-                        else {
-                            velocity.xSpeed = -jumpSpeed.x;
-                        }
-                    }
                 }
             }
         }

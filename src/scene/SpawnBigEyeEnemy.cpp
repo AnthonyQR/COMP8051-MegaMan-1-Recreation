@@ -91,6 +91,16 @@ void SpawnBigEyeEnemy::spawn(World &world) {
                         collider.yOffset = 0;
                     }
                 }
+
+                auto& isFacingRight = bigEye->getComponent<IsFacingRight>().facingRight;
+                auto& velocity = bigEye->getComponent<Velocity>();
+
+                if (isFacingRight) {
+                    velocity.xSpeed = std::abs(velocity.xSpeed);
+                }
+                else {
+                    velocity.xSpeed = -std::abs(velocity.xSpeed);
+                }
             });
 
             bigEyeEnemy.addComponent<SpawnedEnemyTag>();
