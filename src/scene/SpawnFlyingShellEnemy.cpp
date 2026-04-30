@@ -57,8 +57,8 @@ Entity * SpawnFlyingShellEnemy::finishSpawn(World &world, Transform spawnerTrans
     shellCollider.rect.h = shellDst.h;
 
     SDL_Texture* shellProjectileTex = TextureManager::load("Assets/flying_shell_projectile.png");
-    SDL_FRect shellProjectileSrc{0, 0, 8, 8};
-    SDL_FRect shellProjectileDest{0, 0, 8 * 3, 8 * 3};
+    SDL_FRect shellProjectileSrc{0, 0, 6, 6};
+    SDL_FRect shellProjectileDest{0, 0, 6 * 3, 6 * 3};
     Sprite newProjectileSprite{shellProjectileTex, shellProjectileSrc, shellProjectileDest};
 
     shellEnemy.addComponent<ProjectileStats>(800.0f, 2, Vector2D(0, 0), Vector2D(shellTransform.position.x, shellTransform.position.y),

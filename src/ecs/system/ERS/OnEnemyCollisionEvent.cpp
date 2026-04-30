@@ -36,8 +36,9 @@ void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
                 std::abs(leftPenetrationDepth) < std::abs(bottomPenetrationDepth)) {
                 transform.position.x = (wallCollider.x + wallCollider.w + positionOffset - xOffset);
                 enemyCollider.x = transform.position.x + xOffset;
-                if (enemy->hasComponent<OctopusBatteryStats>()) {
-                    enemy->getComponent<OctopusBatteryStats>().isStopped = true;
+
+                if (enemy->hasComponent<OnLeftCollisionCallback>()) {
+                    enemy->getComponent<OnLeftCollisionCallback>().callback(enemy);
                 }
                 return;
             }
@@ -48,8 +49,9 @@ void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
                 std::abs(rightPenetrationDepth) < std::abs(bottomPenetrationDepth)){
                 transform.position.x = (wallCollider.x - enemyCollider.w - positionOffset - xOffset);
                 enemyCollider.x = transform.position.x + xOffset;
-                if (enemy->hasComponent<OctopusBatteryStats>()) {
-                    enemy->getComponent<OctopusBatteryStats>().isStopped = true;
+
+                if (enemy->hasComponent<OnRightCollisionCallback>()) {
+                    enemy->getComponent<OnRightCollisionCallback>().callback(enemy);
                 }
                 return;
             }
@@ -61,8 +63,9 @@ void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
                 (velocity.direction.y * velocity.ySpeed) < 0) {
                 velocity.ySpeed = 0;
                 transform.position.y = (wallCollider.y + wallCollider.h + positionOffset - yOffset);
-                if (enemy->hasComponent<OctopusBatteryStats>()) {
-                    enemy->getComponent<OctopusBatteryStats>().isStopped = true;
+
+                if (enemy->hasComponent<OnTopCollisionCallback>()) {
+                    enemy->getComponent<OnTopCollisionCallback>().callback(enemy);
                 }
                 return;
             }
@@ -78,6 +81,11 @@ void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
                 if (enemy->hasComponent<IsGrounded>()) {
                     enemy->getComponent<IsGrounded>().grounded = true;
                 }
+
+                if (enemy->hasComponent<Gravity>()) {
+                    enemy->getComponent<Gravity>().gravityEnabled = false;
+                }
+
                 if (enemy->hasComponent<AutoJump>()) {
                     auto& autoJump = enemy->getComponent<AutoJump>();
                     if (!autoJump.prepareJump) {
@@ -85,11 +93,9 @@ void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
                         autoJump.jumpDelayTimer = autoJump.jumpDelay;
                     }
                 }
-                if (enemy->hasComponent<StopMovementOnGroundCollision>()) {
-                    velocity.xSpeed = 0;
-                }
-                if (enemy->hasComponent<OctopusBatteryStats>()) {
-                    enemy->getComponent<OctopusBatteryStats>().isStopped = true;
+
+                if (enemy->hasComponent<OnBottomCollisionCallback>()) {
+                    enemy->getComponent<OnBottomCollisionCallback>().callback(enemy);
                 }
                 return;
             }

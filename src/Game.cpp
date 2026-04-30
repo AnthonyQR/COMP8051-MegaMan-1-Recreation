@@ -78,12 +78,12 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     audioManager.loadAudio("cutmanStage", "Assets/Audio/CutManStageLoop.mp3", 5);
     audioManager.loadAudio("victoryMusic", "Assets/Audio/VictoryMusic.mp3", 20);
 
-    audioManager.loadAudio("megamanBuster", "Assets/Audio/MegaBuster.mp3", 6);
+    audioManager.loadAudio("megamanBuster", "Assets/Audio/MegaBuster.mp3", 7);
     audioManager.loadAudio("megamanDamage", "Assets/Audio/MegamanDamage.mp3", 10);
     audioManager.loadAudio("megamanDefeat", "Assets/Audio/MegamanDefeat.mp3", 10);
     audioManager.loadAudio("megamanLand", "Assets/Audio/MegamanLand.mp3", 1);
 
-    audioManager.loadAudio("enemyShoot", "Assets/Audio/EnemyShoot.mp3", 7);
+    audioManager.loadAudio("enemyShoot", "Assets/Audio/EnemyShoot.mp3", 6);
     audioManager.loadAudio("enemyDamage", "Assets/Audio/EnemyDamage.mp3", 8);
     audioManager.loadAudio("dink", "Assets/Audio/Dink.mp3", 9);
 

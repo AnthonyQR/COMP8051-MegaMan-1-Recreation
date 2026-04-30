@@ -57,6 +57,22 @@ void SpawnOctopusBatteryEnemy::finishSpawn(World &world, Entity &spawner, bool i
 
         octopusEnemy.addComponent<OctopusBatteryStats>(350.0f, 1.25f, 1.25f);
 
+        octopusEnemy.addComponent<OnLeftCollisionCallback>([](Entity* octopus) {
+            octopus->getComponent<OctopusBatteryStats>().isStopped = true;
+        });
+
+        octopusEnemy.addComponent<OnRightCollisionCallback>([](Entity* octopus) {
+            octopus->getComponent<OctopusBatteryStats>().isStopped = true;
+        });
+
+        octopusEnemy.addComponent<OnTopCollisionCallback>([](Entity* octopus) {
+            octopus->getComponent<OctopusBatteryStats>().isStopped = true;
+        });
+
+        octopusEnemy.addComponent<OnBottomCollisionCallback>([](Entity* octopus) {
+            octopus->getComponent<OctopusBatteryStats>().isStopped = true;
+        });
+
         octopusEnemy.addComponent<Health>(5);
         octopusEnemy.addComponent<ContactDamage>(4);
 

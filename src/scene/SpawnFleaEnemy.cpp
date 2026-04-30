@@ -49,13 +49,29 @@ void SpawnFleaEnemy::spawn(World &world) {
             fleaEnemy.addComponent<Jump>();
             fleaEnemy.addComponent<AutoJump>(0.5f, std::vector<Vector2D>
             {
-                Vector2D(200.0f, 750.0f),
-                Vector2D(500.0f, 700.0f)
+                Vector2D(190.0f, 750.0f),
+                Vector2D(480.0f, 700.0f)
             }, true, 0.0f
             );
 
+            fleaEnemy.addComponent<OnBottomCollisionCallback>([](Entity* flea) {
+                auto& velocity = flea->getComponent<Velocity>();
+                velocity.xSpeed = 0;
 
-            fleaEnemy.addComponent<StopMovementOnGroundCollision>();
+                auto& collider = flea->getComponent<Collider>();
+                auto& fleaDst = flea->getComponent<Sprite>().dst;
+
+                collider.rect.h = fleaDst.h - (14 * 3);
+                collider.yOffset = (14 * 3);
+            });
+
+            fleaEnemy.addComponent<OnJumpCallback>([](Entity* flea) {
+                auto& collider = flea->getComponent<Collider>();
+                auto& fleaDst = flea->getComponent<Sprite>().dst;
+
+                collider.rect.h = fleaDst.h;
+                collider.yOffset = 0;
+            });
 
             fleaEnemy.addComponent<SpawnedEnemyTag>();
             fleaEnemy.addComponent<DestroyOutOfViewTag>();

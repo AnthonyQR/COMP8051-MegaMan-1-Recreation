@@ -67,6 +67,10 @@ struct AutoJump {
     float jumpDelayTimer{};
 };
 
+struct OnJumpCallback {
+    std::function<void(Entity*)> callback{};
+};
+
 struct CoyoteTime {
     bool isCoyoteTime{};
     float duration{};
@@ -97,8 +101,6 @@ struct Collider {
 struct WallCollidable {
     bool isCollidable{};
 };
-
-struct StopMovementOnGroundCollision{};
 
 struct LadderClimbing {
     float climbSpeed{};
@@ -275,6 +277,22 @@ struct OnPlayerDetectStayCallback {
 
 struct OnPlayerDetectLeaveCallback {
     std::function<void(Entity*, Entity*)> callback{};
+};
+
+struct OnLeftCollisionCallback {
+    std::function<void(Entity*)> callback{};
+};
+
+struct OnRightCollisionCallback {
+    std::function<void(Entity*)> callback{};
+};
+
+struct OnTopCollisionCallback {
+    std::function<void(Entity*)> callback{};
+};
+
+struct OnBottomCollisionCallback {
+    std::function<void(Entity*)> callback{};
 };
 
 struct BladerAttack {

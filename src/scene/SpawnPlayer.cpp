@@ -67,8 +67,8 @@ void SpawnPlayer::spawn(World& world) {
     player.addComponent<IsFacingRight>();
 
     SDL_Texture* playerProjectileTex = TextureManager::load("Assets/megaman_projectile.png");
-    SDL_FRect playerProjectileSrc{0, 0, 8, 8};
-    SDL_FRect playerProjectileDest{0, 0, 8 * 3, 8 * 3};
+    SDL_FRect playerProjectileSrc{0, 0, 8, 6};
+    SDL_FRect playerProjectileDest{0, 0, 8 * 3, 6 * 3};
     Sprite newProjectileSprite {playerProjectileTex, playerProjectileSrc, playerProjectileDest};
 
     player.addComponent<ProjectileStats>(800.0f, 1, Vector2D(0, 0), Vector2D(0, 0),

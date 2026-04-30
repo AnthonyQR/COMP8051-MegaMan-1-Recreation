@@ -44,6 +44,11 @@ public:
                 if (entity->hasComponent<IsGrounded>()) {
                     entity->getComponent<IsGrounded>().grounded = false;
                 }
+
+                // For entity specific jump logic (ex. Hurtbox Shifting)
+                if (entity->hasComponent<OnJumpCallback>()) {
+                    entity->getComponent<OnJumpCallback>().callback(entity.get());
+                }
             }
         }
     };
