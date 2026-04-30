@@ -32,6 +32,7 @@ void Scene::initMainMenu(int windowWidth, int windowHeight) {
     auto menuTransform = menu.addComponent<Transform>(Vector2D(0,0), 0.0f, 1.0f);
 
     Animation anim = AssetManager::getAnimation("titleScreen");
+    anim.getAnimationClip = TitleScreenAnimationSystem::getAnimationClip;
     menu.addComponent<Animation>(anim);
 
     SDL_Texture *text = TextureManager::load("Assets/Animations/megaman_title_screen_anim.png");

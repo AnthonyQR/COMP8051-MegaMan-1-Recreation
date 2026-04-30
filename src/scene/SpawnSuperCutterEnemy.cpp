@@ -11,6 +11,7 @@ void SpawnSuperCutterEnemy::spawn(World& world) {
     for (auto& spawnPoint : world.getMap().superCutterSpawnPoints) {
         auto& spawner(world.createEntity());
         Animation anim = AssetManager::getAnimation("superCutter");
+        anim.getAnimationClip = SuperCutterAnimationSystem::getAnimationClip;
 
         SDL_Texture* projectileTex = TextureManager::load("Assets/Animations/super_cutter_anim.png");
         SDL_FRect projectileSrc = anim.clips[anim.currentClip].frameIndices[0];

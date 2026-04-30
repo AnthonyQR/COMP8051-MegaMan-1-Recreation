@@ -34,9 +34,11 @@ void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
             if (std::abs(leftPenetrationDepth) < std::abs(rightPenetrationDepth) &&
                 std::abs(leftPenetrationDepth) < std::abs(topPenetrationDepth) &&
                 std::abs(leftPenetrationDepth) < std::abs(bottomPenetrationDepth)) {
-                velocity.xSpeed = 0;
                 transform.position.x = (wallCollider.x + wallCollider.w + positionOffset - xOffset);
                 enemyCollider.x = transform.position.x + xOffset;
+                if (enemy->hasComponent<OctopusBatteryStats>()) {
+                    enemy->getComponent<OctopusBatteryStats>().isStopped = true;
+                }
                 return;
             }
 
@@ -44,9 +46,11 @@ void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
             if (std::abs(rightPenetrationDepth) < std::abs(leftPenetrationDepth) &&
                 std::abs(rightPenetrationDepth) < std::abs(topPenetrationDepth) &&
                 std::abs(rightPenetrationDepth) < std::abs(bottomPenetrationDepth)){
-                velocity.xSpeed = 0;
                 transform.position.x = (wallCollider.x - enemyCollider.w - positionOffset - xOffset);
                 enemyCollider.x = transform.position.x + xOffset;
+                if (enemy->hasComponent<OctopusBatteryStats>()) {
+                    enemy->getComponent<OctopusBatteryStats>().isStopped = true;
+                }
                 return;
             }
 
@@ -57,6 +61,9 @@ void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
                 (velocity.direction.y * velocity.ySpeed) < 0) {
                 velocity.ySpeed = 0;
                 transform.position.y = (wallCollider.y + wallCollider.h + positionOffset - yOffset);
+                if (enemy->hasComponent<OctopusBatteryStats>()) {
+                    enemy->getComponent<OctopusBatteryStats>().isStopped = true;
+                }
                 return;
             }
 
@@ -80,6 +87,9 @@ void OnEnemyCollisionEvent::onCollision(Entity *enemy, Entity *other,
                 }
                 if (enemy->hasComponent<StopMovementOnGroundCollision>()) {
                     velocity.xSpeed = 0;
+                }
+                if (enemy->hasComponent<OctopusBatteryStats>()) {
+                    enemy->getComponent<OctopusBatteryStats>().isStopped = true;
                 }
                 return;
             }

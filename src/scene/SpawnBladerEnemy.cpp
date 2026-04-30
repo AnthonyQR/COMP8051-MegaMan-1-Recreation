@@ -26,6 +26,7 @@ void SpawnBladerEnemy::spawn(World &world) {
             bladerEnemy.addComponent<MoveTowardsPlayer>(true, true, false, 200.0f);
 
             Animation anim = AssetManager::getAnimation("blader");
+            anim.getAnimationClip = BladerAnimationSystem::getAnimationClip;
             bladerEnemy.addComponent<Animation>(anim);
 
             SDL_Texture* bladerTex = TextureManager::load("Assets/Animations/blader_anim.png");

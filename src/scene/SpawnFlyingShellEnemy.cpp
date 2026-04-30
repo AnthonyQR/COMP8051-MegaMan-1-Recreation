@@ -42,6 +42,7 @@ Entity * SpawnFlyingShellEnemy::finishSpawn(World &world, Transform spawnerTrans
     shellEnemy.addComponent<StopMovementWhileFiring>(Vector2D{-1, 0});
 
     Animation anim = AssetManager::getAnimation("flyingShell");
+    anim.getAnimationClip = FlyingShellAnimationSystem::getAnimationClip;
     shellEnemy.addComponent<Animation>(anim);
 
     SDL_Texture* shellTex = TextureManager::load("Assets/Animations/flying_shell_anim.png");

@@ -6,6 +6,7 @@
 
 #include "Game.h"
 #include "manager/AssetManager.h"
+#include "Visuals/AnimationSystems/PlayerHitParticlesAnimationSystem.h"
 
 void SpawnPlayer::spawn(World& world) {
 
@@ -18,6 +19,7 @@ void SpawnPlayer::spawn(World& world) {
     playerHitFlash.addComponent<PlayerHitFlash>();
 
     Animation hitParticlesAnim = AssetManager::getAnimation("playerHitParticles");
+    hitParticlesAnim.getAnimationClip = PlayerHitParticlesAnimationSystem::getAnimationClip;
     SDL_Texture* hitParticlesTex = TextureManager::load("Assets/Animations/megaman_hit_particles_anim.png");
     SDL_FRect hitParticlesSrc = hitParticlesAnim.clips[hitParticlesAnim.currentClip].frameIndices[0];
     SDL_FRect hitParticlesDst {0, 0, 96, 36};
@@ -37,7 +39,9 @@ void SpawnPlayer::spawn(World& world) {
     player.addComponent<CoyoteTime>(false, 0.05f);
 
     Animation anim = AssetManager::getAnimation("player");
+    anim.getAnimationClip = PlayerAnimationSystem::getAnimationClip;
     player.addComponent<Animation>(anim);
+
 
     SDL_Texture* tex = TextureManager::load("Assets/Animations/megaman_anim.png");
     // SDL_FRect playerSrc {0, 0, 32, 44};

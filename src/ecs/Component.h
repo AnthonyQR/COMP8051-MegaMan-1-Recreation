@@ -110,6 +110,7 @@ struct LadderClimbing {
 struct Animation {
     std::unordered_map<std::string, AnimationClip> clips{};
     std::string currentClip{};
+    std::function<NextAnimationClip(const std::unique_ptr<Entity>&)> getAnimationClip{};
     float time{}; // Time is accumulated for the current frame
     int currentFrame{}; // Index of the current frame in the clip
     float speed = 0.12f; // Time per frame
@@ -294,6 +295,7 @@ struct OctopusBatteryStats {
     float speed{};
     float waitDuration{};
     float timer{};
+    bool isStopped = false;
 };
 
 struct SceneTransitionDelay {

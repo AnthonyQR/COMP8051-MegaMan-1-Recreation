@@ -21,7 +21,7 @@ public:
         else {
             newClip.name = "jump";
         }
-        newClip.animationSpeed = 0.075f;
+        newClip.animationSpeed = 0.05f;
         newClip.stayOnLastFrame = true;
         return newClip;
     }

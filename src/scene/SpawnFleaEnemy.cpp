@@ -24,6 +24,7 @@ void SpawnFleaEnemy::spawn(World &world) {
             fleaEnemy.addComponent<TrackPlayer>();
 
             Animation anim = AssetManager::getAnimation("flea");
+            anim.getAnimationClip = FleaAnimationSystem::getAnimationClip;
             fleaEnemy.addComponent<Animation>(anim);
 
             SDL_Texture* fleaTex = TextureManager::load("Assets/Animations/flea_anim.png");
@@ -49,9 +50,10 @@ void SpawnFleaEnemy::spawn(World &world) {
             fleaEnemy.addComponent<AutoJump>(0.5f, std::vector<Vector2D>
             {
                 Vector2D(200.0f, 750.0f),
-                Vector2D(500.0f, 650.0f)
+                Vector2D(500.0f, 700.0f)
             }, true, 0.0f
             );
+
 
             fleaEnemy.addComponent<StopMovementOnGroundCollision>();
 

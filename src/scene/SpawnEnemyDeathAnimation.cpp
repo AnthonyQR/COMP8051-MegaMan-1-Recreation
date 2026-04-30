@@ -4,6 +4,8 @@
 
 #include "SpawnEnemyDeathAnimation.h"
 
+#include "Visuals/AnimationSystems/EnemyDeathAnimationSystem.h"
+
 void SpawnEnemyDeathAnimation::spawn(World &world, Entity &entity) {
     auto& death (world.createDeferredEntity());
     auto& entityTransform = entity.getComponent<Transform>();
@@ -11,6 +13,7 @@ void SpawnEnemyDeathAnimation::spawn(World &world, Entity &entity) {
     (Vector2D(entityTransform.position.x, entityTransform.position.y), 0.0f, 1.0f);
 
     Animation newDeathAnim = AssetManager::getAnimation("enemyDeath");
+    newDeathAnim.getAnimationClip = EnemyDeathAnimationSystem::getAnimationClip;
     auto& deathAnim = death.addComponent<Animation>(newDeathAnim);
 
     SDL_Texture* enemyDeathTex = TextureManager::load("Assets/Animations/enemy_death_anim.png");

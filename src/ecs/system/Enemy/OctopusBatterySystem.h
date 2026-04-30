@@ -19,10 +19,11 @@ public:
                 auto& stats = entity->getComponent<OctopusBatteryStats>();
                 auto& velocity = entity->getComponent<Velocity>();
 
-                if (velocity.xSpeed == 0 && velocity.ySpeed == 0) {
+                if (stats.isStopped) {
                     stats.timer -= dt;
                     if (stats.timer <= 0) {
                         stats.timer = stats.waitDuration;
+                        stats.isStopped = false;
                         if (velocity.direction.y != 0) {
                             velocity.direction.y = -velocity.direction.y;
                             velocity.ySpeed = stats.speed;

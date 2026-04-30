@@ -14,8 +14,8 @@ public:
     static NextAnimationClip getAnimationClip(const std::unique_ptr<Entity>& octopus) {
         NextAnimationClip newClip;
 
-        auto& velocity = octopus->getComponent<Velocity>();
-        if (velocity.ySpeed != 0 || velocity.xSpeed != 0) {
+        auto& stats = octopus->getComponent<OctopusBatteryStats>();
+        if (!stats.isStopped) {
             newClip.name = "start_move";
         }
 

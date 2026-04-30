@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="21" nextobjectid="319">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="21" nextobjectid="322">
  <tileset firstgid="1" source="CutManTileset.tsx"/>
  <layer id="1" name="Terrain Layer" width="220" height="144">
   <data encoding="csv">
@@ -301,7 +301,13 @@
   <object id="264" x="1808" y="144" width="160" height="16"/>
  </objectgroup>
  <objectgroup id="20" name="Flea Enemy Spawn Layer">
-  <object id="317" x="112" y="2192">
+  <object id="319" x="1056" y="1184">
+   <point/>
+  </object>
+  <object id="320" x="1120" y="1120">
+   <point/>
+  </object>
+  <object id="321" x="1088" y="1152">
    <point/>
   </object>
  </objectgroup>
@@ -331,9 +337,6 @@
    <point/>
   </object>
   <object id="263" x="1952" y="88">
-   <point/>
-  </object>
-  <object id="272" x="1104" y="1104">
    <point/>
   </object>
   <object id="293" x="2144" y="864">
@@ -475,7 +478,7 @@
   <object id="180" x="752" y="1800" width="272" height="224"/>
   <object id="204" x="752" y="1544" width="272" height="224"/>
   <object id="205" x="752" y="1288" width="272" height="224"/>
-  <object id="206" x="752" y="1032" width="768" height="224"/>
+  <object id="206" x="752" y="1032" width="768" height="224" visible="0"/>
   <object id="207" x="1264" y="776" width="272" height="224"/>
   <object id="208" x="1264" y="520" width="272" height="224"/>
   <object id="209" x="1264" y="264" width="272" height="224"/>
@@ -505,9 +508,6 @@
   <object id="191" x="896" y="1312">
    <point/>
   </object>
-  <object id="260" x="1088" y="1152">
-   <point/>
-  </object>
   <object id="292" x="2224" y="832">
    <point/>
   </object>
@@ -520,9 +520,6 @@
    <point/>
   </object>
   <object id="221" x="928" y="1360">
-   <point/>
-  </object>
-  <object id="259" x="1056" y="1184">
    <point/>
   </object>
  </objectgroup>

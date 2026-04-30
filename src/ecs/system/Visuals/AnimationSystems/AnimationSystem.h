@@ -31,43 +31,8 @@ public:
                 NextAnimationClip newClip;
                 auto& anim = e->getComponent<Animation>();
 
-                if (e->hasComponent<PlayerTag>()) {
-                    newClip = PlayerAnimationSystem::getAnimationClip(e);
-                }
-                else if (e->hasComponent<BeakEnemyTag>()) {
-                    newClip = BeakAnimationSystem::getAnimationClip(e);
-                }
-                else if (e->hasComponent<BladerEnemyTag>()) {
-                    newClip = BladerAnimationSystem::getAnimationClip(e);
-                }
-                else if (e->hasComponent<OctopusBatteryTag>()) {
-                    newClip = OctopusBatteryAnimationSystem::getAnimationClip(e);
-                }
-                else if (e->hasComponent<SuperCutterTag>()) {
-                    newClip = SuperCutterAnimationSystem::getAnimationClip(e);
-                }
-                else if (e->hasComponent<FlyingShellEnemyTag>()) {
-                    newClip = FlyingShellAnimationSystem::getAnimationClip(e);
-                }
-                else if (e->hasComponent<FleaEnemyTag>()) {
-                    newClip = FleaAnimationSystem::getAnimationClip(e);
-                }
-                else if (e->hasComponent<TitleScreenTag>()) {
-                    newClip = TitleScreenAnimationSystem::getAnimationClip(e);
-                }
-                else if (e->hasComponent<EnemyDeathTag>()) {
-                    newClip.name = "death";
-                    newClip.animationSpeed = 0.05f;
-                    newClip.destroyOnFinish = true;
-                }
-                else if (e->hasComponent<PlayerHitParticles>()) {
-                    newClip.name = "play";
-                    newClip.animationSpeed = 0.2f;
-                    newClip.destroyOnFinish = true;
-                }
-                else if (e->hasComponent<VictoryItemTag>()) {
-                    newClip.name = "play";
-                    newClip.animationSpeed = 0.2f;
+                if (anim.getAnimationClip != nullptr) {
+                    newClip = anim.getAnimationClip(e);
                 }
                 else {
                     continue;

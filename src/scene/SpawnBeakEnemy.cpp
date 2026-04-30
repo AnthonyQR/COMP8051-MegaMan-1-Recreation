@@ -47,6 +47,7 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
         beakEnemy.addComponent<IsFacingRight>(facingRight);
 
         Animation anim = AssetManager::getAnimation("beak");
+        anim.getAnimationClip = BeakAnimationSystem::getAnimationClip;
         beakEnemy.addComponent<Animation>(anim);
 
         SDL_Texture* beakTex = TextureManager::load("Assets/Animations/beak_anim.png");

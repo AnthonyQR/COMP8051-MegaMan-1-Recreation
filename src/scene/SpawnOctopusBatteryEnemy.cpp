@@ -39,6 +39,7 @@ void SpawnOctopusBatteryEnemy::finishSpawn(World &world, Entity &spawner, bool i
         }
 
         Animation anim = AssetManager::getAnimation("octopus");
+        anim.getAnimationClip = OctopusBatteryAnimationSystem::getAnimationClip;
         octopusEnemy.addComponent<Animation>(anim);
 
         SDL_Texture* bladerTex = TextureManager::load("Assets/Animations/octopus_battery_anim.png");
