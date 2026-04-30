@@ -13,6 +13,7 @@
 #include "SpawnOctopusBatteryEnemy.h"
 #include "SpawnPlayer.h"
 #include "SpawnSuperCutterEnemy.h"
+#include "Visuals/AnimationSystems/VictoryItemAnimationSystem.h"
 
 Scene::Scene (SceneType sceneType, const char* sceneName, const char* mapPath, const int windowWidth, const int windowHeight)
 : name(sceneName), type(sceneType) {
@@ -74,6 +75,7 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
         entity.addComponent<Transform>(Vector2D(item.x, item.y), 0.0f, 1.0f);
 
         Animation anim = AssetManager::getAnimation("victoryItem");
+        anim.getAnimationClip = VictoryItemAnimationSystem::getAnimationClip;
         entity.addComponent<Animation>(anim);
 
         SDL_Texture* itemTex = TextureManager::load("Assets/Animations/victory_item_anim.png");
