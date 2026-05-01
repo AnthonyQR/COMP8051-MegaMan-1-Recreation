@@ -57,7 +57,7 @@ void SpawnBigEyeEnemy::spawn(World &world) {
 
             bigEyeEnemy.addComponent<IsFacingRight>(false);
 
-            bigEyeEnemy.addComponent<OnBottomCollisionCallback>([](Entity* bigEye) {
+            bigEyeEnemy.addComponent<OnBottomCollisionCallback>([&world](Entity* bigEye) {
                 auto& velocity = bigEye->getComponent<Velocity>();
                 velocity.xSpeed = 0;
 
@@ -79,6 +79,7 @@ void SpawnBigEyeEnemy::spawn(World &world) {
                 else {
                     isFacingRight = false;
                 }
+                world.getAudioEventQueue().push(std::make_unique<AudioEvent>("bigEyeLand"));
             });
 
             bigEyeEnemy.addComponent<OnJumpCallback>([](Entity* bigEye) {

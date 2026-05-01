@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="22" nextobjectid="326">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="24" nextobjectid="330">
  <tileset firstgid="1" source="CutManTileset.tsx"/>
  <layer id="1" name="Terrain Layer" width="220" height="144">
   <data encoding="csv">
@@ -339,12 +339,6 @@
   <object id="263" x="1952" y="88">
    <point/>
   </object>
-  <object id="309" x="2720" y="928">
-   <point/>
-  </object>
-  <object id="310" x="2960" y="832">
-   <point/>
-  </object>
  </objectgroup>
  <objectgroup id="4" name="Ladder Layer">
   <object id="153" x="80" y="2143" width="16" height="97"/>
@@ -417,21 +411,6 @@
   <object id="253" x="1296" y="320">
    <point/>
   </object>
-  <object id="295" x="2608" y="896">
-   <point/>
-  </object>
-  <object id="297" x="2768" y="896">
-   <point/>
-  </object>
-  <object id="302" x="2752" y="848">
-   <point/>
-  </object>
-  <object id="304" x="2992" y="896">
-   <point/>
-  </object>
-  <object id="306" x="2992" y="880">
-   <point/>
-  </object>
  </objectgroup>
  <objectgroup id="12" name="Octopus Battery Vertical Spawn Layer">
   <object id="238" x="1328" y="1184">
@@ -452,10 +431,17 @@
   <object id="250" x="1456" y="288">
    <point/>
   </object>
-  <object id="300" x="2416" y="848">
+ </objectgroup>
+ <objectgroup id="22" name="Screw Bomber Top Spawn Layer">
+  <object id="328" x="2720" y="848">
    <point/>
   </object>
-  <object id="301" x="2848" y="848">
+ </objectgroup>
+ <objectgroup id="23" name="Screw Bomber Bottom Spawn Layer">
+  <object id="327" x="2480" y="896">
+   <point/>
+  </object>
+  <object id="329" x="2848" y="896">
    <point/>
   </object>
  </objectgroup>
@@ -540,7 +526,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="17" name="Debug Spawn Points Layer">
+ <objectgroup id="17" name="Debug Spawn Points Layer" visible="0">
   <object id="273" x="16" y="2192">
    <point/>
   </object>
@@ -574,7 +560,7 @@
   <object id="284" x="1824" y="672">
    <point/>
   </object>
-  <object id="285" x="2304" y="880">
+  <object id="326" x="2304" y="880">
    <point/>
   </object>
   <object id="286" x="3072" y="880">

@@ -85,6 +85,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
 
     audioManager.loadAudio("enemyShoot", "Assets/Audio/EnemyShoot.mp3", 6);
     audioManager.loadAudio("enemyDamage", "Assets/Audio/EnemyDamage.mp3", 8);
+    audioManager.loadAudio("bigEyeLand", "Assets/Audio/BigEyeLand.mp3", 6);
     audioManager.loadAudio("dink", "Assets/Audio/Dink.mp3", 9);
 
     // Load assets
