@@ -121,7 +121,9 @@ public:
                 // Jump
                 if (keyboardInputs.isPressingJump) {
                     keyboardInputs.isPressingJump = false;
-                    jump.startJumping = true;
+                    if (isGrounded.grounded || ladderClimbing.isClimbing) {
+                        jump.startJumping = true;
+                    }
                 }
 
                 else if (!keyboardInputs.isHoldingJump){
