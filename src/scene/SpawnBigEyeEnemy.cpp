@@ -5,6 +5,7 @@
 #include "SpawnBigEyeEnemy.h"
 
 #include "SpawnEnemyDeathAnimation.h"
+#include "SpawnItem.h"
 #include "manager/AssetManager.h"
 #include "Visuals/AnimationSystems/BigEyeAnimationSystem.h"
 
@@ -118,6 +119,7 @@ void SpawnBigEyeEnemy::spawn(World &world) {
 
             bigEyeEnemy.addComponent<OnDeathCallback>([&world] (Entity* bigEye) {
                 SpawnEnemyDeathAnimation::spawn(world, *bigEye);
+                SpawnItem::spawn(world, *bigEye);
             });
 
             std::vector newChildren = {&bigEyeHurtbox};

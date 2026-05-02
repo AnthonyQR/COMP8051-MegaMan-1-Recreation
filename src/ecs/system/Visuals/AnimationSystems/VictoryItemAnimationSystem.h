@@ -11,7 +11,7 @@
 
 class VictoryItemAnimationSystem {
 public:
-    static NextAnimationClip getAnimationClip(const std::unique_ptr<Entity>& death) {
+    static NextAnimationClip getAnimationClip(const std::unique_ptr<Entity>& item) {
         NextAnimationClip newClip;
         newClip.name = "play";
         newClip.animationSpeed = 0.2f;

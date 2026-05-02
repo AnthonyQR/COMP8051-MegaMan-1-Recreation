@@ -5,6 +5,7 @@
 #include "SpawnOctopusBatteryEnemy.h"
 
 #include "SpawnEnemyDeathAnimation.h"
+#include "SpawnItem.h"
 #include "manager/AssetManager.h"
 
 void SpawnOctopusBatteryEnemy::spawn(World& world) {
@@ -90,6 +91,7 @@ void SpawnOctopusBatteryEnemy::finishSpawn(World &world, Entity &spawner, bool i
 
         octopusEnemy.addComponent<OnDeathCallback>([&world] (Entity* octopus) {
             SpawnEnemyDeathAnimation::spawn(world, *octopus);
+            SpawnItem::spawn(world, *octopus);
         });
 
         std::vector newChildren = {&octopusHurtbox};

@@ -104,6 +104,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     AssetManager::loadAnimation("screwBomber", "Assets/Animations/screw_bomber_anim.xml");
 
     AssetManager::loadAnimation("victoryItem", "Assets/Animations/victory_item_anim.xml");
+    AssetManager::loadAnimation("largeHealth", "Assets/Animations/large_health_anim.xml");
 
     // Load scenes
     sceneManager.loadScene(SceneType::Menu, "mainMenu", nullptr, width, height);

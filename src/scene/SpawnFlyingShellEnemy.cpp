@@ -6,6 +6,7 @@
 #include "SpawnFlyingShellEnemy.h"
 
 #include "SpawnEnemyDeathAnimation.h"
+#include "SpawnItem.h"
 #include "Vector2D.h"
 #include "World.h"
 #include "manager/AssetManager.h"
@@ -111,6 +112,7 @@ Entity * SpawnFlyingShellEnemy::finishSpawn(World &world, Transform spawnerTrans
 
     shellEnemy.addComponent<OnDeathCallback>([&world](Entity* shell) {
         SpawnEnemyDeathAnimation::spawn(world, *shell);
+        SpawnItem::spawn(world, *shell);
     });
 
     std::vector newChildren = {&shellHurtbox};

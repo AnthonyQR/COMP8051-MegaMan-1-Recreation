@@ -7,6 +7,7 @@
 #include <cmath>
 
 #include "SpawnEnemyDeathAnimation.h"
+#include "SpawnItem.h"
 #include "manager/AssetManager.h"
 
 void SpawnBladerEnemy::spawn(World &world) {
@@ -126,6 +127,7 @@ void SpawnBladerEnemy::spawn(World &world) {
 
             bladerEnemy.addComponent<OnDeathCallback>([&world] (Entity* blader) {
                 SpawnEnemyDeathAnimation::spawn(world, *blader);
+                SpawnItem::spawn(world, *blader);
             });
 
             std::vector newChildren = {&bladerHurtbox, &bladerPlayerDetection};

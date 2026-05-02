@@ -5,6 +5,7 @@
 #include "SpawnScrewBomberEnemy.h"
 
 #include "SpawnEnemyDeathAnimation.h"
+#include "SpawnItem.h"
 #include "manager/AssetManager.h"
 #include "Visuals/AnimationSystems/ScrewBomberAnimationSystem.h"
 
@@ -186,6 +187,7 @@ void SpawnScrewBomberEnemy::finishSpawn(World &world, Entity &spawner, bool isOn
 
         screwBomberEnemy.addComponent<OnDeathCallback>([&world](Entity* screwBomber) {
             SpawnEnemyDeathAnimation::spawn(world, *screwBomber);
+            SpawnItem::spawn(world, *screwBomber);
         });
 
         std::vector newChildren = {&screwBomberHurtbox, &screwBomberPlayerDetection};

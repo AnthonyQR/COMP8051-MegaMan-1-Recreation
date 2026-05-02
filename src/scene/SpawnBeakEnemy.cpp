@@ -5,6 +5,7 @@
 #include "SpawnBeakEnemy.h"
 
 #include "SpawnEnemyDeathAnimation.h"
+#include "SpawnItem.h"
 #include "manager/AssetManager.h"
 
 void SpawnBeakEnemy::spawn(World &world) {
@@ -123,6 +124,7 @@ void SpawnBeakEnemy::finishSpawn(World &world, Entity& spawner, bool facingRight
 
         beakEnemy.addComponent<OnDeathCallback>([&world](Entity* beak) {
             SpawnEnemyDeathAnimation::spawn(world, *beak);
+            SpawnItem::spawn(world, *beak);
         });
 
         std::vector newChildren = {&beakHurtbox};

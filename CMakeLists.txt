@@ -60,6 +60,7 @@ add_executable(Megaman WIN32 src/main.cpp
         src/scene/SpawnEnemyDeathAnimation.cpp
         src/scene/SpawnBigEyeEnemy.cpp
         src/scene/SpawnScrewBomberEnemy.cpp
+        src/scene/SpawnItem.cpp
 )
 
 target_link_libraries(Megaman

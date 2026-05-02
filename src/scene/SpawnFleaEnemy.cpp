@@ -5,6 +5,7 @@
 #include "SpawnFleaEnemy.h"
 
 #include "SpawnEnemyDeathAnimation.h"
+#include "SpawnItem.h"
 #include "manager/AssetManager.h"
 
 void SpawnFleaEnemy::spawn(World &world) {
@@ -110,6 +111,7 @@ void SpawnFleaEnemy::spawn(World &world) {
 
             fleaEnemy.addComponent<OnDeathCallback>([&world] (Entity* flea) {
                 SpawnEnemyDeathAnimation::spawn(world, *flea);
+                SpawnItem::spawn(world, *flea);
             });
 
             std::vector newChildren = {&fleaHurtbox};

@@ -267,6 +267,14 @@ struct Damage {
     bool invulIgnore{};
 };
 
+struct Healing {
+    int healAmount{};
+    float healDelay = 0.25f;
+    float timer = 0.0f;
+};
+
+struct OneUp{};
+
 struct HealthBarUpdate {
     std::function<void(Entity*)> callback{};
 };
