@@ -25,6 +25,17 @@ public:
                         if (autoFiring.nextPattern >= autoFiring.patterns.size()) {
                             continue;
                         }
+                        while (autoFiring.nextPattern < autoFiring.patterns.size() &&
+                            autoFiring.timer <= 0) {
+                            projectileStats.direction = autoFiring.patterns.at(autoFiring.nextPattern).direction;
+                            projectileStats.spawnCallback(projectileStats, *entity.get());
+
+                            autoFiring.nextPattern++;
+                            if (autoFiring.nextPattern < autoFiring.patterns.size()) {
+                                autoFiring.timer = autoFiring.patterns.at(autoFiring.nextPattern).interval;
+                            }
+                        }
+                        /*
                         if (autoFiring.burst) {
                             while (autoFiring.nextPattern < autoFiring.patterns.size()) {
                                 projectileStats.direction = autoFiring.patterns.at(autoFiring.nextPattern).direction;
@@ -42,6 +53,7 @@ public:
                                 autoFiring.timer = autoFiring.patterns.at(autoFiring.nextPattern).interval;
                             }
                         }
+                        */
                     }
                 }
 

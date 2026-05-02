@@ -6,6 +6,7 @@
 
 #include "SpawnEnemyDeathAnimation.h"
 #include "manager/AssetManager.h"
+#include "Visuals/AnimationSystems/ScrewBomberAnimationSystem.h"
 
 void SpawnScrewBomberEnemy::spawn(World &world) {
     for (auto& screwBomberEnemySpawnPoint : world.getMap().screwBomberBottomSpawnPoints) {
@@ -28,13 +29,13 @@ void SpawnScrewBomberEnemy::spawn(World &world) {
 }
 
 void SpawnScrewBomberEnemy::finishSpawn(World &world, Entity &spawner, bool isOnCeiling) {
-    spawner.addComponent<SpawnOnVisible>(false, [&world](Transform spawnerTransform) {
+    spawner.addComponent<SpawnOnVisible>(false, [&world, isOnCeiling](Transform spawnerTransform) {
         auto& screwBomberEnemy(world.createDeferredEntity());
         auto& screwBomberTransform = screwBomberEnemy.addComponent<Transform>
         (Vector2D(spawnerTransform.position.x, spawnerTransform.position.y), 0.0f, 1.0f);
 
         Animation anim = AssetManager::getAnimation("screwBomber");
-        //anim.getAnimationClip = screwBomberAnimationSystem::getAnimationClip;
+        anim.getAnimationClip = ScrewBomberAnimationSystem::getAnimationClip;
         screwBomberEnemy.addComponent<Animation>(anim);
 
         SDL_Texture* screwBomberTex = TextureManager::load("Assets/Animations/screw_bomber_anim.png");
@@ -54,7 +55,8 @@ void SpawnScrewBomberEnemy::finishSpawn(World &world, Entity &spawner, bool isOn
         Sprite newProjectileSprite{screwBomberProjectileTex, screwBomberProjectileSrc, screwBomberProjectileDest};
 
         screwBomberEnemy.addComponent<ProjectileStats>(600.0f, 2, Vector2D(0, 0),
-            Vector2D(screwBomberTransform.position.x, screwBomberTransform.position.y),
+            Vector2D(screwBomberTransform.position.x + (screwBomberDst.w / 4),
+                screwBomberTransform.position.y + (screwBomberDst.h / 4)),
             [&world, newProjectileSprite](ProjectileStats stats, Entity screwBomber) {
             auto& projectile = world.createDeferredEntity();
             auto& projectileTransform = projectile.addComponent<Transform>(stats.spawnPoint, 0.0f, 1.0f);
@@ -73,22 +75,95 @@ void SpawnScrewBomberEnemy::finishSpawn(World &world, Entity &spawner, bool isOn
         }
     );
 
-        screwBomberEnemy.addComponent<IsFiring>(false, 2.0f, 0.25f, 0.25f);
+        screwBomberEnemy.addComponent<IsFiring>(false, 1.5f, 0.1f, 0.75f);
+
+        if (isOnCeiling) {
+            screwBomberEnemy.addComponent<AutoFiring>(0.0f, std::vector<FiringPattern>
+            {
+                {Vector2D(-1, 0).normalize(), 0.75f},
+                {Vector2D(-1, 1).normalize(), 0.0f},
+                {Vector2D(0, 1).normalize(), 0.0f},
+                {Vector2D(1, 1).normalize(), 0.0f},
+                {Vector2D(1, 0).normalize(), 0.0f},
+
+                {Vector2D(-1, 0).normalize(), 0.5f},
+                {Vector2D(-1, 1).normalize(), 0.0f},
+                {Vector2D(0, 1).normalize(), 0.0f},
+                {Vector2D(1, 1).normalize(), 0.0f},
+                {Vector2D(1, 0).normalize(), 0.0f}
+            }, false, false);
+        }
+        else {
+            screwBomberEnemy.addComponent<AutoFiring>(0.0f, std::vector<FiringPattern>
+            {
+                {Vector2D(-1, 0).normalize(), 0.5f},
+                {Vector2D(-1, -1).normalize(), 0.0f},
+                {Vector2D(0, -1).normalize(), 0.0f},
+                {Vector2D(1, -1).normalize(), 0.0f},
+                {Vector2D(1, 0).normalize(), 0.0f},
+
+                {Vector2D(-1, 0).normalize(), 0.5f},
+                {Vector2D(-1, -1).normalize(), 0.0f},
+                {Vector2D(0, -1).normalize(), 0.0f},
+                {Vector2D(1, -1).normalize(), 0.0f},
+                {Vector2D(1, 0).normalize(), 0.0f}
+            }, false, false);
+        }
+
+        auto& screwBomberPlayerDetection(world.createDeferredEntity());
+        auto& screwBomberDetectionTransform = screwBomberPlayerDetection.addComponent<Transform>(Vector2D(0.0f, 0.0f), 0.0f, 1.0f);
+        auto& screwBomberDetectionCollider = screwBomberPlayerDetection.addComponent<Collider>("EnemyDetect");
+        // Size of tile * 9 tiles
+        screwBomberDetectionCollider.rect.w = 48 * 9;
+        screwBomberDetectionCollider.rect.h = 2000.0f;
+
+        screwBomberPlayerDetection.addComponent<Parent>(&screwBomberEnemy);
+        screwBomberPlayerDetection.addComponent<FollowParent>
+        ((-screwBomberDetectionCollider.rect.w / 2) + (screwBomberCollider.rect.w / 2),
+            -screwBomberDetectionCollider.rect.h / 2);
 
 
-        screwBomberEnemy.addComponent<OnPlayerDetectEnterCallback>([](Entity* screwBomberEnemy, Entity* player) {
-            auto& isFiring = screwBomberEnemy->getComponent<IsFiring>();
+        screwBomberPlayerDetection.addComponent<OnPlayerDetectEnterCallback>([](Entity* screwBomberEnemy, Entity* player) {
+            screwBomberEnemy = screwBomberEnemy->getComponent<Parent>().parent;
+
+            //auto& isFiring = screwBomberEnemy->getComponent<IsFiring>();
             auto& autoFiring = screwBomberEnemy->getComponent<AutoFiring>();
-            isFiring.firing = true;
-            isFiring.timer = isFiring.firingDuration;
             autoFiring.loop = true;
         });
 
-        screwBomberEnemy.addComponent<OnPlayerDetectLeaveCallback>([](Entity* screwBomberEnemy, Entity* player) {
-            auto& isFiring = screwBomberEnemy->getComponent<IsFiring>();
+        screwBomberPlayerDetection.addComponent<OnPlayerDetectLeaveCallback>([](Entity* screwBomberEnemy, Entity* player) {
+            screwBomberEnemy = screwBomberEnemy->getComponent<Parent>().parent;
+
+            //auto& isFiring = screwBomberEnemy->getComponent<IsFiring>();
             auto& autoFiring = screwBomberEnemy->getComponent<AutoFiring>();
-            isFiring.firing = false;
             autoFiring.loop = false;
+        });
+
+        screwBomberEnemy.addComponent<OnStartFiringCallback>([](Entity* screwBomberEnemy) {
+            for (auto& child : screwBomberEnemy->getComponent<Children>().children) {
+                if (child->hasComponent<Hurtbox>()) {
+                    auto& collider = child->getComponent<Collider>();
+                    auto& screwBomberDst = screwBomberEnemy->getComponent<Sprite>().dst;
+
+                    collider.rect.h = screwBomberDst.h;
+                    collider.yOffset = 0;
+                }
+            }
+        });
+
+        screwBomberEnemy.addComponent<OnEndFiringCallback>([isOnCeiling](Entity* screwBomberEnemy) {
+            for (auto& child : screwBomberEnemy->getComponent<Children>().children) {
+                if (child->hasComponent<Hurtbox>()) {
+                    auto& collider = child->getComponent<Collider>();
+                    auto& screwBomberDst = screwBomberEnemy->getComponent<Sprite>().dst;
+
+                    collider.rect.h = screwBomberDst.h / 2;
+
+                    if (!isOnCeiling) {
+                        collider.yOffset = screwBomberDst.h / 2;
+                    }
+                }
+            }
         });
 
         screwBomberEnemy.addComponent<Health>(3);
@@ -100,7 +175,10 @@ void SpawnScrewBomberEnemy::finishSpawn(World &world, Entity &spawner, bool isOn
         auto& screwBomberHurtbox(world.createEntity());
         auto& screwBomberHurtboxCollider = screwBomberHurtbox.addComponent<Collider>("Enemy");
         screwBomberHurtboxCollider.rect.w = screwBomberCollider.rect.w;
-        screwBomberHurtboxCollider.rect.h = screwBomberCollider.rect.h;
+        screwBomberHurtboxCollider.rect.h = screwBomberDst.h / 2;
+        if (!isOnCeiling) {
+            screwBomberHurtboxCollider.yOffset = screwBomberDst.h / 2;
+        }
         screwBomberHurtbox.addComponent<Hurtbox>();
         screwBomberHurtbox.addComponent<Transform>(screwBomberTransform);
         screwBomberHurtbox.addComponent<Parent>(&screwBomberEnemy);
@@ -110,7 +188,7 @@ void SpawnScrewBomberEnemy::finishSpawn(World &world, Entity &spawner, bool isOn
             SpawnEnemyDeathAnimation::spawn(world, *screwBomber);
         });
 
-        std::vector newChildren = {&screwBomberHurtbox};
+        std::vector newChildren = {&screwBomberHurtbox, &screwBomberPlayerDetection};
         screwBomberEnemy.addComponent<Children>(newChildren);
         return &screwBomberEnemy;
     });
