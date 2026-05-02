@@ -10,6 +10,7 @@
 #include "World.h"
 #include "OnDestroyEvent.h"
 #include "OnEnemyCollisionEvent.h"
+#include "OnItemCollisionEvent.h"
 #include "OnPlayerCollisionEvent.h"
 
 EventResponseSystem::EventResponseSystem(World &world) {
@@ -52,6 +53,7 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
     Entity* player = nullptr;
     Entity* enemy = nullptr;
     Entity* other = nullptr;
+    Entity* item = nullptr;
 
     if (e.entityA == nullptr || e.entityB == nullptr) return;
 
@@ -83,6 +85,19 @@ void EventResponseSystem::onCollision(const CollisionEvent& e, const char* other
         enemy = e.entityB;
         other = e.entityA;
         OnEnemyCollisionEvent::onCollision(enemy, other, e, otherTag, world);
+    }
+
+    // Check for item collisions
+    else if (colliderA.tag == "Item" && colliderB.tag == otherTag) {
+        item = e.entityA;
+        other = e.entityB;
+        OnItemCollisionEvent::onCollision(item, other, e, otherTag, world);
+    }
+
+    else if (colliderA.tag == otherTag && colliderB.tag == "Item") {
+        item = e.entityB;
+        other = e.entityA;
+        OnItemCollisionEvent::onCollision(item, other, e, otherTag, world);
     }
 }
 

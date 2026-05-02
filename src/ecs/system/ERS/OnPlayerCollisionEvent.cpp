@@ -403,12 +403,26 @@ void OnPlayerCollisionEvent::itemCollision(Entity *player, Entity *other, const 
     if (player->hasComponent<PlayerGroundCheck>()) return;
     if (player->hasComponent<Hurtbox>()) return;
 
-    world.getAudioEventQueue().push(std::make_unique<AudioEvent>("victoryMusic"));
+    if (other->hasComponent<VictoryItemTag>()) {
+        world.getAudioEventQueue().push(std::make_unique<AudioEvent>("victoryMusic"));
+
+        Game::gameState.isEnding = true;
+        Game::checkSceneState();
+
+        auto& transition(world.createDeferredEntity());
+        transition.addComponent<SceneTransitionDelay>(6.5f, "victory");
+    }
+
+    else if (other->hasComponent<Healing>()){
+        auto& healing(world.createDeferredEntity());
+        auto& healAmount = other->getComponent<Healing>().healAmount;
+        healing.addComponent<HealOvertime>(healAmount, player);
+    }
+
+    else if (other->hasComponent<OneUp>()) {
+        Game::gameState.lives++;
+        world.getAudioEventQueue().push(std::make_unique<AudioEvent>("oneUp"));
+    }
+
     other->destroy();
-
-    Game::gameState.isEnding = true;
-    Game::checkSceneState();
-
-    auto& transition(world.createEntity());
-    transition.addComponent<SceneTransitionDelay>(6.5f, "victory");
 }

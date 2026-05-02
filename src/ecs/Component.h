@@ -269,6 +269,11 @@ struct Damage {
 
 struct Healing {
     int healAmount{};
+};
+
+struct HealOvertime {
+    int healAmount{};
+    Entity* healTarget{};
     float healDelay = 0.25f;
     float timer = 0.0f;
 };

@@ -88,6 +88,9 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     audioManager.loadAudio("bigEyeLand", "Assets/Audio/BigEyeLand.mp3", 6);
     audioManager.loadAudio("dink", "Assets/Audio/Dink.mp3", 9);
 
+    audioManager.loadAudio("oneUp", "Assets/Audio/OneUp.mp3", 15);
+    audioManager.loadAudio("healing", "Assets/Audio/Healing.mp3", 14);
+
     // Load assets
     AssetManager::loadAnimation("titleScreen", "Assets/Animations/megaman_title_screen_anim.xml");
     AssetManager::loadAnimation("player", "Assets/Animations/megaman_anim.xml");
