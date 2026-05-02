@@ -240,6 +240,18 @@ struct AutoFiring {
     int nextPattern{};
 };
 
+struct OnStartFiringCallback {
+    std::function<void(Entity*)> callback{};
+};
+
+struct OnFiringCallback {
+    std::function<void(Entity*)> callback{};
+};
+
+struct OnEndFiringCallback {
+    std::function<void(Entity*)> callback{};
+};
+
 struct ContactDamage {
     int damage{};
 };

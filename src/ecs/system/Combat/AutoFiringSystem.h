@@ -57,6 +57,10 @@ public:
                             isFiring.startFiring = true;
                             isFiring.timer = isFiring.startFiringDuration;
                             autoFiring.timer = autoFiring.patterns.at(autoFiring.nextPattern).interval;
+
+                            if (entity->hasComponent<OnStartFiringCallback>()) {
+                                entity->getComponent<OnStartFiringCallback>().callback(entity.get());
+                            }
                         }
                     }
                 }

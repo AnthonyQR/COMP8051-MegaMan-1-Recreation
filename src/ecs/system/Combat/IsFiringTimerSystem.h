@@ -22,6 +22,10 @@ public:
                         isFiring.startFiring = false;
                         isFiring.firing = true;
                         isFiring.timer = isFiring.firingDuration;
+
+                        if (entity->hasComponent<OnFiringCallback>()) {
+                            entity->getComponent<OnFiringCallback>().callback(entity.get());
+                        }
                     }
                 }
 
@@ -31,6 +35,10 @@ public:
                         isFiring.firing = false;
                         isFiring.endFiring = true;
                         isFiring.timer = isFiring.endFiringDuration;
+
+                        if (entity->hasComponent<OnEndFiringCallback>()) {
+                            entity->getComponent<OnEndFiringCallback>().callback(entity.get());
+                        }
                     }
                 }
 
