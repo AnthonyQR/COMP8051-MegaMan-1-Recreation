@@ -416,7 +416,7 @@ void OnPlayerCollisionEvent::itemCollision(Entity *player, Entity *other, const 
     else if (other->hasComponent<Healing>()){
         auto& healing(world.createDeferredEntity());
         auto& healAmount = other->getComponent<Healing>().healAmount;
-        healing.addComponent<HealOvertime>(healAmount, player);
+        healing.addComponent<HealOvertime>(healAmount, player, 0.08f, 0.0f);
     }
 
     else if (other->hasComponent<OneUp>()) {

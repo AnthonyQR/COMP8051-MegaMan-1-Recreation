@@ -214,4 +214,22 @@ void SpawnPlayer::spawn(World& world) {
         auto& gravity = player->getComponent<Gravity>();
         gravity.gravityEnabled = true;
     });
+
+    player.addComponent<OnHealCallback>([&world](Entity* player) {
+        auto& health = player->getComponent<Health>();
+        Game::gameState.playerHealth = health.currentHealth;
+        std::cout << "Health: " << health.currentHealth << std::endl;
+
+        // Find the health bar & update it
+        for (auto& e : world.getEntities()) {
+            if (e->hasComponent<HealthBarUpdate>()) {
+                e->getComponent<HealthBarUpdate>().callback(e.get());
+                break;
+            };
+        }
+        world.getAudioEventQueue().push(std::make_unique<AudioEvent>("healing"));
+
+        auto& screenFreeze(world.createDeferredEntity());
+        screenFreeze.addComponent<ScreenFreeze>(0.2f);
+    });
 }

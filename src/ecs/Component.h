@@ -279,6 +279,10 @@ struct HealOvertime {
     float timer = 0.0f;
 };
 
+struct OnHealCallback {
+    std::function<void(Entity*)> callback{};
+};
+
 struct OneUp{};
 
 struct HealthBarUpdate {

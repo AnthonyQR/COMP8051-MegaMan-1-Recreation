@@ -122,6 +122,7 @@ public:
                 !currentSceneState.isPaused) {
                 debugTeleportSystem.update(entities, event, *this);
                 keyboardInputSystem.update(entities, event, dt);
+                healOvertimeSystem.update(entities, *this, dt);
             }
 
             if (!currentSceneState.isEnding &&
@@ -140,7 +141,6 @@ public:
                 flashTimerSystem.update(entities, dt);
 
                 damageSystem.update(entities, *this);
-                healOvertimeSystem.update(entities, *this, dt);
                 destructionSystem.update(entities, *this);
             }
 
