@@ -13,6 +13,7 @@
 #include "event/EventManager.h"
 #include "system/Player/KeyboardInputSystem.h"
 #include "Map.h"
+#include "Combat/HealOvertimeSystem.h"
 #include "system/Movement/MovementSystem.h"
 #include "system/Visuals/RenderSystem.h"
 #include "system/Visuals/AnimationSystems/AnimationSystem.h"
@@ -47,6 +48,7 @@
 #include "Movement/JumpSystem.h"
 #include "Movement/TrackPlayer.h"
 #include "scene/SceneType.h"
+#include "Visuals/ScreenFreezeTimerSystem.h"
 
 class World {
     Map map;
@@ -79,6 +81,7 @@ class World {
     CameraSystem cameraSystem;
     FlashTimerSystem flashTimerSystem;
     UIRenderSystem uiRenderSystem;
+    ScreenFreezeTimerSystem screenFreezeTimerSystem;
 
     // Scene
     MainMenuSystem mainMenuSystem;
@@ -104,6 +107,7 @@ class World {
     InvulnerableWhileNotFiringSystem invulnerableWhileNotFiringSystem;
     HitKnockbackSystem hitKnockbackSystem;
     InvulnerabilityTimerSystem invulnerabilityTimerSystem;
+    HealOvertimeSystem healOvertimeSystem;
 
 public:
     World() = default;
@@ -114,10 +118,16 @@ public:
             animationSystem.update(entities, dt);
         }
         else {
-            if (!currentSceneState.isEnding && !currentSceneState.isPaused) {
+            if (!currentSceneState.isEnding &&
+                !currentSceneState.isPaused) {
                 debugTeleportSystem.update(entities, event, *this);
-                animationSystem.update(entities, dt);
                 keyboardInputSystem.update(entities, event, dt);
+            }
+
+            if (!currentSceneState.isEnding &&
+                !currentSceneState.isPaused &&
+                !currentSceneState.isScreenFreeze) {
+                animationSystem.update(entities, dt);
 
                 spawnTimerSystem.update(entities, dt);
                 spawnOnVisibleSystem.update(entities);
@@ -130,11 +140,13 @@ public:
                 flashTimerSystem.update(entities, dt);
 
                 damageSystem.update(entities, *this);
+                healOvertimeSystem.update(entities, *this, dt);
                 destructionSystem.update(entities, *this);
             }
 
             if (!currentSceneState.isEnding) {
                 pauseSystem.update(entities, event, *this);
+                screenFreezeTimerSystem.update(entities, dt);
             }
             sceneTransitionDelaySystem.update(entities, dt);
             updateSceneStateSystem.update(sceneStateEntity, currentSceneState);
@@ -149,7 +161,9 @@ public:
             // Currently Do Nothing
         }
         else {
-            if (!currentSceneState.isEnding && !currentSceneState.isPaused) {
+            if (!currentSceneState.isEnding &&
+                !currentSceneState.isPaused &&
+                !currentSceneState.isScreenFreeze) {
                 coyoteTimeSystem.update(entities, dt);
                 autoJumpSystem.update(entities, dt);
                 jumpSystem.update(entities, dt);

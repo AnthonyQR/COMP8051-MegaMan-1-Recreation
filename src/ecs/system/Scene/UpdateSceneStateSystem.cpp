@@ -15,6 +15,7 @@ void UpdateSceneStateSystem::update(const std::unique_ptr<Entity> &entity, Scene
     sceneState.currentCheckpoint = Game::gameState.currentCheckpoint;
     sceneState.isEnding = Game::gameState.isEnding;
     sceneState.isPaused = Game::gameState.isPaused;
+    sceneState.isScreenFreeze = Game::gameState.isScreenFreeze;
 
     currentState = sceneState;
 }

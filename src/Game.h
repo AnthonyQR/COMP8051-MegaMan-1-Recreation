@@ -21,6 +21,7 @@ struct GameState {
     int currentCheckpoint;
     bool isEnding;
     bool isPaused;
+    bool isScreenFreeze;
 };
 
 class Game {

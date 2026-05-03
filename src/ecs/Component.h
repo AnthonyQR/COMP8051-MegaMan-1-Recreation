@@ -154,6 +154,7 @@ struct SceneState {
     int currentCheckpoint{};
     bool isEnding{};
     bool isPaused{};
+    bool isScreenFreeze{};
 };
 
 struct Health {
@@ -380,6 +381,10 @@ struct HitKnockback {
 
 struct StopMovementWhileFiring {
     Vector2D direction{};
+};
+
+struct ScreenFreeze {
+    float timer{};
 };
 
 struct TitleScreenTag{};
