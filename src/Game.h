@@ -22,6 +22,7 @@ struct GameState {
     bool isEnding;
     bool isPaused;
     bool isScreenFreeze;
+    bool isTransitioning;
 };
 
 class Game {

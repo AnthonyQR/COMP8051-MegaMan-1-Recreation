@@ -22,6 +22,10 @@ void OnPlayerCollisionEvent::onCollision(Entity *player, Entity *other,
         cameraBoundsCollision(player, other, e, otherTag, world);
     }
 
+    else if (std::string(otherTag) == "Camera Transition") {
+        cameraTransitionCollision(player, other, e, otherTag, world);
+    }
+
     else if (std::string(otherTag) == "Projectile") {
         projectileCollision(player, other, e, otherTag, world);
     }
@@ -277,8 +281,67 @@ void OnPlayerCollisionEvent::cameraBoundsCollision(Entity *player, Entity *other
     }
 }
 
-void OnPlayerCollisionEvent::enemyCollision(Entity *player, Entity *other, const CollisionEvent &e,
+void OnPlayerCollisionEvent::cameraTransitionCollision(Entity *player, Entity *other, const CollisionEvent &e,
     const char *otherTag, World &world) {
+    if (player->hasComponent<ProjectileTag>()) return;
+    if (player->hasComponent<Hurtbox>()) return;
+    if (player->hasComponent<PlayerGroundCheck>()) return;
+    if (e.state != CollisionState::Stay) return;
+    if (Game::gameState.isTransitioning) return;
+
+    Entity* cameraEntity = nullptr;
+
+    // Find the camera
+    for (auto& entity : world.getEntities()) {
+        if (entity->hasComponent<Camera>()) {
+            cameraEntity = entity.get();
+            break;
+        }
+    }
+    if (!cameraEntity) return;
+
+    auto& cameraView = cameraEntity->getComponent<Camera>().view;
+    auto& transitionCollider = other->getComponent<Collider>().rect;
+
+    // Find the maximum distance between each side of the camera & the transition collider
+    float leftSideDistance = std::abs(cameraView.x - transitionCollider.x);
+    float rightSideDistance = std::abs((cameraView.x + cameraView.w) - (transitionCollider.x + transitionCollider.w));
+    float topSideDistance = std::abs(cameraView.y - transitionCollider.y);
+    float bottomSideDistance = std::abs((cameraView.y + cameraView.h) - (transitionCollider.y + transitionCollider.h));
+
+    float maximumDistance = std::max({leftSideDistance, rightSideDistance, topSideDistance, bottomSideDistance});
+    float positionOffset = 0.1f;
+
+    auto& playerCollider= player->getComponent<Collider>().rect;
+    auto& yOffset = player->getComponent<Collider>().yOffset;
+
+    if (maximumDistance == topSideDistance) {
+        Vector2D playerMoveDistance = {0, (transitionCollider.y + transitionCollider.h) - (playerCollider.y - yOffset) - positionOffset};
+        Vector2D cameraMoveDistance = {0, (transitionCollider.y + transitionCollider.h) - (cameraView.y) - positionOffset};
+
+        auto& transition (world.createDeferredEntity());
+        transition.addComponent<CameraTransition>(cameraMoveDistance, playerMoveDistance);
+        Game::gameState.isTransitioning = true;
+        return;
+    }
+
+    if (maximumDistance == bottomSideDistance) {
+        auto& ladderClimbing = player->getComponent<LadderClimbing>();
+        if (!ladderClimbing.isClimbing) return;
+
+        Vector2D playerMoveDistance = {0,  transitionCollider.y - (playerCollider.y + playerCollider.h + yOffset) - positionOffset};
+        Vector2D cameraMoveDistance = {0, transitionCollider.y - (cameraView.y + cameraView.h) - positionOffset};
+
+        auto& transition (world.createDeferredEntity());
+        transition.addComponent<CameraTransition>(cameraMoveDistance, playerMoveDistance);
+        Game::gameState.isTransitioning = true;
+        return;
+    }
+
+}
+
+void OnPlayerCollisionEvent::enemyCollision(Entity *player, Entity *other, const CollisionEvent &e,
+                                            const char *otherTag, World &world) {
     if (e.state !=CollisionState::Enter) return;
     if (player->hasComponent<PlayerGroundCheck>()) return;
 

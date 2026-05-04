@@ -126,6 +126,18 @@ struct Camera {
     float worldY;
 };
 
+struct CameraTransition {
+    Vector2D cameraMoveDistance{};
+    Vector2D playerMoveDistance{};
+    float prepareTransitionTime = 0.25f;
+    float transitionTime = 2.0f;
+    float endTransitionTime = 0.25f;
+    bool isPreparingTransition = true;
+    bool isTransitioning = false;
+    bool isEndingTransition = false;
+    float timer{};
+};
+
 struct TimedSpawner {
     float spawnInterval{};
     std::function<void()> spawnCallback{};
@@ -155,6 +167,7 @@ struct SceneState {
     bool isEnding{};
     bool isPaused{};
     bool isScreenFreeze{};
+    bool isTransitioning{};
 };
 
 struct Health {

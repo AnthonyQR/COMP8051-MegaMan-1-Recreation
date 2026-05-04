@@ -17,6 +17,8 @@ public:
         const CollisionEvent& e, const char* otherTag, World& world);
     static void cameraBoundsCollision(Entity *player, Entity *other,
         const CollisionEvent& e, const char* otherTag, World& world);
+    static void cameraTransitionCollision(Entity *player, Entity *other,
+        const CollisionEvent& e, const char* otherTag, World& world);
     static void enemyCollision(Entity *player, Entity *other,
         const CollisionEvent& e, const char* otherTag, World& world);
     static void projectileCollision(Entity *player, Entity *other,

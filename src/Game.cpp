@@ -124,6 +124,7 @@ void Game::init(const char* title, int width, int height, bool fullscreen)
     gameState.isEnding = false;
     gameState.isPaused = false;
     gameState.isScreenFreeze = false;
+    gameState.isTransitioning = false;
 
     // Start Main Menu
     sceneManager.changeSceneDeferred("mainMenu");

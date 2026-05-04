@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="24" nextobjectid="330">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="220" height="144" tilewidth="16" tileheight="16" infinite="0" nextlayerid="25" nextobjectid="347">
  <tileset firstgid="1" source="CutManTileset.tsx"/>
  <layer id="1" name="Terrain Layer" width="220" height="144">
   <data encoding="csv">
@@ -374,7 +374,6 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="14" name="Flying Shell Spawn Layer"/>
  <objectgroup id="21" name="Big Eye Spawn Layer">
   <object id="325" x="1984" y="896">
    <point/>
@@ -445,12 +444,12 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="5" name="Camera Bounds Layer" visible="0">
-  <object id="179" x="0" y="2056" width="1024" height="224" visible="0"/>
+ <objectgroup id="5" name="Camera Bounds Layer">
+  <object id="179" x="0" y="2056" width="1024" height="224"/>
   <object id="180" x="752" y="1800" width="272" height="224"/>
   <object id="204" x="752" y="1544" width="272" height="224"/>
   <object id="205" x="752" y="1288" width="272" height="224"/>
-  <object id="206" x="752" y="1032" width="768" height="224" visible="0"/>
+  <object id="206" x="752" y="1032" width="768" height="224"/>
   <object id="207" x="1264" y="776" width="272" height="224"/>
   <object id="208" x="1264" y="520" width="272" height="224"/>
   <object id="209" x="1264" y="264" width="272" height="224"/>
@@ -460,6 +459,19 @@
   <object id="215" x="1776" y="760" width="504" height="224"/>
   <object id="216" x="2296" y="760" width="752" height="224"/>
   <object id="217" x="3056" y="760" width="272" height="224"/>
+ </objectgroup>
+ <objectgroup id="24" name="Camera Transition Collision Layer">
+  <object id="330" x="752" y="2024" width="272" height="32"/>
+  <object id="331" x="752" y="1768" width="272" height="32"/>
+  <object id="332" x="752" y="1512" width="272" height="32"/>
+  <object id="334" x="752" y="1256" width="272" height="32"/>
+  <object id="335" x="1264" y="1000" width="272" height="32"/>
+  <object id="336" x="1264" y="744" width="272" height="32"/>
+  <object id="337" x="1264" y="488" width="272" height="32"/>
+  <object id="338" x="1264" y="232" width="288" height="32"/>
+  <object id="339" x="1776" y="232" width="272" height="32"/>
+  <object id="340" x="1776" y="488" width="272" height="32"/>
+  <object id="343" x="1776" y="728" width="272" height="32"/>
  </objectgroup>
  <objectgroup id="6" name="Beak Right Spawn Layer">
   <object id="182" x="816" y="2112">
@@ -514,7 +526,7 @@
   <object id="202" x="1904" y="704" width="128" height="16"/>
   <object id="203" x="-224" y="2336" width="4144" height="304"/>
  </objectgroup>
- <objectgroup id="15" name="Checkpoint Collision Layer" visible="0">
+ <objectgroup id="15" name="Checkpoint Collision Layer">
   <object id="268" x="0" y="2048" width="224" height="256"/>
   <object id="269" x="1264" y="768" width="288" height="256"/>
  </objectgroup>
@@ -526,7 +538,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="17" name="Debug Spawn Points Layer" visible="0">
+ <objectgroup id="17" name="Debug Spawn Points Layer">
   <object id="273" x="16" y="2192">
    <point/>
   </object>

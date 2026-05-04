@@ -64,6 +64,7 @@ add_executable(Megaman WIN32 src/main.cpp
         src/ecs/system/ERS/OnItemCollisionEvent.cpp
         src/ecs/system/Combat/HealOvertimeSystem.cpp
         src/ecs/system/Visuals/ScreenFreezeTimerSystem.cpp
+        src/ecs/system/Visuals/CameraTransitionSystem.cpp
 )
 
 target_link_libraries(Megaman

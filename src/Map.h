@@ -29,6 +29,7 @@ public:
     std::vector<Collider> colliders;
     std::vector<Collider> ladders;
     std::vector<Collider> cameraBounds;
+    std::vector<Collider> cameraTransitionColliders;
     std::vector<Collider> deathColliders;
     std::vector<Vector2D> checkPointSpawnPoints;
     std::vector<Collider> checkPointBoundsColliders;

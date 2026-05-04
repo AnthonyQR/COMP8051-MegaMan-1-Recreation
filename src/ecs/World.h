@@ -48,6 +48,7 @@
 #include "Movement/JumpSystem.h"
 #include "Movement/TrackPlayer.h"
 #include "scene/SceneType.h"
+#include "Visuals/CameraTransitionSystem.h"
 #include "Visuals/ScreenFreezeTimerSystem.h"
 
 class World {
@@ -79,6 +80,7 @@ class World {
     RenderSystem renderSystem;
     AnimationSystem animationSystem;
     CameraSystem cameraSystem;
+    CameraTransitionSystem cameraTransitionSystem;
     FlashTimerSystem flashTimerSystem;
     UIRenderSystem uiRenderSystem;
     ScreenFreezeTimerSystem screenFreezeTimerSystem;
@@ -109,8 +111,13 @@ class World {
     InvulnerabilityTimerSystem invulnerabilityTimerSystem;
     HealOvertimeSystem healOvertimeSystem;
 
+
 public:
-    World() = default;
+    World() {
+        // Prevents bug that occurs when trying to spawn in an enemy while the entities list is full
+        entities.reserve(512);
+    }
+
     void update(float dt, const SDL_Event& event, SceneType sceneType) {
         if (sceneType == SceneType::Menu) {
             mainMenuSystem.update(entities, event, *this);
@@ -118,8 +125,16 @@ public:
             animationSystem.update(entities, dt);
         }
         else {
+            if (currentSceneState.isEnding) {
+                // Do nothing
+            }
+            else if (currentSceneState.isPaused) {
+
+            }
+
             if (!currentSceneState.isEnding &&
-                !currentSceneState.isPaused) {
+                !currentSceneState.isPaused &&
+                !currentSceneState.isTransitioning) {
                 debugTeleportSystem.update(entities, event, *this);
                 keyboardInputSystem.update(entities, event, dt);
                 healOvertimeSystem.update(entities, *this, dt);
@@ -127,7 +142,8 @@ public:
 
             if (!currentSceneState.isEnding &&
                 !currentSceneState.isPaused &&
-                !currentSceneState.isScreenFreeze) {
+                !currentSceneState.isScreenFreeze &&
+                !currentSceneState.isTransitioning) {
                 animationSystem.update(entities, dt);
 
                 spawnTimerSystem.update(entities, dt);
@@ -148,7 +164,11 @@ public:
                 pauseSystem.update(entities, event, *this);
                 screenFreezeTimerSystem.update(entities, dt);
             }
+            if (currentSceneState.isTransitioning) {
+                animationSystem.update(entities, dt);
+            }
             sceneTransitionDelaySystem.update(entities, dt);
+            cameraTransitionSystem.update(entities, dt);
             updateSceneStateSystem.update(sceneStateEntity, currentSceneState);
         }
         audioEventQueue.process(); // Process all the audio events
@@ -163,7 +183,8 @@ public:
         else {
             if (!currentSceneState.isEnding &&
                 !currentSceneState.isPaused &&
-                !currentSceneState.isScreenFreeze) {
+                !currentSceneState.isScreenFreeze &&
+                !currentSceneState.isTransitioning) {
                 coyoteTimeSystem.update(entities, dt);
                 autoJumpSystem.update(entities, dt);
                 jumpSystem.update(entities, dt);
@@ -181,6 +202,10 @@ public:
 
                 collisionSystem.update(*this);
                 cameraSystem.update(entities);
+            }
+            if (currentSceneState.isTransitioning) {
+                movementSystem.update(entities, dt);
+                followParentSystem.update(entities);
             }
         }
     }

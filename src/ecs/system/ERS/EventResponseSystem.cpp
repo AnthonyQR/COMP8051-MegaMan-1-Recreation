@@ -29,6 +29,7 @@ EventResponseSystem::EventResponseSystem(World &world) {
             onCollision(collision, "EnemyDetect", world);
             onCollision(collision, "Checkpoint", world);
             onCollision(collision, "Item", world);
+            onCollision(collision, "Camera Transition", world);
         }
     );
 

@@ -41,6 +41,7 @@ void Map::load(const char* path, SDL_Texture *ts) {
     parseData(layer, "Collision Layer", colliders);
     parseData(layer, "Ladder Layer", ladders);
     parseData(layer, "Camera Bounds Layer", cameraBounds);
+    parseData(layer, "Camera Transition Collision Layer", cameraTransitionColliders);
     parseData(layer, "Death Collision Layer", deathColliders);
     parseData(layer, "Checkpoint Spawn Layer", checkPointSpawnPoints);
     parseData(layer, "Checkpoint Collision Layer", checkPointBoundsColliders);

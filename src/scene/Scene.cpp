@@ -71,6 +71,7 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
         */
     }
 
+
     for (auto&item : world.getMap().itemSpawnPoints) {
         auto& entity(world.createEntity());
         entity.addComponent<Transform>(Vector2D(item.x, item.y), 0.0f, 1.0f);
@@ -106,13 +107,24 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
 
     // Spawn Camera Bounds
     for (auto &cameraBounds : world.getMap().cameraBounds) {
-        auto& e = world.createEntity();
+        auto& e(world.createEntity());
         e.addComponent<Transform>(Vector2D(cameraBounds.rect.x, cameraBounds.rect.y), 0.0f, 1.0f);
         auto& c = e.addComponent<Collider>("Camera Bounds");
         c.rect.x = cameraBounds.rect.x;
         c.rect.y = cameraBounds.rect.y;
         c.rect.w = cameraBounds.rect.w;
         c.rect.h = cameraBounds.rect.h;
+    }
+
+    // Spawn Colliders
+    for (auto &collider : world.getMap().cameraTransitionColliders) {
+        auto& e(world.createEntity());
+        e.addComponent<Transform>(Vector2D(collider.rect.x, collider.rect.y), 0.0f, 1.0f);
+        auto& c = e.addComponent<Collider>("Camera Transition");
+        c.rect.x = collider.rect.x;
+        c.rect.y = collider.rect.y;
+        c.rect.w = collider.rect.w;
+        c.rect.h = collider.rect.h;
     }
 
     // Spawn Camera
@@ -143,6 +155,7 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
         c.rect.w = collider.rect.w;
         c.rect.h = collider.rect.h;
     }
+
 
     // Spawn Health bar in specific order (background -> fill -> dividers)
     Transform healthBarTransform = Transform(Vector2D(windowWidth / 12.0f, windowHeight / 12.0f), 0.0f, 1.0f);
@@ -186,7 +199,7 @@ void Scene::initGameplay(const char *mapPath, int windowWidth, int windowHeight)
     // Add Scene State
     auto &state(world.CreateSceneStateEntity());
     state.addComponent<SceneState>(Game::gameState.playerHealth, Game::gameState.playerMaxHealth,
-        Game::gameState.lives, Game::gameState.currentCheckpoint, Game::gameState.isEnding);
+        Game::gameState.lives, Game::gameState.currentCheckpoint);
 
     auto& pause(world.createEntity());
     pause.addComponent<GamePaused>(false);

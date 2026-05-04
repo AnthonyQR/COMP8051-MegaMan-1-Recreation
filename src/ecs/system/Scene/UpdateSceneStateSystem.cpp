@@ -16,6 +16,7 @@ void UpdateSceneStateSystem::update(const std::unique_ptr<Entity> &entity, Scene
     sceneState.isEnding = Game::gameState.isEnding;
     sceneState.isPaused = Game::gameState.isPaused;
     sceneState.isScreenFreeze = Game::gameState.isScreenFreeze;
+    sceneState.isTransitioning = Game::gameState.isTransitioning;
 
     currentState = sceneState;
 }
