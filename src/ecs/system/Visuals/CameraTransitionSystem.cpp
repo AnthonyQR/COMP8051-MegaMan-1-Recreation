@@ -68,6 +68,7 @@ void CameraTransitionSystem::update(std::vector<std::unique_ptr<Entity> > &entit
         }
     }
 
+
     if (transition.isEndingTransition) {
         transition.timer -= dt;
         if (transition.timer <= 0) {

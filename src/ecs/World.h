@@ -138,7 +138,7 @@ public:
             else if (currentSceneState.isScreenFreeze) {
                 pauseSystem.update(entities, event, *this);
                 keyboardInputSystem.update(entities, event);
-                screenFreezeTimerSystem.update(entities, dt);
+                healOvertimeSystem.update(entities, *this, dt);
             }
 
             else if (currentSceneState.isTransitioning) {
@@ -170,6 +170,7 @@ public:
                 destructionSystem.update(entities, *this);
             }
             sceneTransitionDelaySystem.update(entities, dt);
+            screenFreezeTimerSystem.update(entities, dt);
             updateSceneStateSystem.update(sceneStateEntity, currentSceneState);
         }
         audioEventQueue.process(); // Process all the audio events

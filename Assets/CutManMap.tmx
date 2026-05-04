@@ -149,12 +149,12 @@
 4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,2,2,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,4,5,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
- <objectgroup id="18" name="Item Spawn Points Layer">
+ <objectgroup id="18" name="Item Spawn Points Layer" visible="0">
   <object id="283" x="3184" y="928">
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="3" name="Collision Layer">
+ <objectgroup id="3" name="Collision Layer" visible="0">
   <object id="5" x="0" y="2240" width="480" height="64"/>
   <object id="6" x="480" y="2240" width="192" height="64"/>
   <object id="7" x="576" y="2208" width="96" height="32"/>
@@ -300,7 +300,7 @@
   <object id="149" x="2064" y="720" width="224" height="32"/>
   <object id="264" x="1808" y="144" width="160" height="16"/>
  </objectgroup>
- <objectgroup id="20" name="Flea Enemy Spawn Layer">
+ <objectgroup id="20" name="Flea Enemy Spawn Layer" visible="0">
   <object id="319" x="1056" y="1184">
    <point/>
   </object>
@@ -311,7 +311,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="10" name="Blader Enemy Spawn Layer">
+ <objectgroup id="10" name="Blader Enemy Spawn Layer" visible="0">
   <object id="222" x="288" y="2120">
    <point/>
   </object>
@@ -340,7 +340,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="4" name="Ladder Layer">
+ <objectgroup id="4" name="Ladder Layer" visible="0">
   <object id="153" x="80" y="2143" width="16" height="97"/>
   <object id="154" x="160" y="2143" width="16" height="33"/>
   <object id="155" x="336" y="2143" width="16" height="97"/>
@@ -366,7 +366,7 @@
   <object id="176" x="1872" y="463" width="16" height="81"/>
   <object id="177" x="1808" y="703" width="16" height="113"/>
  </objectgroup>
- <objectgroup id="13" name="Super Cutter Spawn Layer">
+ <objectgroup id="13" name="Super Cutter Spawn Layer" visible="0">
   <object id="254" x="896" y="1192">
    <point/>
   </object>
@@ -374,12 +374,12 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="21" name="Big Eye Spawn Layer">
+ <objectgroup id="21" name="Big Eye Spawn Layer" visible="0">
   <object id="325" x="1984" y="896">
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="11" name="Octopus Battery Horizontal Spawn Layer">
+ <objectgroup id="11" name="Octopus Battery Horizontal Spawn Layer" visible="0">
   <object id="240" x="1440" y="1152">
    <point/>
   </object>
@@ -411,7 +411,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="12" name="Octopus Battery Vertical Spawn Layer">
+ <objectgroup id="12" name="Octopus Battery Vertical Spawn Layer" visible="0">
   <object id="238" x="1328" y="1184">
    <point/>
   </object>
@@ -431,12 +431,12 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="22" name="Screw Bomber Top Spawn Layer">
+ <objectgroup id="22" name="Screw Bomber Top Spawn Layer" visible="0">
   <object id="328" x="2720" y="848">
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="23" name="Screw Bomber Bottom Spawn Layer">
+ <objectgroup id="23" name="Screw Bomber Bottom Spawn Layer" visible="0">
   <object id="327" x="2480" y="896">
    <point/>
   </object>
@@ -449,7 +449,7 @@
   <object id="180" x="752" y="1800" width="272" height="224"/>
   <object id="204" x="752" y="1544" width="272" height="224"/>
   <object id="205" x="752" y="1288" width="272" height="224"/>
-  <object id="206" x="752" y="1032" width="768" height="224"/>
+  <object id="206" x="752" y="1032" width="784" height="224"/>
   <object id="207" x="1264" y="776" width="272" height="224"/>
   <object id="208" x="1264" y="520" width="272" height="224"/>
   <object id="209" x="1264" y="264" width="272" height="224"/>
@@ -473,7 +473,7 @@
   <object id="340" x="1776" y="488" width="272" height="32"/>
   <object id="343" x="1776" y="728" width="272" height="32"/>
  </objectgroup>
- <objectgroup id="6" name="Beak Right Spawn Layer">
+ <objectgroup id="6" name="Beak Right Spawn Layer" visible="0">
   <object id="182" x="816" y="2112">
    <point/>
   </object>
@@ -493,7 +493,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="9" name="Beak Right Early Spawn Layer">
+ <objectgroup id="9" name="Beak Right Early Spawn Layer" visible="0">
   <object id="218" x="896" y="1840">
    <point/>
   </object>
@@ -504,7 +504,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="7" name="Beak Left Spawn Layer">
+ <objectgroup id="7" name="Beak Left Spawn Layer" visible="0">
   <object id="192" x="864" y="1488">
    <point/>
   </object>
@@ -512,7 +512,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="19" name="Flying Shell Timed Spawn Layer">
+ <objectgroup id="19" name="Flying Shell Timed Spawn Layer" visible="0">
   <object id="312" x="2024" y="616">
    <point/>
   </object>
@@ -520,17 +520,17 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="8" name="Death Collision Layer">
+ <objectgroup id="8" name="Death Collision Layer" visible="0">
   <object id="197" x="1104" y="1296" width="160" height="64"/>
   <object id="201" x="1984" y="544" width="32" height="16"/>
   <object id="202" x="1904" y="704" width="128" height="16"/>
   <object id="203" x="-224" y="2336" width="4144" height="304"/>
  </objectgroup>
- <objectgroup id="15" name="Checkpoint Collision Layer">
+ <objectgroup id="15" name="Checkpoint Collision Layer" visible="0">
   <object id="268" x="0" y="2048" width="224" height="256"/>
   <object id="269" x="1264" y="768" width="288" height="256"/>
  </objectgroup>
- <objectgroup id="16" name="Checkpoint Spawn Layer">
+ <objectgroup id="16" name="Checkpoint Spawn Layer" visible="0">
   <object id="270" x="16" y="2192">
    <point/>
   </object>
@@ -538,7 +538,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="17" name="Debug Spawn Points Layer">
+ <objectgroup id="17" name="Debug Spawn Points Layer" visible="0">
   <object id="273" x="16" y="2192">
    <point/>
   </object>
