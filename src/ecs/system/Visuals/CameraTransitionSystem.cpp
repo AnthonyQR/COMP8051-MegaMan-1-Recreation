@@ -7,7 +7,7 @@
 #include "Component.h"
 #include "Game.h"
 
-void CameraTransitionSystem::update(std::vector<std::unique_ptr<Entity> > &entities, float dt) {
+void CameraTransitionSystem::update(std::vector<std::unique_ptr<Entity> > &entities, float dt, World& world) {
     Entity* player = nullptr;
     Entity* cameraEntity = nullptr;
     Entity* transitionEntity = nullptr;
@@ -27,6 +27,7 @@ void CameraTransitionSystem::update(std::vector<std::unique_ptr<Entity> > &entit
     if (transitionEntity == nullptr) return;
     for (auto& entity: entities) {
         if (entity->hasComponent<DestroyOutOfViewTag>()) {
+            world.getEventManager().emit(DestroyedEvent{entity.get()});
             entity->destroy();
         }
     }
@@ -37,6 +38,8 @@ void CameraTransitionSystem::update(std::vector<std::unique_ptr<Entity> > &entit
 
     if (transition.isPreparingTransition) {
         Game::gameState.isTransitioning = true;
+        playerVelocity.xSpeed = 0;
+        playerVelocity.ySpeed = 0;
         transition.timer -= dt;
         if (transition.timer <= 0) {
             transition.timer = transition.transitionTime;
@@ -59,7 +62,7 @@ void CameraTransitionSystem::update(std::vector<std::unique_ptr<Entity> > &entit
             transition.isTransitioning = false;
             transition.isEndingTransition = true;
 
-            playerVelocity.direction = {0., 0};
+            playerVelocity.direction = {0, 0};
             playerVelocity.xSpeed = 0;
             playerVelocity.ySpeed = 0;
         }

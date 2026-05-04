@@ -130,12 +130,12 @@ struct CameraTransition {
     Vector2D cameraMoveDistance{};
     Vector2D playerMoveDistance{};
     float prepareTransitionTime = 0.25f;
-    float transitionTime = 2.0f;
+    float transitionTime = 1.5f;
     float endTransitionTime = 0.25f;
     bool isPreparingTransition = true;
     bool isTransitioning = false;
     bool isEndingTransition = false;
-    float timer{};
+    float timer = prepareTransitionTime;
 };
 
 struct TimedSpawner {

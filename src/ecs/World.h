@@ -47,6 +47,7 @@
 #include "Movement/AutoJumpSystem.h"
 #include "Movement/JumpSystem.h"
 #include "Movement/TrackPlayer.h"
+#include "Player/PlayerControllerSystem.h"
 #include "scene/SceneType.h"
 #include "Visuals/CameraTransitionSystem.h"
 #include "Visuals/ScreenFreezeTimerSystem.h"
@@ -72,6 +73,7 @@ class World {
 
     // Player
     KeyboardInputSystem keyboardInputSystem;
+    PlayerControllerSystem playerControllerSystem;
     CoyoteTimeSystem coyoteTimeSystem;
     PauseSystem pauseSystem;
     DebugTeleportSystem debugTeleportSystem;
@@ -129,21 +131,28 @@ public:
                 // Do nothing
             }
             else if (currentSceneState.isPaused) {
-
+                pauseSystem.update(entities, event, *this);
+                keyboardInputSystem.update(entities, event);
             }
 
-            if (!currentSceneState.isEnding &&
-                !currentSceneState.isPaused &&
-                !currentSceneState.isTransitioning) {
+            else if (currentSceneState.isScreenFreeze) {
+                pauseSystem.update(entities, event, *this);
+                keyboardInputSystem.update(entities, event);
+                screenFreezeTimerSystem.update(entities, dt);
+            }
+
+            else if (currentSceneState.isTransitioning) {
+                pauseSystem.update(entities, event, *this);
+                keyboardInputSystem.update(entities, event);
+                animationSystem.update(entities, dt);
+                cameraTransitionSystem.update(entities, dt, *this);
+            }
+
+            else {
                 debugTeleportSystem.update(entities, event, *this);
-                keyboardInputSystem.update(entities, event, dt);
-                healOvertimeSystem.update(entities, *this, dt);
-            }
-
-            if (!currentSceneState.isEnding &&
-                !currentSceneState.isPaused &&
-                !currentSceneState.isScreenFreeze &&
-                !currentSceneState.isTransitioning) {
+                pauseSystem.update(entities, event, *this);
+                keyboardInputSystem.update(entities, event);
+                playerControllerSystem.update(entities, dt);
                 animationSystem.update(entities, dt);
 
                 spawnTimerSystem.update(entities, dt);
@@ -157,18 +166,10 @@ public:
                 flashTimerSystem.update(entities, dt);
 
                 damageSystem.update(entities, *this);
+                healOvertimeSystem.update(entities, *this, dt);
                 destructionSystem.update(entities, *this);
             }
-
-            if (!currentSceneState.isEnding) {
-                pauseSystem.update(entities, event, *this);
-                screenFreezeTimerSystem.update(entities, dt);
-            }
-            if (currentSceneState.isTransitioning) {
-                animationSystem.update(entities, dt);
-            }
             sceneTransitionDelaySystem.update(entities, dt);
-            cameraTransitionSystem.update(entities, dt);
             updateSceneStateSystem.update(sceneStateEntity, currentSceneState);
         }
         audioEventQueue.process(); // Process all the audio events
@@ -279,6 +280,10 @@ public:
     Entity& CreateSceneStateEntity() {
         sceneStateEntity = std::make_unique<Entity>();
         return *sceneStateEntity;
+    }
+
+    SceneState& GetCurrentSceneState() {
+        return currentSceneState;
     }
 
     EventManager& getEventManager() {return eventManager;}

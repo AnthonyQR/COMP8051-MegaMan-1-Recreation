@@ -9,9 +9,11 @@
 
 #include "Entity.h"
 
+class World;
+
 class CameraTransitionSystem {
 public:
-    void update(std::vector<std::unique_ptr<Entity>>& entities, float dt);
+    void update(std::vector<std::unique_ptr<Entity>>& entities, float dt, World& world);
 };
 
 #endif //MEGAMAN_CAMERATRANSITIONSYSTEM_H
