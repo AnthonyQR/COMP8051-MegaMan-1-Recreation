@@ -15,3 +15,12 @@ Controls:
 - Z: Jump
 - X: Shoot
 - Enter: Start / Pause
+
+Special Thanks:
+- Charles Tapp, for teaching us & giving us the opportunity to create the projects for this course
+- Mister Mike, who created the spritesheets that was used for this project
+    - https://www.spriters-resource.com/profile/mistermike/
+- Chris Rovell, who ripped the music that was used for this project
+    - https://www.zophar.net/music/nintendo-nes-nsf/mega-man
+- Nai255, who ripped the SFX that was used for this project
+    - https://sounds.spriters-resource.com/profile/nai255/
